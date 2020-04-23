@@ -70,7 +70,7 @@ CREATE TABLE shop_categories (
 
 | id                  | creator_id | category_id | price | name        | description |
 | ------------------- | --------   | ----------- | ----- | ----------- | ----------- |
-| INT PRIMARY KEY     | INT        | INT         | INT   | VARCHAR(24) | VARCHAR(48) |
+| INT PRIMARY KEY     | INT        | INT         | INT   | VARCHAR(24) | VARCHAR(128) |
 
 **Erstellen:**
 
@@ -81,7 +81,7 @@ CREATE TABLE shop_items (
     category_id INT,
     price INT,
     name VARCHAR(24),
-    description VARCHAR(48)
+    description VARCHAR(128)
 );
 ```
 
