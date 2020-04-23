@@ -13,6 +13,16 @@ Anleitung zur Installation (mit kleinem Tutorial) der MariaDB: https://www.guru9
 
 Einfach die Anleitung befolgen: https://mariadb.com/resources/blog/installing-mariadb-10-1-16-on-mac-os-x-with-homebrew/
 
+# Node installieren
+
+Alles hier dokumentiert: https://nodejs.org/en/download/
+
+Überprüfen mit `npm -v` und `node -v`.
+
+# Node Server starten
+
+In diesem Verzeichnis `npm install` ausführen. Nun sollte ein `node_modules` Ordner existieren. Danach `npm start` benutzen und bam, es geht.
+
 # Datenbankstruktur
 
 ## shop-users
