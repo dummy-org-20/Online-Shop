@@ -6,4 +6,4 @@ Seiten:
 /Details
 /Account
 /Login
-/item-uebersicht
+/Warenkorb
