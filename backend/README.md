@@ -53,9 +53,9 @@ CREATE TABLE shop_users (
 
 Optional, falls es nicht funktioniert, einfach droppen und dann `category` als `VARCHAR` speichern.
 
-| id              | name        | description |
-| --------------- | ----------- | ----------- |
-| INT PRIMARY KEY | VARCHAR(24) | VARCHAR(48) |
+| id              | name        | description  |
+| --------------- | ----------- | ------------ |
+| INT PRIMARY KEY | VARCHAR(24) | VARCHAR(128) |
 
 **Erstellen:**
 
