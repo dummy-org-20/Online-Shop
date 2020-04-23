@@ -1,0 +1,42 @@
+* {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 400;
+    /*300, 400, 700*/
+}
+
+#main-navbar {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+
+
+
+
+
+
+
+
+#second-navbar {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .05);
+}
+
+
+.path {
+    color: #2b3130;
+}
+
+.path:hover {
+    color: #e2001a;
+}
+
+#second-navbar a {
+    font-weight: 700;
+}
+
+#path-disabled {
+    color: #a5a5a5;
+    cursor: default;
+}
+
