@@ -46,6 +46,13 @@ function start(){
 	})
 }
 
+//gets item_id returns array in callback with urls of all images that belong to the item_id 
+function getImagesURL(item_id,callback){
+	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id,(rows)=>{
+		callback(rows);
+	});
+}
+
 async function setup(callback){
 	await db.start();
 	//change Database as default isnt set at the beginning
