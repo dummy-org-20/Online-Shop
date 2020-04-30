@@ -2,12 +2,12 @@ const mariadb = require('mariadb');
 const config= require('./config.json');
 const pool = mariadb.createPool({
      host: config.host, 
-     user: config.user, 
+	 user: config.user,
+	 port: 5077, 
      password: config.password,
      connectionLimit: config.connectionLimit,
 	 database: config.database
 });
-
 
 
 let start= async function(){

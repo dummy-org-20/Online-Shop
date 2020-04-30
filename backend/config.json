@@ -1,7 +1,7 @@
 {
-	"host": "localhost", 
-	"user":"user", 
-	"password": "pasword",
+	"host": "127.0.0.1", 
+	"user":"root", 
+	"password": "myRoot",
 	"connectionLimit": 5,
 	"database":"shop"
 }
