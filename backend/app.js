@@ -48,6 +48,7 @@ function start(){
 
 async function setup(callback){
 	await db.start();
+	//change Database as default isnt set at the beginning
 	await db.changeDatabase("shop");
 	callback();
 }
