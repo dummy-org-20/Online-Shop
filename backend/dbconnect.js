@@ -1,16 +1,31 @@
 const mariadb = require('mariadb');
 const config= require('./config.json');
-const pool = mariadb.createPool({
+
+var pool = mariadb.createPool({
      host: config.host, 
-	 user: config.user,
-	 port: 5077, 
+     user: config.user, 
      password: config.password,
      connectionLimit: config.connectionLimit,
-	 database: config.database
+	 port: config.port
 });
 
+let changeDatabase= async function(str){
+	return new Promise((resolve,reject)=>{
+		pool.end().then( () => {
+		pool= mariadb.createPool({
+			host: config.host, 
+			user: config.user, 
+			password: config.password,
+			connectionLimit: config.connectionLimit,
+			database: str,
+			port: config.port
+		});
+		resolve(true);
+		});
+	});
+}
 
-let start= async function(){
+let start= async function(resolve,reject){
 	return new Promise((resolve,_reject)=>{
 		pool.getConnection()
 		.then(conn => {
@@ -35,3 +50,4 @@ let search = function (q,callback){
 
 exports.search=search;
 exports.start=start;
+exports.changeDatabase=changeDatabase;
