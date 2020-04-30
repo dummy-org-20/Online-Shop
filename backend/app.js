@@ -1,6 +1,12 @@
 const app = require("express")()
-//const db = require('dbconnect');
-const User = require("./user")
+const db = require('./dbconnect');
+const User = require('./user');
+
+async function setup(){
+	await db.start();
+}
+setup();
+db.search("select * from sample",(rows)=>{console.log(rows)});
 
 app.get("/", function (req, res) {
     res.send("ye boi");
