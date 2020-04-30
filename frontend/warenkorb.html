@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Accessoires</title>
+</head>
+
+<body>
+    <!-- NAV-BAR -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png"
+                    width="150" height="45" alt="Shop">
+            </a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <p id="welcome">Wilkommen, Paul</p>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <img id="profil-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRdOvjx-Ooi0vYqAiqSAZFXeDlbRJnskm2blrI-QBmf91TedpD-&usqp=CAU"
+                            width="45" height="45">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-shopping-bag"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="second-navbar" class="navbar navbar-expand-lg">
+        <div class="container">
+            <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2">
+                <h5>Warenkorb</h5>
+            </div>
+            <div id="search-bar" class="mx-auto order-0">
+                <input class="form-control" id="myInput" type="text" placeholder="Suche">
+            </div>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <!--<ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle no-radius btn-outline-secondary"
+                                type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Sortieren
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Preis absteigend</a>
+                                <a class="dropdown-item" href="#">Preis aufsteigend</a>
+                                <a class="dropdown-item" href="#">Alphabetisch</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>-->
+            </div>
+        </div>
+    </nav>
+
+    <!-- SHOPPING-CART-TABLE -->
+    <main>
+        <div class="container">
+            <table class="table borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Produkt</th>
+                        <th scope="col">Anzahl</th>
+                        <th scope="col">Preis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                width="45" height="45">
+                            <span>CHAMPION - Legacy Baseball Cap</span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-dark no-radius">-</button>
+                            <span class="ammount">1</span>
+                            <button type="button" class="btn btn-outline-dark no-radius">+</button>
+                        </td>
+                        <td>
+                            <p>15,99&euro;</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                width="45" height="45">
+                            <span>CHAMPION - Legacy Baseball Cap</span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-dark no-radius">-</button>
+                            <span class="ammount">1</span>
+                            <button type="button" class="btn btn-outline-dark no-radius">+</button>
+                        </td>
+                        <td>
+                            <p>15,99&euro;</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                width="45" height="45">
+                            <span>CHAMPION - Legacy Baseball Cap</span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-dark no-radius">-</button>
+                            <span class="ammount">1</span>
+                            <button type="button" class="btn btn-outline-dark no-radius">+</button>
+                        </td>
+                        <td>
+                            <p>15,99&euro;</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                width="45" height="45">
+                            <span>CHAMPION - Legacy Baseball Cap</span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-dark no-radius">-</button>
+                            <span class="ammount">1</span>
+                            <button type="button" class="btn btn-outline-dark no-radius">+</button>
+                        </td>
+                        <td>
+                            <p>15,99&euro;</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        <td> </td>
+                        <td>
+                            <p id="sum">45,99&euro;</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="shopping-cart-options">
+                <button type="button" class="btn btn-outline-dark no-radius btn-lg" data-toggle="modal"
+                    data-target="#myModal">BESTELLEN</button>
+                <input class="form-control" id="myInput" type="text" placeholder="Rabatt-Code">
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content no-radius">
+                <div class="modal-header">
+                    <h4 class="modal-title">BESTELLUNG</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h3>Summe: 39,48&euro;</h3>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputEmail4">Vorname</label>
+                                <input type="text" class="form-control" id="inputVorname" placeholder="Vorname">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputPassword4">Nachname</label>
+                                <input type="text" class="form-control" id="inputNachname" placeholder="Nachname">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-10">
+                                <label for="inputEmail4">Straße</label>
+                                <input type="text" class="form-control" id="inputStraße" placeholder="Straße">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="inputPassword4">Nr.</label>
+                                <input type="text" class="form-control" id="inputNr" placeholder="Nr.">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <label for="inputEmail4">PLZ</label>
+                                <input type="text" class="form-control" id="inputPlz" placeholder="PLZ">
+                            </div>
+                            <div class="form-group col-md-7">
+                                <label for="inputPassword4">Ort</label>
+                                <input type="text" class="form-control" id="inputOrt" placeholder="Ort">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark no-radius btn-lg"
+                        data-dismiss="modal">Bestellen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="feed.js"></script>
+</body>
+
+</html>
