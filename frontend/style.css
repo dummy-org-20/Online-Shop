@@ -1,42 +1,95 @@
+/* ALLGEMEIN */
 * {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
     /*300, 400, 700*/
 }
 
+.form-control {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.no-radius {
+    border-radius: 0px !important;
+}
+
+
+/* NAVBAR */
 #main-navbar {
     border-bottom: 1px solid #e5e5e5;
 }
 
+#main-navbar li {
+    margin-left: 20px;
+}
 
+#main-navbar li p {
+    line-height: 45px;
+    margin: 0;
+}
 
+#main-navbar li img {
+    border-radius: 50%;
+}
 
+#main-navbar li i {
+    font-size: 25px;
+    line-height: 45px;
+    color: #212529;
+}
 
-
-
-
-
+#main-navbar li i:hover {
+    color: #65717d;
+}
 
 #second-navbar {
     box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
     box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .05);
-}
-
-
-.path {
-    color: #2b3130;
-}
-
-.path:hover {
-    color: #e2001a;
+    margin-bottom: 30px;
 }
 
 #second-navbar a {
     font-weight: 700;
 }
 
-#path-disabled {
-    color: #a5a5a5;
-    cursor: default;
+#search-bar input {
+    width: 400px;
+    /*text-align: center;*/
+    border-color: #6c757d;
 }
 
+#second-navbar h5 {
+    line-height: 38px;
+    margin: 0;
+    color: #6c757d;
+}
+
+#second-navbar a.dropdown-item {
+    font-weight: 400;
+    color: #6c757d;
+}
+
+/* SHOPPING-CART */
+.borderless td, .borderless th {
+    border: none;
+}
+
+table .ammount {
+    margin: 0 5px;
+}
+
+#sum {
+    text-decoration:overline;
+    font-weight: bold;
+}
+
+#shopping-cart-options * {
+    float: right;
+}
+
+#shopping-cart-options input {
+    width: 150px;
+    margin: 5px 20px;
+}
