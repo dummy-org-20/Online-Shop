@@ -1,27 +1,37 @@
 const mariadb = require('mariadb');
 const config= require('./config.json');
-
 const pool = mariadb.createPool({
      host: config.host, 
-     user:config.user, 
+     user: config.user, 
      password: config.password,
-     connectionLimit: config.connectionLimit
+     connectionLimit: config.connectionLimit,
+	 database: config.database
 });
 
-pool.getConnection()
-    .then(conn => {
-    
-      conn.query("SELECT 1 as val")
-        .then(rows => { // rows: [ {val: 1}, meta: ... ]
-          return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"]);
-        })
-        .then(res => { // res: { affectedRows: 1, insertId: 1, warningStatus: 0 }
-          conn.release(); // release to pool
-        })
-        .catch(err => {
-          conn.release(); // release to pool
-        })
-        
-    }).catch(err => {
-      //not connected
-    });
+
+
+let start= async function(){
+	return new Promise((resolve,_reject)=>{
+		pool.getConnection()
+		.then(conn => {
+			resolve(true);
+		}).catch(err => {
+		  console.log("Error konnte nicht mit Datenbank verbinden, überprüfe die Config.json");
+		  _reject(true);
+		});
+	});
+}
+
+let search = function (q,callback){
+	pool.query(q)
+		.then((rows) => {
+			callback(rows);
+		})
+		.catch(err => {
+			console.log(err); 
+			return
+		})
+}
+
+exports.search=search;
+exports.start=start;

@@ -1,6 +1,7 @@
 {
-	"host": 'localhost', 
-	"user":'myUser', 
-	"password": 'myPassword',
-	"connectionLimit": 1
+	"host": "localhost", 
+	"user":"user", 
+	"password": "pasword",
+	"connectionLimit": 5,
+	"database":"shop"
 }
