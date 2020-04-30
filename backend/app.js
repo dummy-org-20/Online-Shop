@@ -48,7 +48,7 @@ function start(){
 
 //gets item_id returns array in callback with urls of all images that belong to the item_id 
 function getImagesURL(item_id,callback){
-	db.search("SELECT url,order_id FROM shop_item_images WHERE item_id ORDER BY order_id ASC="+item_id,(rows)=>{
+	db.search("SELECT url,order_id FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
 		result=[]
 		for(i of rows){
 			result.push(i[0]);
