@@ -1,0 +1,36 @@
+CREATE TABLE IF NOT EXISTS shop_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(25) NOT NULL,
+    password VARCHAR(64) NOT NULL,
+    security_answer VARCHAR(64),
+    admin BOOL
+);
+CREATE TABLE IF NOT EXISTS shop_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(128)
+);
+CREATE TABLE IF NOT EXISTS shop_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    creator_id INT NOT NULL,
+    category_id INT,
+    price INT,
+    name VARCHAR(24),
+    description VARCHAR(128)
+);
+CREATE TABLE IF NOT EXISTS shop_item_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id INT NOT NULL,
+    url VARCHAR(24),
+    orderid INT
+);
+CREATE TABLE IF NOT EXISTS shop_order_items (
+    order_id INT,
+    item_id INT,
+    amount INT
+);
+CREATE TABLE IF NOT EXISTS shop_orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    address VARCHAR(64),
+    status INT,
+    user_id INT
+);

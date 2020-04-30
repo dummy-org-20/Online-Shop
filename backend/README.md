@@ -21,7 +21,17 @@ Alles hier dokumentiert: https://nodejs.org/en/download/
 
 # Node Server starten
 
-In diesem Verzeichnis `npm install` ausführen. Nun sollte ein `node_modules` Ordner existieren. Danach `npm start` benutzen und bam, es geht.
+Wenn Mariadb und und Node.js installiert sind, muss die Config.json eingestellt werden, sodass sie sich mit eurer DB verbinden kann.
+Nachdem ihr das gemacht habt, müsst ihr die Setup.bat ausführen, die die Datenbank für euch einrichtet.
+
+Danach müsst ihr die start.bat oder npm start ausführen. Falls ihr nicht die Module besitzt müsst ihr npm install <modul> ausführen.
+
+Derzeitige Module:
+
+- fs
+- mariadb
+- express
+
 
 # Datenbankstruktur
 
