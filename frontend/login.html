@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Anmelden</title>
+</head>
+
+<body>
+    <!-- LOGIN-SIGNUP -->
+    <main id="login-signup">
+        <!-- Logo -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png"
+            width="150" height="45" alt="Shop">
+        <!-- Tabs -->
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-login-tab" data-toggle="tab" href="#nav-login" role="tab"
+                    aria-controls="nav-login" aria-selected="true">Anmelden</a>
+                <a class="nav-item nav-link" id="nav-signup-tab" data-toggle="tab" href="#nav-signup" role="tab"
+                    aria-controls="nav-signup" aria-selected="false">Registrieren</a>
+            </div>
+        </nav>
+        <!-- LogIn -->
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-login" role="tabpanel" aria-labelledby="nav-login-tab">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input type="text" class="form-control" id="inputStraße" placeholder="Nutzername">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="password" class="form-control" id="inputNr" placeholder="Passwort">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark no-radius btn-lg btn-block"
+                        data-dismiss="modal">Anmelden</button>
+                </form>
+            </div>
+            <!-- SignUp -->
+            <div class="tab-pane fade" id="nav-signup" role="tabpanel" aria-labelledby="nav-signup-tab">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <input type="text" class="form-control" id="inputStraße" placeholder="Nutzername">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="password" class="form-control" id="inputNr" placeholder="Passwort">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPassword4">Sicherheitsfrage:</label>
+                            <input type="text" class="form-control" id="inputOrt"
+                                placeholder="Wie heißt Ihr Geburtsort?">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark no-radius btn-lg btn-block"
+                        data-dismiss="modal">Registrieren</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script src="feed.js"></script>
+</body>
+
+</html>

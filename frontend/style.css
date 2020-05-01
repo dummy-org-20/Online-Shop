@@ -72,24 +72,57 @@
 }
 
 /* SHOPPING-CART */
-.borderless td, .borderless th {
+#shopping-cart .borderless td,
+.borderless th {
     border: none;
 }
 
-table .ammount {
+#shopping-cart table .ammount {
     margin: 0 5px;
 }
 
-#sum {
-    text-decoration:overline;
+#shopping-cart table p {}
+
+#shopping-cart #sum {
+    text-decoration: overline;
     font-weight: bold;
 }
 
-#shopping-cart-options * {
+#shopping-cart #shopping-cart-options * {
     float: right;
 }
 
-#shopping-cart-options input {
+#shopping-cart #shopping-cart-options input {
     width: 150px;
     margin: 5px 20px;
+}
+
+/* LOGIN */
+#login-signup {
+    width: 100%;
+    max-width: 430px;
+    padding: 15px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+#login-signup img {
+    margin: 20px 0;
+}
+
+#login-signup nav {
+    margin: 20px 0;
+}
+
+#login-signup .nav-item {
+    border-radius: 0px;
+}
+
+/* BENUTZER-KONTO */
+#benutzer-konto .nav-item a {
+    border-radius: 0px;
+}
+
+#benutzer-konto .tab-pane {
+    background-color: white;
 }

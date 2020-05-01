@@ -8,17 +8,20 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
-    <title>Accessoires</title>
+    <title>Warenkorb</title>
 </head>
 
 <body>
     <!-- NAV-BAR -->
+    <!-- Main-Navbar -->
     <nav id="main-navbar" class="navbar navbar-expand-lg">
         <div class="container">
+            <!-- Logo -->
             <a class="navbar-brand" href="#">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png"
                     width="150" height="45" alt="Shop">
             </a>
+            <!-- Message, Profile-Pic, Shoppingcart-Icon -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <p id="welcome">Wilkommen, Paul</p>
@@ -38,14 +41,18 @@
             </ul>
         </div>
     </nav>
+    <!-- Second-Navbar -->
     <nav id="second-navbar" class="navbar navbar-expand-lg">
         <div class="container">
+            <!-- Heading -->
             <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2">
                 <h5>Warenkorb</h5>
             </div>
+            <!-- Search-Bar -->
             <div id="search-bar" class="mx-auto order-0">
                 <input class="form-control" id="myInput" type="text" placeholder="Suche">
             </div>
+            <!-- Sort -->
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <!--<ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -68,7 +75,7 @@
     </nav>
 
     <!-- SHOPPING-CART-TABLE -->
-    <main>
+    <main id="shopping-cart">
         <div class="container">
             <table class="table borderless">
                 <thead>
