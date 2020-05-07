@@ -88,13 +88,19 @@ function start(){
 			req.query.description
 		);
 
-		item.insertItem(shopItem, db, function(id) {
-			if(id >= 0) {
-				shopItem.id = id;
-				res.status(200).send(shopItem);
-			} else {
-				res.status(400).send({message:"no"})
-			}
+		let token = req.cookies["sessionID"];
+		checkCookie(token, (user_id) => {
+			if(user_id == null) return;
+
+			// TODO isAdmin für den User
+			item.insertItem(shopItem, db, function(id) {
+				if(id >= 0) {
+					shopItem.id = id;
+					res.status(200).send(shopItem);
+				} else {
+					res.status(400).send({message:"no"})
+				}
+			});
 		});
 	});
 
@@ -102,12 +108,18 @@ function start(){
 	app.post("/item.delete", function(req, res) {
 		let id = req.query.id;
 
-		item.deleteItem(id, db, function(success) {
-			if(success) {
-				res.status(200).send({message:"nice"});
-			} else {
-				res.status(400).send({message:"no"});
-			}
+		let token = req.cookies["sessionID"];
+		checkCookie(token, (user_id) => {
+			if(user_id == null) return;
+
+			// TODO isAdmin für den User
+			item.deleteItem(id, db, function(success) {
+				if(success) {
+					res.status(200).send({message:"nice"});
+				} else {
+					res.status(400).send({message:"no"});
+				}
+			});
 		});
 	});
 
