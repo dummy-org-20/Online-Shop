@@ -16,17 +16,24 @@ function getItem(id, db, callback) {
         let item = Object.assign(new ShopItem(), rows[0]);
 
         callback(item);
-    })
+    });
 }
 
-function insertItem(item, db) {
+function insertItem(item, db, callback) {
     db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`) VALUES (?, ?, ?, ?, ?)",
                 [item.creator_id, item.category_id, item.price, item.name, item.description],
-                function(rows) {
-        console.log(rows);
-    })
+                function(result) {
+        callback(result.affectedRows > 0 ? result.insertId : -1);
+    });
+}
+
+function deleteItem(id, db, callback) {
+    db.safeSearch("DELETE FROM shop_items WHERE id=?", [id], function(result) {
+        callback(result.affectedRows > 0)
+    });
 }
 
 module.exports.ShopItem = ShopItem;
 module.exports.getItem = getItem;
 module.exports.insertItem = insertItem;
+module.exports.deleteItem = deleteItem;
