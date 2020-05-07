@@ -42,6 +42,8 @@ function start(){
 					let userName = req.query.name;
 					let password = req.query.password;
 					let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
+						//todo connect cookie to logged user and not to temp user
+						//mark temp user as "unused"
 						let user = Object.assign(new User(), rows[0])
 						if (password == user.password) {
 							res.status(200).send({message:"Yes"});
@@ -69,7 +71,7 @@ function start(){
                 }
                 if(categories==[]){
                     console.log(categories);
-                    let item = db.search("select * from shop_items where category_id IN (" +categories+ ") AND name = \'"+sfor+"\'", (rows)=>{
+                    let item = db.search("select * from shop_items where category_id IN (" +categories+ ") AND name LIKE \""+sfor+"\"*", (rows)=>{
                         var items = new Array();
                         for (let index = 0; index < rows.length; index++) {
                             items.push(Object.assign(new Item(), rows[index]));
@@ -84,7 +86,7 @@ function start(){
                 }
             });
         } else {
-            let item = db.search("select * from shop_items where name = \'"+sfor+"\'", (rows)=>{
+            let item = db.search("select * from shop_items where name LIKE \""+sfor+"\"*", (rows)=>{
                 var items = new Array();
                 for (let index = 0; index < rows.length; index++) {
                     items.push(Object.assign(new Item(), rows[index]));
@@ -95,7 +97,7 @@ function start(){
         }
     })
 
-    //create new User in db 
+    //create new User in db
     //WIP
 	app.post("/user", function(req, res) {
 		let user = new User(parseInt(req.query.id), req.query.name, req.query.password, req.query.securityAnswer, "true" == req.query.admin)
@@ -134,6 +136,7 @@ function start(){
 		checkCookie(cookie,(user_id)=>{
 			if(user_id==null){
 				res.status(400);
+				res.send();
 			}
 			else{
 				db.search("SELECT item_id from shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0) AND item_id="+item_id,(rows)=>{
