@@ -34,19 +34,23 @@ function start(){
 
 	//login for the user
 	app.get("/login", function(req, res){
-		let userName = req.query.name;
-		let password = req.query.password;
+        cookie=req.cookies["sessionID"];
+        checkCookie(cookie,(user_id)=>{
+            
+            let userName = req.query.name;
+            let password = req.query.password;
 
-		let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
-			let user = Object.assign(new User(), rows[0])
+            let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
+                let user = Object.assign(new User(), rows[0])
 
-			if (password == user.password) {
-				res.status(200).send({message:"Yes"});
-			} else {
-				res.status(418).send({message:"No"});
-			}
+                if (password == user.password) {
+                    res.status(200).send({message:"Yes"});
+                } else {
+                    res.status(418).send({message:"No"});
+                }
 
-		});
+            });
+        });
 	})
 
     //search after itemName in single, multiple or all categories
