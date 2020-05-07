@@ -102,12 +102,12 @@ function start(){
 		res.status(200);
 	})
 	
-	//Hole alle Items und Bilder der Items aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
+	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
 	app.get("/getWarenkorb", function(req,res) {
 		cookie=req.cookies["sessionID"];
 		checkCookie(cookie,(user_id)=>{
 			if(user_id==null){
-				res.status(200).json(null);
+				res.status(400).json(null);
 			}
 			else{
 				getWarenkorb(user_id,(result)=>{
@@ -281,7 +281,6 @@ function createNewCookie(callback){
 	});
 }
 
-//todo return the number of items
 //gets all Items as item_ids with their amount the user currently has in his warenkorb
 function getWarenkorb(user_id,callback){
 	db.search("SELECT item_id,amount FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0)",(rows)=>{
