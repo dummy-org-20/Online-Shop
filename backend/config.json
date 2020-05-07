@@ -1,7 +1,7 @@
 {
 	"host": "localhost", 
 	"user":"root", 
-	"password": "myRoot",
+	"password": "*******",
 	"connectionLimit": 5,
 	"port":  5077
 }
