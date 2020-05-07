@@ -3,5 +3,5 @@
 	"user":"root", 
 	"password": "passw",
 	"connectionLimit": 5,
-	"port":  5077
+	"port":  3306
 }
