@@ -37,7 +37,7 @@ function start(){
 		let userName = req.query.name;
 		let password = req.query.password;
 
-		let user = db.search("select * from shop_users where username='"+userName+"'", (rows)=>{
+		let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
 			let user = Object.assign(new User(), rows[0])
 
 			if (password == user.password) {
@@ -49,6 +49,49 @@ function start(){
 		});
 	})
 
+<<<<<<< Updated upstream
+=======
+    //search after itemName in single, multiple or all categories
+    app.get("/search", function(req, res){
+		let cats = req.query.category.toString();
+		let sfor = req.query.item;
+
+        splitCat = cats.split(",").forEach(x => {x = "'"+x+"'"});
+        if(splitCat!=null){
+            let category = db.search("select * from shop_categories where name IN ("+splitCat+")", (rows)=>{
+                var categories = new Array();
+                for (let index = 0; index < rows.length; index++) {
+                    categories.push(rows[index].id);
+                }
+                if(categories==[]){
+                    console.log(categories);
+                    let item = db.search("select * from shop_items where category_id IN (" +categories+ ") AND name = \'"+sfor+"\'", (rows)=>{
+                        var items = new Array();
+                        for (let index = 0; index < rows.length; index++) {
+                            items.push(Object.assign(new Item(), rows[index]));
+                        }
+                        console.log(items);
+                        res.status(200).json(items);
+                    });
+                } else {
+                    let err = "Error: category >>"+cats+"<< does not exist";
+                    console.log(err);
+                    res.status(400).send({message:err});
+                }
+            });
+        } else {
+            let item = db.search("select * from shop_items where name = \'"+sfor+"\'", (rows)=>{
+                var items = new Array();
+                for (let index = 0; index < rows.length; index++) {
+                    items.push(Object.assign(new Item(), rows[index]));
+                }
+                console.log(items);
+                res.status(200).json(items);
+            });
+        }
+    })
+
+>>>>>>> Stashed changes
     //create new User in db 
     //WIP
 	app.post("/user", function(req, res) {
