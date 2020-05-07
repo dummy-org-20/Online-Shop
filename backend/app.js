@@ -168,7 +168,7 @@ function createNewCookie(callback){
 
 //gets all Items the user currently has in his warenkorb
 function getWarenkorb(user_id,callback){
-	db.search("SELECT * FROM shop_items WHERE id IN (SELECT item_id FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+"))",(rows)=>{
+	db.search("SELECT * FROM shop_items WHERE id IN (SELECT item_id FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0))",(rows)=>{
 		callback(rows);
 	});
 }
