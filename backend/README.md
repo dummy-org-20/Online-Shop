@@ -75,6 +75,7 @@ Optional, falls es nicht funktioniert, einfach droppen und dann `category` als `
 ```sql=
 CREATE TABLE shop_categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(24),
     description VARCHAR(128)
 );
 ```
