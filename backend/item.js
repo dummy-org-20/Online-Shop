@@ -11,28 +11,19 @@ class ShopItem {
 
 }
 
-function getItem(id, pool, callback) {
-    pool.query("SELECT * FROM shop_items WHERE id=?", [id])
-		.then((rows) => {
-			let item = Object.assign(new ShopItem(), rows[0]);
+function getItem(id, db, callback) {
+    db.safeSearch("SELECT * FROM shop_items WHERE id=?", [id], function(rows) {
+        let item = Object.assign(new ShopItem(), rows[0]);
 
-            callback(item);
-		})
-		.catch(err => {
-			console.log(err); 
-			return
-		})
+        callback(item);
+    })
 }
 
-function insertItem(item, pool) {
-    pool.query("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`)"
-            + " VALUES (?, ?, ?, ?, ?)", [item.creator_id, item.category_id, item.price, item.name, item.description])
-    .then((rows) => {
+function insertItem(item, db) {
+    db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`) VALUES (?, ?, ?, ?, ?)",
+                [item.creator_id, item.category_id, item.price, item.name, item.description],
+                function(rows) {
         console.log(rows);
-    })
-    .catch(err => {
-        console.log(err); 
-        return
     })
 }
 

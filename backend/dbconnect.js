@@ -48,6 +48,18 @@ let search = function (q,callback){
 		})
 }
 
+let safeSearch = function(q, p, callback) {
+	pool.query(q, p)
+		.then((rows) => {
+			callback(rows);
+		})
+		.catch(err => {
+			console.log(err); 
+			return
+		})
+}
+
 exports.search=search;
+exports.safeSearch=safeSearch;
 exports.start=start;
 exports.changeDatabase=changeDatabase;
