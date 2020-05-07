@@ -9,3 +9,6 @@
     Datenbanktabelle zugegriffen. Sollte der User nicht existieren oder das Password falsch sein wird der HTML-Status
     418 und die Fehlermeldung "No" zurückgegeben. 
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
+	
+## app.get("/getWarenkorb", function(req, res):
+    Hier erhälst du eine JSON mit den jetzigen Items des derzeitigen Users. Gibt eine leere JSON zurück wenn der Cookie nicht exisitiert oder keine Items da sind.
