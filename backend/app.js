@@ -1,6 +1,9 @@
 const app = require("express")()
 const db = require('./dbconnect');
 const User = require('./user');
+const Category = require('./category');
+const item = require('./item');
+const Item = item.ShopItem;
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
@@ -59,6 +62,64 @@ function start(){
 			getWarenkorb(user_id,(result)=>{
 					res.status(200).json(result);
 				});
+		});
+	});
+
+	// get item by id
+	app.get("/item/:id", function(req, res) {
+		let id = req.params.id;
+
+		item.getItem(id, db, function(item) {
+			if(item.id != undefined) {
+				res.status(200).send(item);
+			} else {
+				res.status(400).send({message:"no senorita"});
+			}
+		})
+	});
+
+	// insert item
+	app.post("/item.insert", function(req, res) {
+		let shopItem = new ShopItem(
+			parseInt(req.query.creator_id),
+			parseInt(req.query.category_id),
+			parseInt(req.query.price),
+			req.query.name,
+			req.query.description
+		);
+
+		let token = req.cookies["sessionID"];
+		checkCookie(token, (user_id) => {
+			if(user_id == null) return;
+
+			// TODO isAdmin für den User
+			item.insertItem(shopItem, db, function(id) {
+				if(id >= 0) {
+					shopItem.id = id;
+					res.status(200).send(shopItem);
+				} else {
+					res.status(400).send({message:"no"})
+				}
+			});
+		});
+	});
+
+	// delete item
+	app.post("/item.delete", function(req, res) {
+		let id = req.query.id;
+
+		let token = req.cookies["sessionID"];
+		checkCookie(token, (user_id) => {
+			if(user_id == null) return;
+
+			// TODO isAdmin für den User
+			item.deleteItem(id, db, function(success) {
+				if(success) {
+					res.status(200).send({message:"nice"});
+				} else {
+					res.status(400).send({message:"no"});
+				}
+			});
 		});
 	});
 

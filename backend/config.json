@@ -1,7 +1,7 @@
 {
-	"host": "localhost", 
-	"user":"root", 
-	"password": "*******",
+	"host": "superioz.dev", 
+	"user": "root", 
+	"password": "W5SCdDxFtj",
 	"connectionLimit": 5,
-	"port":  5077
+	"port":  3306
 }
