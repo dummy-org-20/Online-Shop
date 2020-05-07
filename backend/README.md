@@ -31,6 +31,7 @@ Derzeitige Module:
 - fs
 - mariadb
 - express
+- express cookie-parser
 
 
 # Datenbankstruktur
