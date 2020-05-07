@@ -103,9 +103,24 @@ function start(){
 	app.get("/getWarenkorb", function(req,res) {
 		cookie=req.cookies["sessionID"];
 		checkCookie(cookie,(user_id)=>{
-			getWarenkorb(user_id,(result)=>{
-					res.status(200).json(result);
+			if(user_id==null){
+				res.status(200).json(null);
+			}
+			else{
+				getWarenkorb(user_id,(result)=>{
+					console.log(result)
+					for(let i=0;i<result.length;i++){
+						getImagesURL(result[i]["id"],(urls)=>{
+							result[i]["urls"]=urls;
+							console.log(urls);
+							console.log(result[i]);
+							if(i==result.length-1){
+								res.status(200).json(result);
+							}
+						});
+					}
 				});
+			}
 		});
 	});
 
@@ -175,9 +190,9 @@ function start(){
 //gets item_id returns array in callback with urls of all images that belong to the item_id 
 function getImagesURL(item_id,callback){
 	db.search("SELECT url,order_id FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
-		result=[]
-		for(i of rows){
-			result.push(i["url"]);
+		result={};
+		for(let i =0;i<rows.length;i++){
+			result[i]=rows[i]["url"];
 		}
 		callback(result);
 	});
@@ -194,6 +209,7 @@ function checkCookie(cookie,callback){
 	});
 }
 
+//creates new Cookie that doesnt already exist in the Database
 function createNewCookie(callback){
 	letters="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9".split(",");
 	string="";
