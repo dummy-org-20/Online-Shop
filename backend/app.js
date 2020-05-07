@@ -10,8 +10,7 @@ app.use(cookieParser());
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
-		console.log(req.cookies);
-		checkCookie("xd",(user_id)=>{
+		checkCookie(req.cookies["sessionID"],(user_id)=>{
 			if(user_id==null){
 				createNewCookie((cookie)=>{
 					res.cookie("sessionID",cookie);
@@ -112,17 +111,7 @@ function start(){
 			}
 			else{
 				getWarenkorb(user_id,(result)=>{
-					console.log(result)
-					for(let i=0;i<result.length;i++){
-						getImagesURL(result[i]["id"],(urls)=>{
-							result[i]["urls"]=urls;
-							console.log(urls);
-							console.log(result[i]);
-							if(i==result.length-1){
-								res.status(200).json(result);
-							}
-						});
-					}
+					res.status(200).json(result);
 				});
 			}
 		});
@@ -130,21 +119,52 @@ function start(){
 	
 	//Setze Ein item in den Warenkorb des jetzigen User (funktioniert über Cookie "sessionID")
 	//Bei der Anfrage müssen die Anfrage Parameter item_id und count als int gegeben werden
+	//Es wird automatisch ein existierendes Item geupdatet.
+	//Wenn ein Item entfernt werden sollen, muss ein negativer count angegeben werden.
 	//Warenkorb existiert hier schon
 	app.post("/setWarenkorb", function(req,res) {
 		cookie=req.cookies["sessionID"];
-		item_id=req.query["item_id"];
-		count=req.query["count"];
+		item_id=parseInt(req.query["item_id"]);
+		count=parseInt(req.query["count"]);
+		if(!Number.isInteger(item_id)||item_id<1||!Number.isInteger(count)){
+			res.status(400);
+			res.send();
+			return;
+		}
 		checkCookie(cookie,(user_id)=>{
 			if(user_id==null){
 				res.status(400);
 			}
 			else{
-				db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0), ?, ?)",
-					[item_id, count],
-					function(result) {
-						console.log("workd");
-						res.status(200);
+				db.search("SELECT item_id from shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0) AND item_id="+item_id,(rows)=>{
+					if(rows.length==0){
+						if(count>0){
+							db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0), ?, ?)",
+							[item_id, count],
+							function(result) {
+								console.log("workd");
+								res.status(200);
+								res.send();
+							});
+						}else{
+							res.status(400);
+							res.send();
+						}
+					}else{
+						db.safeSearch("UPDATE shop_order_items SET amount=amount+? WHERE order_id=(SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0) AND item_id=?",
+						[ count,item_id],
+						function(result) {
+							console.log("update");
+							//res.status(200);
+							db.search("DELETE FROM shop_order_items WHERE amount<=0",
+								function(result) {
+									console.log(result);
+									res.status(200);
+									res.send();
+								}
+							);
+						});
+					}
 				});
 			}
 		});
@@ -262,9 +282,9 @@ function createNewCookie(callback){
 }
 
 //todo return the number of items
-//gets all Items the user currently has in his warenkorb
+//gets all Items as item_ids with their amount the user currently has in his warenkorb
 function getWarenkorb(user_id,callback){
-	db.search("SELECT * FROM shop_items WHERE id IN (SELECT item_id FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0))",(rows)=>{
+	db.search("SELECT item_id,amount FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0)",(rows)=>{
 		callback(rows);
 	});
 }

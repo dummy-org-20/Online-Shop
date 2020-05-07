@@ -12,9 +12,16 @@
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
 
 ## app.get("/getWarenkorb", function(req, res):
-    Hier erhälst du eine JSON mit den jetzigen Items und den URLs der Bildern in richtiger Reihenfolge sortiert des derzeitigen Users. Gibt null zurück wenn der Cookie nicht exisitiert.
+    Hier erhälst du eine JSON mit den jetzigen Items und deren Anzahl des derzeitigen Users. Gibt null zurück wenn der Cookie nicht exisitiert.
 	Hier ein Beispiel:
-	[{"id":1,"creator_id":1,"category_id":1,"price":300,"name":"xd","description":"lol","urls":{"0":"asdasdasd","1":"xsdsddss"}},{"id":2,"creator_id":3,"category_id":2,"price":400,"name":"f","description":"f","urls":{}}]
+	[{"item_id":2,"amount":5},{"item_id":3,"amount":2}]
+	
+## app.post("/setWarenkorb", function(req, res):
+    Setze Ein item in den Warenkorb des jetzigen User (funktioniert über Cookie "sessionID").
+	Bei der Anfrage müssen die Anfrage Parameter item_id und count als int gegeben werden.
+	Es wird automatisch ein existierendes Item geupdatet.
+	Wenn ein Item entfernt werden sollen, muss ein negativer count gleich dem vorherigen count angegeben werden.
+	
 
 ## app.get("/search", function(req, res)):
     Hier kann die Item-Tabelle über zwei Query-Parameter durchsucht werden (item, category). Der item-Parameter legt den
