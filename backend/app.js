@@ -1,6 +1,8 @@
 const app = require("express")()
 const db = require('./dbconnect');
 const User = require('./user');
+const Category = require('./category');
+const Item = require('./item');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
@@ -39,6 +41,26 @@ function start(){
 
 		});
 	})
+
+    app.get("/search", function(req, res){
+		let cats = req.query.category;
+		let sfor = req.query.item;
+
+        let category = db.search("select * from shop_categories where name='"+cats+"'", (rows)=>{
+            var categories = new Array();
+            for (let index = 0; index < rows.length; index++) {
+                categories.push(rows[index].id);
+            }
+            console.log(categories);
+		    let item = db.search("select * from shop_items where category_id IN (" +categories+ ")", (rows)=>{
+                var items = new Array();
+                for (let index = 0; index < rows.length; index++) {
+                    items.push(Object.assign(new Item, rows[index]));
+                }
+                console.log("Items: \n"+items);
+            });
+        });
+    })
 
     //create new User in db 
     //WIP
