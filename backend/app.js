@@ -35,7 +35,8 @@ function start(){
 		});
 	})
 
-	//create new User in db
+    //create new User in db 
+    //WIP
 	app.post("/user", function(req, res) {
 		let user = new User(parseInt(req.query.id), req.query.name, req.query.password, req.query.securityAnswer, "true" == req.query.admin)
 		res.status(200);
