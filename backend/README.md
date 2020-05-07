@@ -108,7 +108,7 @@ CREATE TABLE shop_item_images (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
     url VARCHAR(24),
-    order INT
+    order_id INT
 );
 ```
 
@@ -137,6 +137,13 @@ CREATE TABLE shop_order_items (
 | id              | address     | status | user_id |
 | --------------- | ----------- | ------ | ------- |
 | INT PRIMARY KEY | VARCHAR(64) | INT    | INT     |
+
+**Status:**
+- 0: Im Warenkorb
+- 1: Bestellt und noch nicht verschickt
+- 2: Bestellt und auf dem Weg
+- 3: Bestellt und angekommen
+- 4: Bestellt und Fehler bei der Lieferung
 
 **Erstellen:**
 
