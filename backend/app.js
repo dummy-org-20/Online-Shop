@@ -36,22 +36,25 @@ function start(){
 	app.get("/login", function(req, res){
         cookie=req.cookies["sessionID"];
         checkCookie(cookie,(user_id)=>{
-            
-            let userName = req.query.name;
-            let password = req.query.password;
-
-            let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
-                let user = Object.assign(new User(), rows[0])
-
-                if (password == user.password) {
-                    res.status(200).send({message:"Yes"});
-                } else {
-                    res.status(418).send({message:"No"});
-                }
-
-            });
-        });
-	})
+			checkIfAlreadyLoggedIn(user_id,(t)=>{
+				if(t){
+					res.status(200).send({message:"Yes"});
+				}else{
+					let userName = req.query.name;
+					let password = req.query.password;
+					let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
+						let user = Object.assign(new User(), rows[0])
+						if (password == user.password) {
+							res.status(200).send({message:"Yes"});
+						} else {
+							res.status(418).send({message:"No"});
+						}
+					});
+				}
+			});
+		});
+    });
+});
 
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
@@ -185,6 +188,15 @@ function start(){
 	app.listen(8000, function () {
 		console.log("App started at localhost:8000");
 	})
+}
+
+//takes an already exisiting user_id and checks if its not a temporary user
+function checkIfAlreadyLoggedIn(user_id,callback){
+	db.search("SELECT isTemporary FROM shop_users WHERE id="+user_id+" AND isUsed=1",(rows)=>{
+		if(rows[0]==0){
+			callback(true);
+		}else callback(false);
+	});
 }
 
 //gets item_id returns array in callback with urls of all images that belong to the item_id 
