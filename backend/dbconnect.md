@@ -18,4 +18,7 @@ changeDatabase(String database):
 
 search(String query, callback(result)):
 	Diese Funktion ist synchron. Sie führt die query auf der jetzigen Datenbank aus und gibt das Ergebnis in die callback Funktion zurück.
+
+safeSearch(String query, List parameters, callback(result)):
+	Asynchron, callback gibt das Result zurück. In der Query stehen '?' für je ein Objekt in der Parameterliste. Gleichzusetzen mit PreparedStatements.
 	

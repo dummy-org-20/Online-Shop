@@ -9,11 +9,9 @@
     Datenbanktabelle zugegriffen. Sollte der User nicht existieren oder das Password falsch sein wird der HTML-Status
     418 und die Fehlermeldung "No" zurückgegeben. 
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
-<<<<<<< Updated upstream
-	
+
 ## app.get("/getWarenkorb", function(req, res):
     Hier erhälst du eine JSON mit den jetzigen Items des derzeitigen Users. Gibt eine leere JSON zurück wenn der Cookie nicht exisitiert oder keine Items da sind.
-=======
 
 ## app.get("/search", function(req, res)):
     Hier kann die Item-Tabelle über zwei Query-Parameter durchsucht werden (item, category). Der item-Parameter legt den
@@ -23,4 +21,16 @@
     Wenn der Nutzer bei mehreren Kategorie-Eingaben eine falsche (nicht-existente) eingibt, wird diese einfach übersprungen.
     Wenn der Nutzer nur eine Kategorie eingibt und diese falsch ist wird eine Fehlermeldung und die HTTP-Statusmeldung 400: 
     Bad Request ausgegeben.
->>>>>>> Stashed changes
+
+## app.get("/item/:id", function(req, res)):
+    Hier kann sich ein Item mit der gegebenen ID geholt werden aus der Datenbank. Gibt das Item oder "no" zurück.
+
+## app.post("/item.insert", function(req, res)):
+    Damit kann ein Item in die Datenbank geschrieben werden. Die Daten für das Item werden den Query-Parametern entnommen.
+    Gibt die ID von dem neu hinzugefügten Item oder "no" zurück.
+    Muss mit einem "SessionId" Cookie authorisiert werden.
+
+## app.post("/item.delete", function(req, res)):
+    Damit kann ein Item gelöscht werden. Die ID wird den Query Parametern entnommen.
+    Gibt "200" zurück, wenn es erfolgreich war.
+    Benötigt eine "SessionId".
