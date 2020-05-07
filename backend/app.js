@@ -7,6 +7,9 @@ app.use(cookieParser());
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
+		console.log(req.cookies);
+		res.cookie("test", "xd");
+		console.log(checkCookie("xd"));
 		res.send("ye boi");
 	});
 
@@ -53,10 +56,20 @@ function start(){
 function getImagesURL(item_id,callback){
 	db.search("SELECT url,order_id FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
 		result=[]
-		for(i of rows){
-			result.push(i[0]);
+		for(i of rows[0]){
+			result.push(i["url"]);
 		}
 		callback(result);
+	});
+}
+
+function checkCookie(cookie){
+	db.search("SELECT user_id FROM shop_login_cookies WHERE cookie=\""+cookie+"\"",(rows)=>{
+		if(rows.length==0){
+			return null;
+		}else{
+			return rows[0]["user_id"];
+		}
 	});
 }
 
