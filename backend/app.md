@@ -11,7 +11,9 @@
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
 
 ## app.get("/getWarenkorb", function(req, res):
-    Hier erhälst du eine JSON mit den jetzigen Items des derzeitigen Users. Gibt eine leere JSON zurück wenn der Cookie nicht exisitiert oder keine Items da sind.
+    Hier erhälst du eine JSON mit den jetzigen Items und den URLs der Items des derzeitigen Users. Gibt null zurück wenn der Cookie nicht exisitiert.
+	Hier ein Beispiel:
+	[{"id":1,"creator_id":1,"category_id":1,"price":300,"name":"xd","description":"lol","urls":{"0":"asdasdasd","1":"xsdsddss"}},{"id":2,"creator_id":3,"category_id":2,"price":400,"name":"f","description":"f","urls":{}}]
 
 ## app.get("/search", function(req, res)):
     Hier kann die Item-Tabelle über zwei Query-Parameter durchsucht werden (item, category). Der item-Parameter legt den
