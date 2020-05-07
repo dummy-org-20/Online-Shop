@@ -34,3 +34,8 @@ CREATE TABLE IF NOT EXISTS shop_orders (
     status INT,
     user_id INT
 );
+CREATE TABLE IF NOT EXISTS shop_login_cookies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cookie VARCHAR(64),
+    user_id INT
+);

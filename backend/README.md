@@ -155,3 +155,24 @@ CREATE TABLE shop_orders (
     user_id INT
 );
 ```
+
+## shop_login_cookies
+
+| id              | cookie      | user_id |
+| --------------- | ----------- | ------- |
+| INT PRIMARY KEY | VARCHAR(32) | INT     |
+
+**user_id:**
+- 0: temporärer User
+- x: der User mit der id x
+
+
+**Erstellen:**
+
+```sql=
+CREATE TABLE shop_login_cookies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cookie VARCHAR(64),
+    user_id INT
+);
+```
