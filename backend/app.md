@@ -5,7 +5,8 @@
     json zurückgegeben.
 
 ## app.get("/login", function(req, res)):
-    Hier wird der Login mit zwei query-Parametern (name, password) ausgeführt und auf die entsprechenden Einträge in der
+    Hier wird zuerst durch einen Session-ID-Cookie geprüft, ob der Nutzer bereits eingeloggt ist und entsprechend status 200, message: "Yes" zurückgegeben oder es wird ein login mit username und passwort beantragt.
+    Bei Login mit zwei query-Parametern (name, password) ausgeführt und auf die entsprechenden Einträge in der
     Datenbanktabelle zugegriffen. Sollte der User nicht existieren oder das Password falsch sein wird der HTML-Status
     418 und die Fehlermeldung "No" zurückgegeben. 
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
