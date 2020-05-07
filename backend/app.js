@@ -1,6 +1,8 @@
 const app = require("express")()
 const db = require('./dbconnect');
 const User = require('./user');
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
