@@ -16,9 +16,9 @@ function start(){
 				createNewCookie((cookie)=>{
 					res.cookie("sessionID",cookie);
 					//adduser(cookie);
+					res.send("ye boi");
 				});
 			}
-			//res.send("ye boi");
 		});
 	});
 
@@ -54,7 +54,7 @@ function start(){
 			});
 		});
     });
-});
+
 
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
@@ -103,6 +103,7 @@ function start(){
 		res.status(200);
 	})
 	
+	//Hole alle Items und Bilder der Items aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
 	app.get("/getWarenkorb", function(req,res) {
 		cookie=req.cookies["sessionID"];
 		checkCookie(cookie,(user_id)=>{
@@ -122,6 +123,28 @@ function start(){
 							}
 						});
 					}
+				});
+			}
+		});
+	});
+	
+	//Setze Ein item in den Warenkorb des jetzigen User (funktioniert über Cookie "sessionID")
+	//Bei der Anfrage müssen die Anfrage Parameter item_id und count als int gegeben werden
+	//Warenkorb existiert hier schon
+	app.post("/setWarenkorb", function(req,res) {
+		cookie=req.cookies["sessionID"];
+		item_id=req.query["item_id"];
+		count=req.query["count"];
+		checkCookie(cookie,(user_id)=>{
+			if(user_id==null){
+				res.status(400);
+			}
+			else{
+				db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0), ?, ?)",
+					[item_id, count],
+					function(result) {
+						console.log("workd");
+						res.status(200);
 				});
 			}
 		});
@@ -238,6 +261,7 @@ function createNewCookie(callback){
 	});
 }
 
+//todo return the number of items
 //gets all Items the user currently has in his warenkorb
 function getWarenkorb(user_id,callback){
 	db.search("SELECT * FROM shop_items WHERE id IN (SELECT item_id FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0))",(rows)=>{
