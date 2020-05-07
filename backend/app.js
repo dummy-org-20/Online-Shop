@@ -49,8 +49,6 @@ function start(){
 		});
 	})
 
-<<<<<<< Updated upstream
-=======
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
 		let cats = req.query.category.toString();
@@ -91,7 +89,6 @@ function start(){
         }
     })
 
->>>>>>> Stashed changes
     //create new User in db 
     //WIP
 	app.post("/user", function(req, res) {
