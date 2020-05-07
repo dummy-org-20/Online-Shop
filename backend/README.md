@@ -44,9 +44,9 @@ CREATE DATABASE shop;
 
 ## shop_users
 
-| id              | username    | password   | security_answer   | admin |
-| --------------- | ----------- | ---------- | ----------------- | ----- |
-| INT PRIMARY KEY | VARCHAR(25) | VARCHAR(64)| VARCHAR(64)       | BOOL  |
+| id              | username    | password   | security_answer   | admin | isTemporary | isUsed |
+| --------------- | ----------- | ---------- | ----------------- | ----- | ----------- | ------ |
+| INT PRIMARY KEY | VARCHAR(25) | VARCHAR(64)| VARCHAR(64)       | BOOL  | BOOL        | BOOL   |
 
 **Erstellen:**
 
@@ -56,7 +56,9 @@ CREATE TABLE shop_users (
     username VARCHAR(25) NOT NULL,
     password VARCHAR(64) NOT NULL,
     security_answer VARCHAR(64),
-    admin BOOL
+    admin BOOL,
+	isTemporary BOOl,
+	isUsed BOOL
 );
 ```
 
@@ -140,7 +142,7 @@ CREATE TABLE shop_order_items (
 | INT PRIMARY KEY | VARCHAR(64) | INT    | INT     |
 
 **Status:**
-- 0: Im Warenkorb
+- 0: Ist im Warenkorb
 - 1: Bestellt und noch nicht verschickt
 - 2: Bestellt und auf dem Weg
 - 3: Bestellt und angekommen
@@ -159,21 +161,15 @@ CREATE TABLE shop_orders (
 
 ## shop_login_cookies
 
-| id              | cookie      | user_id |
-| --------------- | ----------- | ------- |
-| INT PRIMARY KEY | VARCHAR(32) | INT     |
-
-**user_id:**
-- 0: temporärer User
-- x: der User mit der id x
-
+| user_id         | cookie      |
+| --------------- | ----------- |
+| INT PRIMARY KEY | VARCHAR(32) |
 
 **Erstellen:**
 
 ```sql=
 CREATE TABLE shop_login_cookies (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cookie VARCHAR(64),
-    user_id INT
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    cookie VARCHAR(32)
 );
 ```

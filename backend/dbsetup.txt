@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS shop_users (
     username VARCHAR(25) NOT NULL,
     password VARCHAR(64) NOT NULL,
     security_answer VARCHAR(64),
-    admin BOOL
+    admin BOOL,
+	isTemporary BOOl,
+	isUsed BOOL
 );
 CREATE TABLE IF NOT EXISTS shop_categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,7 +37,6 @@ CREATE TABLE IF NOT EXISTS shop_orders (
     user_id INT
 );
 CREATE TABLE IF NOT EXISTS shop_login_cookies (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cookie VARCHAR(64),
-    user_id INT
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    cookie VARCHAR(32)
 );
