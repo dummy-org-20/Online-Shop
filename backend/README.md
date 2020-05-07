@@ -24,7 +24,7 @@ Alles hier dokumentiert: https://nodejs.org/en/download/
 Wenn Mariadb und und Node.js installiert sind, muss die Config.json eingestellt werden, sodass sie sich mit eurer DB verbinden kann.
 Nachdem ihr das gemacht habt, müsst ihr die Setup.bat ausführen, die die Datenbank für euch einrichtet.
 
-Danach müsst ihr die start.bat oder npm start ausführen. Falls ihr nicht die Module besitzt müsst ihr npm install <modul> ausführen.
+Danach müsst ihr die start.bat oder npm start ausführen. Falls ihr nicht die Module besitzt müsst ihr npm install (modul) ausführen.
 
 Derzeitige Module:
 
