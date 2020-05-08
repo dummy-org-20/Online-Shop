@@ -7,6 +7,9 @@ const Item = item.ShopItem;
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+//TODO
+// function deleteCookieIfTemp with POST /deleteCookie such that if the window closes the temp cookie is deleted, account is marked unused and warenkorb is deleted/marked unused
+
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
@@ -14,7 +17,9 @@ function start(){
 			if(user_id==null){
 				createNewCookie((cookie)=>{
 					res.cookie("sessionID",cookie);
-					//adduser(cookie);
+					//add new user if no temp user is unused
+					//else use an unused temp user
+					//connect the usere with cookie
 					res.send("ye boi");
 				});
 			}
@@ -42,7 +47,7 @@ function start(){
 					let userName = req.query.name;
 					let password = req.query.password;
 					let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
-						//todo connect cookie to logged user and not to temp user
+						//todo connect cookie to logged user and disconnect from temp user
 						//mark temp user as "unused"
 						let user = Object.assign(new User(), rows[0])
 						if (password == user.password) {
@@ -55,7 +60,6 @@ function start(){
 			});
 		});
     });
-
 
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
@@ -99,7 +103,7 @@ function start(){
 
     //create new User in db
     //WIP
-	app.post("/user", function(req, res) {
+	app.post("/register", function(req, res) {
 		let user = new User(parseInt(req.query.id), req.query.name, req.query.password, req.query.securityAnswer, "true" == req.query.admin)
 		res.status(200);
 	})
@@ -174,6 +178,7 @@ function start(){
 	});
 
 	// get item by id
+	//TODO give back URLs of images of item
 	app.get("/item/:id", function(req, res) {
 		let id = req.params.id;
 
@@ -187,6 +192,7 @@ function start(){
 	});
 
 	// insert item
+	//TODO also need to be able to upload images (maybe in another function)
 	app.post("/item.insert", function(req, res) {
 		let shopItem = new ShopItem(
 			parseInt(req.query.creator_id),
@@ -213,6 +219,8 @@ function start(){
 	});
 
 	// delete item
+	//We may also not want to delete an Item so that items that arent on sale will still be in the buy history of the user
+	//we will will just mark them as unavaible
 	app.post("/item.delete", function(req, res) {
 		let id = req.query.id;
 
@@ -245,9 +253,9 @@ function checkIfAlreadyLoggedIn(user_id,callback){
 	});
 }
 
-//gets item_id returns array in callback with urls of all images that belong to the item_id 
+//gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
 function getImagesURL(item_id,callback){
-	db.search("SELECT url,order_id FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
+	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
 		result={};
 		for(let i =0;i<rows.length;i++){
 			result[i]=rows[i]["url"];
@@ -291,10 +299,12 @@ function getWarenkorb(user_id,callback){
 	});
 }
 
+//returns a random int between 0-max
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+//starts db and changes database before the server is online
 async function setup(callback){
 	await db.start();
 	//change Database as default isnt set at the beginning

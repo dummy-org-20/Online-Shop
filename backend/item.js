@@ -10,6 +10,8 @@ class ShopItem {
     }
 
 }
+//TODO make a function that returns items+url
+//also change delete item so that it marks it as unavaible instead of deleting it for real
 
 function getItem(id, db, callback) {
     db.safeSearch("SELECT * FROM shop_items WHERE id=?", [id], function(rows) {
