@@ -1,38 +1,130 @@
-.App {
-  text-align: center;
+/* ALLGEMEIN */
+* {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 400;
+    /*300, 400, 700*/
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.form-control {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.no-radius {
+    border-radius: 0px !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+/* NAVBAR */
+#main-navbar {
+    border-bottom: 1px solid #e5e5e5;
 }
 
-.App-link {
-  color: #61dafb;
+#main-navbar li {
+    margin-left: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#main-navbar li p {
+    line-height: 45px;
+    margin: 0;
+}
+
+#main-navbar li img {
+    border-radius: 50%;
+}
+
+#main-navbar li i {
+    font-size: 25px;
+    line-height: 45px;
+    color: #212529;
+}
+
+#main-navbar li i:hover {
+    color: #65717d;
+}
+
+#second-navbar {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 10px 15px 0 rgba(0, 0, 0, .05);
+    margin-bottom: 30px;
+}
+
+#second-navbar a {
+    font-weight: 700;
+}
+
+#search-bar input {
+    width: 400px;
+    /*text-align: center;*/
+    border-color: #6c757d;
+}
+
+#second-navbar h5 {
+    line-height: 38px;
+    margin: 0;
+    color: #6c757d;
+}
+
+#second-navbar a.dropdown-item {
+    font-weight: 400;
+    color: #6c757d;
+}
+
+/* SHOPPING-CART */
+#shopping-cart .borderless td,
+.borderless th {
+    border: none;
+}
+
+#shopping-cart table .ammount {
+    margin: 0 5px;
+}
+
+#shopping-cart #sum {
+    text-decoration: overline;
+    font-weight: bold;
+}
+
+#shopping-cart table span {
+    margin: 0 10px;
+}
+
+#shopping-cart #shopping-cart-options * {
+    float: right;
+}
+
+#shopping-cart #shopping-cart-options input {
+    width: 150px;
+    margin: 5px 20px;
+}
+
+/* LOGIN */
+#login-signup {
+    width: 100%;
+    max-width: 430px;
+    padding: 15px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+#login-signup img {
+    margin: 20px 0;
+}
+
+#login-signup nav {
+    margin: 20px 0;
+}
+
+#login-signup .nav-item {
+    border-radius: 0px;
+}
+
+/* BENUTZER-KONTO */
+#benutzer-konto .nav-item a {
+    border-radius: 0px;
+}
+
+#benutzer-konto .tab-pane {
+    background-color: white;
 }

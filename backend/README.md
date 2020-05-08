@@ -9,6 +9,10 @@ Den TCP Port während der Installation auf 5077 ändern!
 
 Anleitung zur Installation (mit kleinem Tutorial) der MariaDB: https://www.guru99.com/mariadb-tutorial-install.html
 
+## Dokumentation
+
+Jedes Skript ist in ihrer eigenen md dokumentiert.
+
 ## Für Mac Boys
 
 Einfach die Anleitung befolgen: https://mariadb.com/resources/blog/installing-mariadb-10-1-16-on-mac-os-x-with-homebrew/
@@ -101,9 +105,9 @@ CREATE TABLE shop_items (
 
 ## shop_item_images
 
-| id                  | item_id  | url         | order | 
-| ------------------- | -------- | ----------- | ----- |
-| INT PRIMARY KEY     | INT      | VARCHAR(24) | INT   |
+| id                  | item_id  | url         | order_id | 
+| ------------------- | -------- | ----------- | -------- |
+| INT PRIMARY KEY     | INT      | VARCHAR(24) | INT      |
 
 **Erstellen:**
 
