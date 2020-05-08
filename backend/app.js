@@ -54,7 +54,6 @@ function start(){
 			});
 		});
     });
-});
 
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
