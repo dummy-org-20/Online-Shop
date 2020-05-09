@@ -10,14 +10,28 @@ class ShopItem {
     }
 
 }
+
 //TODO make a function that returns items+url
 //also change delete item so that it marks it as unavaible instead of deleting it for real
+
+function getImagesURL(item_id,callback){
+	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
+		result={};
+		for(let i =0;i<rows.length;i++){
+			result[i]=rows[i]["url"];
+        }
+        
+		callback(result);
+	});
+}
 
 function getItem(id, db, callback) {
     db.safeSearch("SELECT * FROM shop_items WHERE id=?", [id], function(rows) {
         let item = Object.assign(new ShopItem(), rows[0]);
-
-        callback(item);
+        getImagesURL(id, images => {
+            item.urls=images;
+            callback(item);
+        });
     });
 }
 
