@@ -31,7 +31,6 @@ function start(){
 		let userName = req.params.name;
 		let user = db.search("select * from shop_users where username='"+userName+"'", (rows)=>{
 			let user = Object.assign(new User(), rows[0])
-
 			res.status(200).json(user);
 		});
 	})
@@ -253,7 +252,7 @@ function checkIfAlreadyLoggedIn(user_id,callback){
 	});
 }
 
-//gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
+/* //gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
 function getImagesURL(item_id,callback){
 	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
 		result={};
@@ -273,7 +272,7 @@ function checkCookie(cookie,callback){
 			callback(rows[0]["user_id"]);
 		}
 	});
-}
+} */
 
 //creates new Cookie that doesnt already exist in the Database
 function createNewCookie(callback){
