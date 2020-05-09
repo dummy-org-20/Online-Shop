@@ -56,7 +56,7 @@ CREATE DATABASE shop;
 
 ```sql=
 CREATE TABLE shop_users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
     password VARCHAR(64) NOT NULL,
     security_answer VARCHAR(64),
