@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Warenkorb</title>
+</head>
+
+<body>
+    <!-- NAV-BAR -->
+    <!-- Main-Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png"
+                    width="150" height="45" alt="Shop">
+            </a>
+            <!-- Message, Profile-Pic, Shoppingcart-Icon -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <p id="welcome">Wilkommen, Paul</p>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <img id="profil-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRdOvjx-Ooi0vYqAiqSAZFXeDlbRJnskm2blrI-QBmf91TedpD-&usqp=CAU"
+                            width="45" height="45">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-shopping-bag"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Second-Navbar -->
+    <nav id="second-navbar" class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Heading -->
+            <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2">
+                <h5>Startseite</h5>
+            </div>
+            <!-- Search-Bar -->
+            <div id="search-bar" class="mx-auto order-0">
+                <input class="form-control" id="myInput" type="text" placeholder="Suche">
+            </div>
+            <!-- Sort -->
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Details -->
+    <main id="details" class="container">
+        <div class="row">
+            <!-- Image-Slider -->
+            <div class="col-6">
+                <div id="carousel" class="carousel slide" data-ride="carousel">
+                    <div class="row">
+                        <!-- Image-Slider-Preview -->
+                        <div id="image-slider-preview" class="col-2">
+                            <div class="clearfix">
+                                <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <div class="item">
+                                            <div data-target="#carousel" data-slide-to="0" class="thumb">
+                                                <img
+                                                    src="https://www.sony.de/image/2c01991ee6c32a1ad0f6a9f198086f96?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF">
+                                            </div>
+                                            <div data-target="#carousel" data-slide-to="1" class="thumb">
+                                                <img
+                                                    src="https://media.alltricks.com/hd/11069105d528f97290107.69498196.jpg">
+                                            </div>
+                                            <div data-target="#carousel" data-slide-to="2" class="thumb">
+                                                <img
+                                                    src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto/i1-512bfa8a-01a0-4971-bd34-9cef18a159e0/air-force-1-07-damenschuh-sg6nmr.jpg">
+                                            </div>
+                                            <div data-target="#carousel" data-slide-to="3" class="thumb">
+                                                <img
+                                                    src="https://cdn.eglobalcentral.de/images/magictoolbox_cache/8c95d73fec130487c102a73bf1ab42ce/3/1/31631/thumb360x360/3245460558/apple-iphone-11-128gb-a2223-dual-sim-black.jpg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Image-Slider-Image -->
+                        <div id="image-slider-img" class="col-10">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100 carousel-img"
+                                        src="https://www.sony.de/image/2c01991ee6c32a1ad0f6a9f198086f96?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF"
+                                        alt="Second slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100 carousel-img"
+                                        src="https://media.alltricks.com/hd/11069105d528f97290107.69498196.jpg"
+                                        alt="First slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100 carousel-img"
+                                        src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto/i1-512bfa8a-01a0-4971-bd34-9cef18a159e0/air-force-1-07-damenschuh-sg6nmr.jpg"
+                                        alt="Third slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100 carousel-img"
+                                        src="https://cdn.eglobalcentral.de/images/magictoolbox_cache/8c95d73fec130487c102a73bf1ab42ce/3/1/31631/thumb360x360/3245460558/apple-iphone-11-128gb-a2223-dual-sim-black.jpg"
+                                        alt="Third slide">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Details-Info -->
+            <div id="details-info" class="col-6">
+                <h2><b>IPhone 11 Pro Max 64GB</b></h2>
+                <h1>499,99&euro;</h1>
+                <h5>Beschreibung</h5>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                    et ea rebum.</p>
+                <button type="button" class="btn btn-outline-dark no-radius btn-lg">-</button>
+                <span class="ammount">1</span>
+                <button type="button" class="btn btn-outline-dark no-radius btn-lg">+</button>
+                <button id="add-to-cart" type="button" class="btn btn-dark no-radius btn-lg" data-toggle="modal"
+                    data-target="#myModal">IN DEN EINKAUFSWAGEN</button>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
