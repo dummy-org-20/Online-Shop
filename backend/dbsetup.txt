@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS shop_item_images (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
     url VARCHAR(24),
-    orderid INT
+    order_id INT
 );
 CREATE TABLE IF NOT EXISTS shop_order_items (
     order_id INT,
