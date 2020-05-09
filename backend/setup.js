@@ -13,7 +13,7 @@ function start(){
 	tablesCreated=[];
 	for(let i=0;i<commands.length-1;i++){
 		db.search(commands[i]+";",(rows)=>{
-			console.log("Die "+(i+1)+" Tabelle von "+(commands.length-1)+" wurde erstellt");
+			console.log("Die "+(i+1)+". Tabelle von "+(commands.length-1)+" wurde erstellt");
 			tablesCreated.push(i);
 			if(tablesCreated.length==commands.length-1){
 				process.exit()

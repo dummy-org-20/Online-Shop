@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 class ShopItem {
 
     constructor(id, creator_id, category_id, price, name, description, isAvailable) {
@@ -16,7 +18,6 @@ class ShopItem {
             for(let i =0;i<rows.length;i++){
                 result[i]=rows[i]["url"];
             }
-            
             callback(result);
         });
     }
@@ -45,8 +46,23 @@ class ShopItem {
         });
     }
 
+    setImage(id, db, callback){
+        db.safeSearch("SELECT * FROM shop_items WHERE id=?", [id], function(rows){
+            rslt = Object.assign(new Item(), rows[0]);
+            if(rslt == []){
+                console.log("Error: item_id was not found in database");
+            } else {
+                if(!fs.exists(id)){
+                    fs.mkdirSync(id);
+                }
+                //WIP
+                //binary stream as input => convert to jpeg or png and drop to correct directory
+                db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
+                [id, ])
+            }
+        });
+    }
+
 }
-
-
 
 module.exports.ShopItem = ShopItem;
