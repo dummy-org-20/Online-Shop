@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Mein Konto</title>
+</head>
+
+<body>
+    <!-- NAV-BAR -->
+    <!-- Main-Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png"
+                    width="150" height="45" alt="Shop">
+            </a>
+            <!-- Message, bestellungen-Pic, Shoppingcart-Icon -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <p id="welcome">Wilkommen, Paul</p>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <img id="profil-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRdOvjx-Ooi0vYqAiqSAZFXeDlbRJnskm2blrI-QBmf91TedpD-&usqp=CAU"
+                            width="45" height="45">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fa fa-shopping-bag"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Second-Navbar -->
+    <nav id="second-navbar" class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Heading -->
+            <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2">
+                <h5>Mein Konto</h5>
+            </div>
+            <!-- Search-Bar -->
+            <div id="search-bar" class="mx-auto order-0">
+                <input class="form-control" id="myInput" type="text" placeholder="Suche">
+            </div>
+            <!-- Sort -->
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <!--<ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle no-radius btn-outline-secondary"
+                                type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Sortieren
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Preis absteigend</a>
+                                <a class="dropdown-item" href="#">Preis aufsteigend</a>
+                                <a class="dropdown-item" href="#">Alphabetisch</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>-->
+            </div>
+        </div>
+    </nav>
+
+    <!-- BENUTZER-KONTO -->
+    <main id="benutzer-konto" class="container">
+        <div class="row">
+            <!-- Tabs -->
+            <div class="col-md-3">
+                <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="mein-konto-tab" data-toggle="tab" href="#mein-konto" role="tab"
+                            aria-controls="mein-konto" aria-selected="true">Mein Konto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="bestellungen-tab" data-toggle="tab" href="#bestellungen" role="tab"
+                            aria-controls="bestellungen" aria-selected="false">Bestellungen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="add-produkt-tab" data-toggle="tab" href="#add-produkt" role="tab"
+                            aria-controls="add-produkt" aria-selected="false">Produkt hinzufügen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nutzer-verwalten-tab" data-toggle="tab" href="#nutzer-verwalten"
+                            role="tab" aria-controls="nutzer-verwalten" aria-selected="false">Nutzer verwalten</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="produkte-verwalten-tab" data-toggle="tab" href="#produkte-verwalten"
+                            role="tab" aria-controls="produkte-verwalten" aria-selected="false">Produkte verwalten</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="bestellungen-verwalten-tab" data-toggle="tab"
+                            href="#bestellungen-verwalten" role="tab" aria-controls="bestellungen-verwalten"
+                            aria-selected="false">Bestellungen verwalten</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="mein-konto" role="tabpanel"
+                        aria-labelledby="mein-konto-tab">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><b>Nutzername:</b></th>
+                                    <td>@peter</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>Konto-Typ:</b></th>
+                                    <td>Admin</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-danger no-radius">Abmelden</button>
+                    </div>
+                    <div class="tab-pane fade" id="bestellungen" role="tabpanel" aria-labelledby="bestellungen-tab">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Artikel</th>
+                                    <th scope="col">Preis</th>
+                                    <th scope="col">Adresse</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>187</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                    </td>
+                                    <td>15,99&euro;</td>
+                                    <td>Max Muster <br>Coblitzallee 1-9, <br>68163 Mannheim</td>
+                                    <td>offen</td>
+                                </tr>
+                                <tr>
+                                    <td>243</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                    </td>
+                                    <td>15,99&euro;</td>
+                                    <td>Max Muster <br>Coblitzallee 1-9, <br>68163 Mannheim</td>
+                                    <td>offen</td>
+                                </tr>
+                                <tr>
+                                    <td>423</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                    </td>
+                                    <td>15,99&euro;</td>
+                                    <td>Max Muster <br>Coblitzallee 1-9, <br>68163 Mannheim</td>
+                                    <td>gesendet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="add-produkt" role="tabpanel" aria-labelledby="add-produkt-tab">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <input type="text" class="form-control" id="titel" placeholder="Titel">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <textarea class="form-control" id="description" rows="3"
+                                        placeholder="Beschreibung"></textarea>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="select">Kategorie</label>
+                                    <select class="form-control" id="select">
+                                        <option>Technik</option>
+                                        <option>Bücher</option>
+                                        <option>Haushalt</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="price">Preis (in &euro;)</label>
+                                    <input type="text" class="form-control" id="price" placeholder="9,99">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-7">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile1">
+                                        <label class="custom-file-label" for="customFile1">Bild 1 (Titelbild)</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile2">
+                                        <label class="custom-file-label" for="customFile2">Bild 2</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile3">
+                                        <label class="custom-file-label" for="customFile3">Bild 3</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile4">
+                                        <label class="custom-file-label" for="customFile4">Bild 4</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-dark no-radius btn-lg"
+                                data-dismiss="modal">Produkt einstellen</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="nutzer-verwalten" role="tabpanel"
+                        aria-labelledby="nutzer-verwalten-tab">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nutzername</th>
+                                    <th scope="col">Konto-Typ</th>
+                                    <th scope="col">Optionen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>187</td>
+                                    <td>@petername</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>Nutzer</option>
+                                                <option>Admin</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger no-radius">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>243</td>
+                                    <td>@dominik_jem</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option>Nutzer</option>
+                                                <option selected>Admin</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger no-radius">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>423</td>
+                                    <td>@nadja_234</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>Nutzer</option>
+                                                <option>Admin</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger no-radius">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="produkte-verwalten" role="tabpanel"
+                        aria-labelledby="produkte-verwalten-tab">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Produkt</th>
+                                    <th scope="col">Preis</th>
+                                    <th scope="col">Kategorie</th>
+                                    <th scope="col">Rabatt</th>
+                                    <th scope="col">Optionen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>187</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap</span>
+                                    </td>
+                                    <td>15,99&euro;</td>
+                                    <td>Bekleidung</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>0%</option>
+                                                <option>10%</option>
+                                                <option>20%</option>
+                                                <option>30%</option>
+                                                <option>40%</option>
+                                                <option>50%</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger no-radius">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <td>197</td>
+                                <td>
+                                    <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                        width="45" height="45">
+                                    <span>CHAMPION - Legacy Baseball Cap</span>
+                                </td>
+                                <td>15,99&euro;</td>
+                                <td>Bekleidung</td>
+                                <td>
+                                    <div class="form-group">
+                                        <select id="inputState" class="form-control">
+                                            <option selected>0%</option>
+                                            <option>10%</option>
+                                            <option>20%</option>
+                                            <option>30%</option>
+                                            <option>40%</option>
+                                            <option>50%</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger no-radius">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="bestellungen-verwalten" role="tabpanel"
+                        aria-labelledby="bestellungen-verwalten-tab">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Artikel</th>
+                                    <th scope="col">Nutzername</th>
+                                    <th scope="col">Adresse</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>187</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                    </td>
+                                    <td>@peter_x</td>
+                                    <td>Max Muster <br>Coblitzallee 1-9, <br>68163 Mannheim</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>offen</option>
+                                                <option>gesendet</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>243</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                    </td>
+                                    <td>@Karl_Str</td>
+                                    <td>Max Muster <br>Coblitzallee 1-9, <br>68163 Mannheim</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>offen</option>
+                                                <option>gesendet</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>423</td>
+                                    <td>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png"
+                                            width="45" height="45">
+                                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
+                                        <br>
+                                    </td>
+                                    <td>@sarah</td>
+                                    <td>Max Muster <br>Coblitzallee 1-9, <br>68163 Mannheim</td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>offen</option>
+                                                <option>gesendet</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+</body>
+
+</html>

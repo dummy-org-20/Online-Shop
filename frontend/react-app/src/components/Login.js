@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
     render() {
         return (
             <main id="login-signup">
                 {/* Logo */}
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png" width={150} height={45} alt="Shop" />
+                <Link to="/">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png" width={150} height={45} alt="Shop" />
+                </Link>
                 {/* Tabs */}
                 <nav>
                 <div className="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
