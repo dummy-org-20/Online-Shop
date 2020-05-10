@@ -13,15 +13,20 @@ app.use(cookieParser());
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
-		checkCookie(req.cookies["sessionID"],(user_id)=>{
-			if(user_id==null){
+		//console.log("im actually called");
+		new User(0,0,0,0,0,0,0,req.cookies["sessionID"],db,(user)=>{
+			if(user.isEmpty()){
 				createNewCookie((cookie)=>{
-					res.cookie("sessionID",cookie);
+					//TODO fix header issue
+					res.cookie("sessionID",cookie).send("ye boi");
 					//add new user if no temp user is unused
 					//else use an unused temp user
 					//connect the usere with cookie
-					res.send("ye boi");
+					console.log(user);
 				});
+			}
+			else{
+				//res.send("lmao");
 			}
 		});
 	});
