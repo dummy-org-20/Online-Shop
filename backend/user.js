@@ -68,8 +68,11 @@ class User {
 		});
 	}
 	
-	disconnectCookieFromUser(user_id){
-	
+	//deletes cookie associated with *this* user
+	disconnectCookieFromUser(db){
+		db.safeSearch("DELETE FROM shop_login_cookies WHERE user_id=?;",[this.id],(res)=>{
+			//maybe return it worked
+		});
 	}
 	
 	isAdmin(){
