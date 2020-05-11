@@ -28,25 +28,44 @@ class User {
     }
 
 	//funktion geht davon aus, das alles, bis auf das ID attribut in dem derzeitigen User eingetragen ist.
-	addUser(db){
+	//gibt im callback die id des neuen kreierten User zurück
+	addUser(db,callback){
 		db.safeSearch("INSERT INTO shop_users (`username`, `password`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?)",
 		[this.username,this.password,this.security_answer,this.admin,this.isTemporary,this.isUsed],
 		function(res) {
-			console.log("added user number "+res);
+			console.log("added user number "+res["insertId"]);
+			callback(res["insertId"]);
 		});
 	}
 	
 	//gibt die id eines tempusers zurück die genutzt werden kann
-	getTempUser(){
+	getTempUser(db,callback){
 		db.search("SELECT MIN(id) FROM shop_users WHERE isTemporary=1 AND isUsed=0",(result)=>{
-			if(result.length==0){
-				
+			if(result[0]["MIN(id)"]==null){
+				new User(0,"temp","temp","",false,true,true).addUser(db,(id)=>{
+					callback(id);
+				});
+			}else{
+				db.safeSearch("UPDATE shop_users SET isUsed=1 WHERE id=?",[result[0]["MIN(id)"]],(res)=>{
+					callback(result[0]["MIN(id)"]);
+				});
 			}
 		});
 	}
 	
-	connectUserWithCookie(){
-	
+	//connects the id of *this* user to the cookie
+	connectUserWithCookie(db,cookie){
+		db.safeSearch("SELECT cookie FROM shop_login_cookies WHERE cookie=?",[cookie],(result)=>{
+			if(result.length==0){
+				db.safeSearch("INSERT INTO shop_login_cookies (`user_id`,`cookie`) VALUES (?,?)",[this.id,cookie],(result)=>{
+					//maybe return if it worked
+				});
+			}else{
+				db.safeSearch("UPDATE shop_login_cookies SET user_id=? WHERE cookie=?",[this.id,cookie],(result)=>{
+					//maybe return if it worked
+				});
+			}
+		});
 	}
 	
 	disconnectCookieFromUser(user_id){

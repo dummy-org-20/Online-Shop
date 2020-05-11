@@ -18,15 +18,14 @@ function start(){
 			if(user.isEmpty()){
 				createNewCookie((cookie)=>{
 					//TODO fix header issue
-					res.cookie("sessionID",cookie).send("ye boi");
-					//add new user if no temp user is unused
-					//else use an unused temp user
-					//connect the usere with cookie
-					console.log(user);
+					res.cookie("sessionID",cookie).send("lemme give you a cookie");
+					user.getTempUser(db,(user_id)=>{
+						new User(user_id).connectUserWithCookie(db,cookie);
+					});
 				});
 			}
 			else{
-				//res.send("lmao");
+				res.send("you already have a cookie dont be greedy");
 			}
 		});
 	});
