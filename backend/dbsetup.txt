@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS shop_items (
     creator_id INT NOT NULL,
     category_id INT,
     price INT,
-    name VARCHAR(24),
+    name VARCHAR(42),
     description VARCHAR(512),
     isAvailable BOOL
 );
@@ -42,3 +42,29 @@ CREATE TABLE IF NOT EXISTS shop_login_cookies (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     cookie VARCHAR(32)
 );
+INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values(ChristianAt,Passwort1,Lüdenscheid,False,False,True);
+INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values(AleksST,Passwort2,Frankfurt,False,False,True);
+INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values(TobiasBü,Passwort3,Gummersbach,False,False,True);
+INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values(DominikJe,Passwort4,Weinheim,False,False,True);
+INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values(ThomasMe,Passwort5,Bitburg,False,False,True);
+INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values(AchimderAdmin,Passwort6,AdminTown,True,False,True);
+
+INSERT INTO shop_categories(name,description) Values('Bücher','Romane und Taschenbücher für jeden Lesespaß');
+INSERT INTO shop_categories(name,description) Values('Gaming','Mäuse, Tastaturen und Monitore');
+INSERT INTO shop_categories(name,description) Values('Getränke','Verschiedene Spirituosen und Weine');
+INSERT INTO shop_categories(name,description) Values('Hardware','CPUs, Grafikkarten und Mainboards');
+INSERT INTO shop_categories(name,description) Values('Kamera','Kameras von verschiedenen Herstellern ');
+INSERT INTO shop_categories(name,description) Values('Küchengeräte','Alles was Sie in ihrer Küche brauchen!');
+INSERT INTO shop_categories(name,description) Values('Nahrungsergänzungsmittel','Supplements zum Boost ihrer Gesundheit');
+INSERT INTO shop_categories(name,description) Values('Smartphones','Alle neuesten Handys vom Markt');
+INSERT INTO shop_categories(name,description) Values('Spielzeug','Spielzeuge für Kinder jeglichen Alters');
+INSERT INTO shop_categories(name,description) Values('TV','Die besten Smart-Tvs!');
+
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable) Values(0 ,0,6,'Bürgerliches Gesetzbuch BGB','Bürgerliches Gesetzbuch mit EinführungsG, Allgemeines GleichbehandlungsG, Produktha-tungsG, 
+UnterlassungsklagenG, WohnungseigentumsG, BeurkundungsG, ErbbaurechtsG, Rom I bis III, VOen (EG).', True);
+
+
+
+
+
+
