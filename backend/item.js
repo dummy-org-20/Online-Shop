@@ -46,23 +46,46 @@ class ShopItem {
         });
     }
 
-    setImage(id, db, callback){
-        db.safeSearch("SELECT * FROM shop_items WHERE id=?", [id], function(rows){
-            rslt = Object.assign(new Item(), rows[0]);
-            if(rslt == []){
-                console.log("Error: item_id was not found in database");
-            } else {
-                if(!fs.exists(id)){
-                    fs.mkdirSync(id);
+    setImage(image_string, order_id, db, callback){
+                let id = String(this.id);
+                let path = "images/"+id
+                if(!fs.existsSync(path)){
+                    if(!fs.existsSync("images")){
+                        fs.mkdirSync("images");
+                    } 
+                    fs.mkdirSync(path);
                 }
+                base64_decode(image_string, path+"/"+order_id+".jpg");
                 //WIP
                 //binary stream as input => convert to jpeg or png and drop to correct directory
                 db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
-                [id, ])
-            }
-        });
+                [id, path+"/"+(order_id)+".jpg", order_id], function(x){ console.log(">successfully added url to database<") });
     }
 
+    testImage(){
+        let enc_img = base64_encode("images/Test/test.jpg");
+        //console.log(enc_img);
+        base64_decode(enc_img,"images/Test/testName.jpg");
+    }
+
+}
+
+//encodes the image given at the path "file" to a base64 encoded string 
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer.from(bitmap).toString('base64');
+}
+
+//gets a base64 encoded String and puts out a jpg at the directory "file"
+//"file" also specifies the name (see testclass above)
+function base64_decode(base64str, file) {
+    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+    var bitmap = new Buffer.from(base64str, 'base64');
+    // write buffer to file
+    fs.writeFileSync(file, bitmap);
+    console.log('>File created at '+file+' from base64 encoded string<');
 }
 
 module.exports.ShopItem = ShopItem;

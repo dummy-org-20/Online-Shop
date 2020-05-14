@@ -86,9 +86,9 @@ CREATE TABLE shop_categories (
 
 ## shop_items
 
-| id                  | creator_id | category_id | price | name        | description |
-| ------------------- | --------   | ----------- | ----- | ----------- | ----------- |
-| INT PRIMARY KEY     | INT        | INT         | INT   | VARCHAR(24) | VARCHAR(128) |
+| id                  | creator_id | category_id | price | name        | description  | isAvailable |
+| ------------------- | --------   | ----------- | ----- | ----------- | ------------ | ----------- |
+| INT PRIMARY KEY     | INT        | INT         | INT   | VARCHAR(24) | VARCHAR(128) | BOOL        |
 
 **Erstellen:**
 
