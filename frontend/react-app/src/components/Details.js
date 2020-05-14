@@ -2,7 +2,40 @@ import React, { Component } from 'react';
 import Header from './Header';
 
 class Details extends Component {
+
+    constructor() {
+        super()
+        this.state = {
+            name: "",
+            price: 0,
+            description: ""
+        }
+    }
+
+    componentDidMount() {
+        fetch("/item/" + this.props.match.params.id).then(response => response.json()).then(data => {
+            this.setState({ 
+                name: data.name,
+                description: data.description,
+                price: data.price
+            });
+        }).catch(function (error) {
+            console.log(error.message)
+        });
+    }
+
+    formatPrice(price) {
+        let euro = Number.parseInt(price / 100)
+        let cent = price % 100
+        if(cent == 0) return euro + "€"
+        return euro + "," + cent + "€"
+    }
+
     render() {
+        if(this.state.name == undefined) {
+            return "TODO: Creating page for item not found"
+        }
+
         return (
             <React.Fragment>
                 <Header name="Details"  sort="d-none" />
@@ -58,12 +91,10 @@ class Details extends Component {
                     </div>
                     {/* Details-Info */}
                     <div id="details-info" className="col-6">
-                    <h2><b>IPhone 11 Pro Max 64GB</b></h2>
-                    <h1>499,99€</h1>
+                    <h2><b>{this.state.name}</b></h2>
+                    <h1>{this.formatPrice(this.state.price)}</h1>
                     <h5>Beschreibung</h5>
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                        et ea rebum.</p>
+                    <p>{this.state.description}</p>
                     <button type="button" className="btn btn-outline-dark no-radius btn-lg">-</button>
                     <span className="ammount">1</span>
                     <button type="button" className="btn btn-outline-dark no-radius btn-lg">+</button>
@@ -71,7 +102,6 @@ class Details extends Component {
                     </div>
                 </div>
                 </main>
-                <p>Link: {this.props.match.params.id}</p>
             </React.Fragment>
         )
     }
