@@ -45,27 +45,44 @@ class User {
 		});
 	}
 	
+	getTemporary(){
+		return this.isTemporary;
+	}
+	
+	//password for temp user is temp
+	getUser(username,password,callback){
+		this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{
+			if(result.length==0){
+				callback(this);
+			}else{
+				Object.assign(this,result[0]);
+				callback(this);
+			}
+		});
+	}
+	
 	//connects the id of *this* user to the cookie
-	connectUserWithCookie(cookie){
-		this.db.safeSearch("SELECT cookie FROM shop_login_cookies WHERE cookie=?",[cookie],(result)=>{
+	connectUserWithCookie(cookie,callback){
+		this.db.safeSearch("SELECT user_id FROM shop_login_cookies WHERE user_id=?",[this.id],(result)=>{
 			if(result.length==0){
 				this.db.safeSearch("INSERT INTO shop_login_cookies (`user_id`,`cookie`) VALUES (?,?)",[this.id,cookie],(result)=>{
-					//maybe return if it worked
+					callback(result);
 				});
 			}else{
-				this.db.safeSearch("UPDATE shop_login_cookies SET user_id=? WHERE cookie=?",[this.id,cookie],(result)=>{
-					//maybe return if it worked
+				this.db.safeSearch("UPDATE shop_login_cookies SET cookie=? WHERE user_id=?",[cookie,this.id],(result)=>{
+					callback(result);
 				});
 			}
 		});
 	}
 	
 	//deletes cookie associated with *this* user
-	disconnectCookieFromUser(){
+	disconnectCookieFromUser(callback){
 		this.db.safeSearch("DELETE FROM shop_login_cookies WHERE user_id=?;",[this.id],(res)=>{
-			//maybe return it worked
+			callback(res);
 		});
 	}
+
 	
 	isAdmin(){
 		return this.admin;
@@ -73,7 +90,7 @@ class User {
 	
 	isEmpty(){
 		for(var prop in this) {
-			if(this.prop==null||this.prop==this.db)continue;
+			if(this[prop]==null||this[prop]==this["db"]||prop=="cookie")continue;
 			if(this.hasOwnProperty(prop))
 				return false;
 		}

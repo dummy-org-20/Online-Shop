@@ -33,6 +33,7 @@ function start(){
 	});
 
 	//gets user-object from db
+	//WIP
 	app.get("/user/:name", function (req, res) {
 		let userName = req.params.name;
 		let user = db.search("select * from shop_users where username='"+userName+"'", (rows)=>{
@@ -42,27 +43,33 @@ function start(){
 	})
 
 	//login for the user
-	app.get("/login", function(req, res){
+	//if user isnt already logged it with cookie needs params username and password
+	app.post("/login", function(req, res){
         cookie=req.cookies["sessionID"];
-        checkCookie(cookie,(user_id)=>{
-			checkIfAlreadyLoggedIn(user_id,(t)=>{
-				if(t){
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send({message:"No"});
+			}
+			else{
+				if(!user.getTemporary()){
 					res.status(200).send({message:"Yes"});
 				}else{
-					let userName = req.query.name;
-					let password = req.query.password;
-					let user = db.search("select * from shop_users where username=\'"+userName+"\'", (rows)=>{
-						//todo connect cookie to logged user and disconnect from temp user
-						//mark temp user as "unused"
-						let user = Object.assign(new User(), rows[0])
-						if (password == user.password) {
-							res.status(200).send({message:"Yes"});
-						} else {
-							res.status(418).send({message:"No"});
+					let username = req.query["username"];
+					let password = req.query["password"];
+					new User({"db":db}).getUser(username,password,(user2)=>{
+						if(user2.isEmpty()){
+							res.status(400).send({message:"No"});
+						}else{
+							user.disconnectCookieFromUser((t)=>{
+								user2.connectUserWithCookie(cookie,(end)=>{
+									res.status(200).send({message:"Yes"});
+								});
+							});
 						}
 					});
 				}
-			});
+			}
 		});
     });
 
