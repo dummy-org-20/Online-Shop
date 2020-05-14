@@ -14,13 +14,15 @@ app.use(cookieParser());
 function start(){
 	app.get("/", function (req, res) {
 		//console.log("im actually called");
-		new User(0,0,0,0,0,0,0,req.cookies["sessionID"],db,(user)=>{
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
-				createNewCookie((cookie)=>{
+				createNewCookie((cookiee)=>{
 					//TODO fix header issue
-					res.cookie("sessionID",cookie).send("lemme give you a cookie");
-					user.getTempUser(db,(user_id)=>{
-						new User(user_id).connectUserWithCookie(db,cookie);
+					res.cookie("sessionID",cookiee).send("lemme give you a cookie");
+					user.getTempUser((user_id)=>{
+						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee);
 					});
 				});
 			}
@@ -256,7 +258,7 @@ function checkIfAlreadyLoggedIn(user_id,callback){
 	});
 }
 
-/* //gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
+//gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
 function getImagesURL(item_id,callback){
 	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
 		result={};
@@ -276,7 +278,7 @@ function checkCookie(cookie,callback){
 			callback(rows[0]["user_id"]);
 		}
 	});
-} */
+} 
 
 //creates new Cookie that doesnt already exist in the Database
 function createNewCookie(callback){
