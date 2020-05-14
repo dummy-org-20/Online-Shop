@@ -22,6 +22,7 @@ class App extends Component {
             <Route path="/details/:id" component={Details} />
             <Route path="/account" component={Account} />
             <Route path="/login" component={Login} />
+            <Route path="*" component={() => "404 NOT FOUND"} />
           </Switch>
         </div>
       </Router>
