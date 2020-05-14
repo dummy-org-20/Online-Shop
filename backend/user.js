@@ -49,6 +49,16 @@ class User {
 		return this.isTemporary;
 	}
 	
+	exists(callback){
+		this.db.safeSearch("SELECT * FROM shop_users WHERE username=?",[this.username],(result)=>{
+			if(result.length==0){
+				callback(false);
+			}else{
+				callback(true);
+			}
+		});
+	}
+	
 	//password for temp user is temp
 	getUser(username,password,callback){
 		this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{

@@ -116,8 +116,9 @@ function start(){
     //create new User in db
     //WIP
 	app.post("/register", function(req, res) {
-		let user = new User(parseInt(req.query.id), req.query.name, req.query.password, req.query.securityAnswer, "true" == req.query.admin)
-		res.status(200);
+		let username = req.query["username"];
+		let password = req.query["password"];
+		new User({"db":db,"username":username}).exists();
 	})
 	
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
@@ -161,7 +162,7 @@ function start(){
 							db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0), ?, ?)",
 							[item_id, count],
 							function(result) {
-								console.log("workd");
+								//console.log("workd");
 								res.status(200);
 								res.send();
 							});
@@ -173,7 +174,7 @@ function start(){
 						db.safeSearch("UPDATE shop_order_items SET amount=amount+? WHERE order_id=(SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0) AND item_id=?",
 						[ count,item_id],
 						function(result) {
-							console.log("update");
+							//console.log("update");
 							//res.status(200);
 							db.search("DELETE FROM shop_order_items WHERE amount<=0",
 								function(result) {
