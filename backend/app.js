@@ -22,7 +22,7 @@ function start(){
 					//TODO fix header issue
 					res.cookie("sessionID",cookiee).send("lemme give you a cookie");
 					user.getTempUser((user_id)=>{
-						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee);
+					new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{});
 					});
 				});
 			}
@@ -43,7 +43,7 @@ function start(){
 	})
 
 	//login for the user
-	//if user isnt already logged it with cookie needs params username and password
+	//if user isnt already logged in with cookie this request needs params username and password in order to get yes
 	app.post("/login", function(req, res){
         cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -118,7 +118,24 @@ function start(){
 	app.post("/register", function(req, res) {
 		let username = req.query["username"];
 		let password = req.query["password"];
-		new User({"db":db,"username":username}).exists();
+		let security_answer = req.query["security_answer"];
+		if(username==undefined||password==undefined||security_answer==undefined){
+			res.status(400).send({message:"wrong parameters"});
+		}
+		new User({"db":db,"username":username}).exists((exist)=>{
+			if(exist){
+				res.status(400).send({message:"User already exists"});
+			}else{
+				let user=new User({"db":db,"username":username,"password":password,"security_answer":security_answer});
+				user.addUser((id)=>{
+					user.id=id;
+					user.connectUserWithCookie((end)=>{
+						res.status(200).send({message:"User has been added"});
+					});
+				});
+				
+			}
+		});
 	})
 	
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
