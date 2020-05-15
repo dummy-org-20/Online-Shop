@@ -55,17 +55,18 @@ class ShopItem {
                     } 
                     fs.mkdirSync(path);
                 }
-                base64_decode(image_string, path+"/"+order_id+".jpg");
-                //WIP
-                //binary stream as input => convert to jpeg or png and drop to correct directory
+                if(!fs.existsSync(path+"/"+order_id+".jpg")){
+                    base64_decode(image_string, path+"/"+order_id+".jpg");
+                } else {
+                    var x = parseInt(order_id);
+                    while(fs.existsSync(`${path}/${x}.jpg`)){
+                        fs.renameSync(`${path}/${x}.jpg`,`${path}/${x+1}.jpg`);
+                        x=x+2;
+                    }
+                    base64_decode(image_string, path+"/"+order_id+".jpg");
+                }
                 db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
                 [id, path+"/"+(order_id)+".jpg", order_id], function(x){ console.log(">successfully added url to database<") });
-    }
-
-    testImage(){
-        let enc_img = base64_encode("images/Test/test.jpg");
-        //console.log(enc_img);
-        base64_decode(enc_img,"images/Test/testName.jpg");
     }
 
 }

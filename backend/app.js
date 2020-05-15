@@ -4,6 +4,7 @@ const User = require('./user');
 const Category = require('./category');
 const item = require('./item');
 const Item = item.ShopItem;
+var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
@@ -29,6 +30,26 @@ function start(){
 			else{
 				res.send("you already have a cookie dont be greedy");
 			}
+		});
+	});
+
+	//TODO function for changing order of images
+	
+	//posts a new image to the according item
+	//order_id sets the order, in which the items are to be displayed
+	//the input image must be a base64 encoded string in the field "image" from a json in the html-body
+	//automatically merges the image's order_id into the rest if a conflict occurs
+	app.use(bodyParser.json({limit: '50mb'})).post("/uploadImage", function (req, res){
+		let item_id = req.query.item_id;
+		let order_id = req.query.order_id;
+		// image_name will be in query_params
+		let image_string = req.body.image.toString();
+		let item = db.safeSearch("select * from shop_items where id=?", [item_id], function(x){
+			itm = Object.assign(new Item(), x[0]);
+			console.log(itm);
+			itm.setImage(image_string, order_id, db, function(y){
+				res.status(200).send({message:"Image was successfully uploaded"})
+			});
 		});
 	});
 
