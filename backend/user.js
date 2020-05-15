@@ -45,7 +45,7 @@ class User {
 		});
 	}
 	
-	getTemporary(){
+	isTemporary(){
 		return this.isTemporary;
 	}
 	
@@ -82,17 +82,17 @@ class User {
 	//connects the id of *this* user to the cookie
 	connectUserWithCookie(cookie,callback){
 		this.db.safeSearch("SELECT user_id FROM shop_login_cookies WHERE cookie=?",[cookie],(result)=>{
-			if(result.length==0){
-				this.db.safeSearch("INSERT INTO shop_login_cookies (`user_id`,`cookie`) VALUES (?,?)",[this.id,cookie],(result)=>{
-					callback(result);
-				});
-			}else{
-				new User({"db":this.db,"id":this.id}).disconnectCookieFromUser((e)=>{
+			new User({"db":this.db,"id":this.id}).disconnectCookieFromUser((e)=>{
+				if(result.length==0){
+					this.db.safeSearch("INSERT INTO shop_login_cookies (`user_id`,`cookie`) VALUES (?,?)",[this.id,cookie],(result)=>{
+						callback(result);
+					});
+				}else{
 					this.db.safeSearch("UPDATE shop_login_cookies SET user_id=? WHERE cookie=?",[this.id,cookie],(result)=>{
 						callback(result);
 					});
-				});
-			}
+				}
+			});
 		});
 	}
 	
