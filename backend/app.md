@@ -1,15 +1,21 @@
-## app.get("/user/:name", function (req, res)):
-    Diese Funktion greift auf die Datenbank zu und liefert die Ergebnisse der user-Tabelle
-    zum Parameter ":name". 
-    Anschließend werden die zurückgegebenen Datenbank-Einträge in das user.js-Objekt gemappt und als
-    json zurückgegeben.
+## app.get("/user", function (req, res)):
+    Diese Funktion gibt den dezeitigen User mit den Attributen: id, username, admin
+	Kann ausgebaut werden, falls ein User mehr attribute haben soll.
 
 ## app.get("/login", function(req, res)):
     Hier wird zuerst durch einen Session-ID-Cookie geprüft, ob der Nutzer bereits eingeloggt ist und entsprechend status 200, message: "Yes" zurückgegeben oder es wird ein login mit username und passwort beantragt.
-    Bei Login mit zwei query-Parametern (name, password) ausgeführt und auf die entsprechenden Einträge in der
+    Bei Login mit zwei query-Parametern (username, password) ausgeführt und auf die entsprechenden Einträge in der
     Datenbanktabelle zugegriffen. Sollte der User nicht existieren oder das Password falsch sein wird der HTML-Status
-    418 und die Fehlermeldung "No" zurückgegeben. 
+    400 und die Fehlermeldung "No" zurückgegeben. 
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
+
+## app.post("/register"):
+	Hier wird ein neuer User erstellt. Benötigt die Parameter "username","password" und "security_answer". Wenn ein User mit dem Username schon existiert, wird die Antwort 400 "User already exists" gesendet.
+	Ansonsten wird der neue user erstellt und automatisch auch mit diesem User eingeloggt. Es können keine Admin accounts per Webseite erstellt werden.
+	
+##app.get("/userAll"):
+	Diese Funktion gibt dem User, falls dieser Admin ist, alle User die derzeitig in der DB existieren mit ALLEN Daten der User als json zurück.
+	Kann für die Benutzer Verwaltung verwendet werden. 
 
 ## app.get("/getWarenkorb", function(req, res):
     Hier erhälst du eine JSON mit den jetzigen Items und deren Anzahl des derzeitigen Users. Gibt null zurück wenn der Cookie nicht exisitiert.
