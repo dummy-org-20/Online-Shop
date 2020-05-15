@@ -53,15 +53,45 @@ function start(){
 		});
 	});
 
-	//gets user-object from db
-	//WIP
-	app.get("/user/:name", function (req, res) {
-		let userName = req.params.name;
-		let user = db.search("select * from shop_users where username='"+userName+"'", (rows)=>{
-			let user = Object.assign(new User(), rows[0])
-			res.status(200).json(user);
+	//gets user-object from db that is associated with the cookie
+	app.get("/user", function (req, res) {
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).json(null);
+			}
+			else{
+				userWithLessInfo=new User({"id":user.id,"username":user.username,"admin":user.admin})
+				res.status(200).json(userWithLessInfo);
+			}
 		});
 	})
+	
+	//gets all user-objects in ascending order in the db
+	//only usable as admin
+	app.get("/userAll", function (req, res) {
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(us)=>{
+			if(us.isEmpty()||!us.isAdmin()){
+				res.status(400).send({message:"I dont think so m8"});
+			}else{
+				db.search("SELECT id FROM shop_users ORDER BY id ASC",(result)=>{
+					console.log(result);
+					allUsers=[];
+					for(let i=0;i<result.length;i++){
+						new User({"db":db}).getUserByID(result[i].id,(user2)=>{
+							allUsers.push(user2);
+							if(allUsers.length==result.length){
+								res.status(200).json(allUsers.sort(function(a,b){return a["id"]-b["id"];}));
+							}
+						});
+					}
+				});
+			}
+		});
+	});
 
 	//login for the user
 	//if user isnt already logged in with cookie this request needs params username and password in order to get yes
@@ -82,8 +112,10 @@ function start(){
 						if(user2.isEmpty()){
 							res.status(400).send({message:"No"});
 						}else{
-							user2.connectUserWithCookie(cookie,(end)=>{
-								res.status(200).send({message:"Yes"});
+							user.markUnused((e)=>{
+								user2.connectUserWithCookie(cookie,(end)=>{
+									res.status(200).send({message:"Yes"});
+								});
 							});
 						}
 					});
@@ -133,7 +165,8 @@ function start(){
     })
 
     //create new User in db
-    //WIP
+	//changes current User to freshly created User
+	//need params username password and security_answer
 	app.post("/register", function(req, res) {
 		let username = req.query["username"];
 		let password = req.query["password"];
@@ -149,9 +182,18 @@ function start(){
 				user.addUser((id)=>{
 					user.id=id;
 					user.disconnectCookieFromUser(()=>{
-						user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
-							res.status(200).send({message:"User has been added"});
-						});
+						if(user.isTemporary()){
+							user.markUnused((e)=>{
+								user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
+									res.status(200).send({message:"User has been added"});
+								});
+							});
+						}
+						else{
+							user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
+								res.status(200).send({message:"User has been added"});
+							});
+						}
 					});
 				});
 				

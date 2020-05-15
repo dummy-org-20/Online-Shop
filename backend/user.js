@@ -60,6 +60,7 @@ class User {
 	}
 	
 	//password for temp user is temp
+	//function which changes *this* user to the user with the username and password
 	getUser(username,password,callback){
 		this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{
 			if(result.length==0){
@@ -68,6 +69,13 @@ class User {
 				Object.assign(this,result[0]);
 				callback(this);
 			}
+		});
+	}
+	
+	//gives back user in callback without changing this user
+	getUserByID(id,callback){
+		this.db.safeSearch("SELECT * FROM shop_users WHERE id=?",[id],(result)=>{
+			callback(new User(result[0]));
 		});
 	}
 	
@@ -94,7 +102,19 @@ class User {
 			callback(res);
 		});
 	}
-
+	
+	//marks the *this* user as unused in db
+	markUnused(callback){
+		this.db.safeSearch("UPDATE shop_users SET isUsed=0 WHERE id=?",[this.id],(res)=>{
+			callback(res);
+		});
+	}
+	
+	markUsed(callback){
+		this.db.safeSearch("UPDATE shop_users SET isUsed=1 WHERE id=?",[this.id],(res)=>{
+			callback(res);
+		});
+	}
 	
 	isAdmin(){
 		return this.admin;
