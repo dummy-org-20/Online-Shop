@@ -162,12 +162,13 @@ function start(){
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
 	app.get("/getWarenkorb", function(req,res) {
 		cookie=req.cookies["sessionID"];
-		checkCookie(cookie,(user_id)=>{
-			if(user_id==null){
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
 				res.status(400).json(null);
 			}
 			else{
-				getWarenkorb(user_id,(result)=>{
+				getWarenkorb(user.id,(result)=>{
 					res.status(200).json(result);
 				});
 			}
@@ -181,6 +182,7 @@ function start(){
 	//Warenkorb existiert hier schon
 	app.post("/setWarenkorb", function(req,res) {
 		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie==null;
 		item_id=parseInt(req.query["item_id"]);
 		count=parseInt(req.query["count"]);
 		if(!Number.isInteger(item_id)||item_id<1||!Number.isInteger(count)){
@@ -188,19 +190,18 @@ function start(){
 			res.send();
 			return;
 		}
-		checkCookie(cookie,(user_id)=>{
-			if(user_id==null){
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
 				res.status(400);
 				res.send();
-			}
-			else{
-				db.search("SELECT item_id from shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0) AND item_id="+item_id,(rows)=>{
+			}else{
+				console.log(user.id);
+				db.safeSearch("SELECT item_id from shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=? AND status=0) AND item_id=?",[user.id,item_id],(rows)=>{
 					if(rows.length==0){
 						if(count>0){
-							db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0), ?, ?)",
-							[item_id, count],
+							db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id=? AND status=0), ?, ?)",
+							[user.id,item_id,count],
 							function(result) {
-								//console.log("workd");
 								res.status(200);
 								res.send();
 							});
@@ -209,14 +210,11 @@ function start(){
 							res.send();
 						}
 					}else{
-						db.safeSearch("UPDATE shop_order_items SET amount=amount+? WHERE order_id=(SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0) AND item_id=?",
-						[ count,item_id],
+						db.safeSearch("UPDATE shop_order_items SET amount=amount+? WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=? AND status=0) AND item_id=?",
+						[count,user.id,item_id],
 						function(result) {
-							//console.log("update");
-							//res.status(200);
 							db.search("DELETE FROM shop_order_items WHERE amount<=0",
 								function(result) {
-									console.log(result);
 									res.status(200);
 									res.send();
 								}
