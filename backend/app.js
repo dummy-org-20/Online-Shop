@@ -250,20 +250,23 @@ function start(){
 			req.query.name,
 			req.query.description
 		);
-
-		let token = req.cookies["sessionID"];
-		checkCookie(token, (user_id) => {
-			if(user_id == null) return;
-
-			// TODO isAdmin für den User
-			item.insertItem(shopItem, db, function(id) {
-				if(id >= 0) {
-					shopItem.id = id;
-					res.status(200).send(shopItem);
-				} else {
-					res.status(400).send({message:"no"})
-				}
-			});
+		
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()||!user.isAdmin()){
+				res.status(400).send({message:"no"});
+				return;
+			}else{
+				item.insertItem(shopItem, db, function(id) {
+					if(id >= 0) {
+						shopItem.id = id;
+						res.status(200).send(shopItem);
+					} else {
+						res.status(400).send({message:"no"})
+					}
+				});
+			}
 		});
 	});
 
@@ -273,18 +276,21 @@ function start(){
 	app.post("/item.delete", function(req, res) {
 		let id = req.query.id;
 
-		let token = req.cookies["sessionID"];
-		checkCookie(token, (user_id) => {
-			if(user_id == null) return;
-
-			// TODO isAdmin für den User
-			item.deleteItem(id, db, function(success) {
-				if(success) {
-					res.status(200).send({message:"nice"});
-				} else {
-					res.status(400).send({message:"no"});
-				}
-			});
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()||!user.isAdmin()){
+				res.status(400).send({message:"no"});
+				return;
+			}else{
+				item.deleteItem(id, db, function(success) {
+					if(success) {
+						res.status(200).send({message:"nice"});
+					} else {
+						res.status(400).send({message:"no"});
+					}
+				});
+			}
 		});
 	});
 
@@ -293,6 +299,8 @@ function start(){
 	})
 }
 
+//DEPRICATED
+/*
 //takes an already exisiting user_id and checks if its not a temporary user
 function checkIfAlreadyLoggedIn(user_id,callback){
 	db.search("SELECT isTemporary FROM shop_users WHERE id="+user_id+" AND isUsed=1",(rows)=>{
@@ -322,7 +330,7 @@ function checkCookie(cookie,callback){
 			callback(rows[0]["user_id"]);
 		}
 	});
-} 
+}*/
 
 //creates new Cookie that doesnt already exist in the Database
 function createNewCookie(callback){
