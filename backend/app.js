@@ -147,7 +147,7 @@ function start(){
 			if(exist){
 				res.status(400).send({message:"User already exists"});
 			}else{
-				let user=new User({"db":db,"username":username,"password":password,"security_answer":security_answer});
+				let user=new User({"db":db,"username":username,"password":password,"security_answer":security_answer,"admin":false,"isTemporary":false,"isUsed":true});
 				user.addUser((id)=>{
 					user.id=id;
 					user.connectUserWithCookie((end)=>{
