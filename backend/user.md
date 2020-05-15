@@ -17,7 +17,7 @@
 ## getTempUser(callback)
 	Holt einen Tempuser aus der Datenbank, setzt diesen auf benutzt, und gibt im Callback die ID des TempUsers zurück, die benutzt werden kann.
 	
-## isTemporary()
+## getTemporary()
 	gibt zurück, ob der jetzige User Temporär ist.
 
 ## exists(callback)

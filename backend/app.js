@@ -182,7 +182,7 @@ function start(){
 				user.addUser((id)=>{
 					user.id=id;
 					user.disconnectCookieFromUser(()=>{
-						if(user.isTemporary()){
+						if(user.getTemporary()){
 							user.markUnused((e)=>{
 								user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
 									res.status(200).send({message:"User has been added"});

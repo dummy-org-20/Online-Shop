@@ -45,7 +45,7 @@ class User {
 		});
 	}
 	
-	isTemporary(){
+	getTemporary(){
 		return this.isTemporary;
 	}
 	
