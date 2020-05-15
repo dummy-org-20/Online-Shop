@@ -73,14 +73,16 @@ class User {
 	
 	//connects the id of *this* user to the cookie
 	connectUserWithCookie(cookie,callback){
-		this.db.safeSearch("SELECT user_id FROM shop_login_cookies WHERE user_id=?",[this.id],(result)=>{
+		this.db.safeSearch("SELECT user_id FROM shop_login_cookies WHERE cookie=?",[cookie],(result)=>{
 			if(result.length==0){
 				this.db.safeSearch("INSERT INTO shop_login_cookies (`user_id`,`cookie`) VALUES (?,?)",[this.id,cookie],(result)=>{
 					callback(result);
 				});
 			}else{
-				this.db.safeSearch("UPDATE shop_login_cookies SET cookie=? WHERE user_id=?",[cookie,this.id],(result)=>{
-					callback(result);
+				new User({"db":this.db,"id":this.id}).disconnectCookieFromUser((e)=>{
+					this.db.safeSearch("UPDATE shop_login_cookies SET user_id=? WHERE cookie=?",[this.id,cookie],(result)=>{
+						callback(result);
+					});
 				});
 			}
 		});
@@ -127,7 +129,7 @@ function getUserByID(id,db,callback){
 	if(id==null){
 		callback(null);
 	}
-	db.search("select * from shop_users where id="+id, (rows)=>{
+	db.safeSearch("select * from shop_users where id=?",[id], (rows)=>{
 		if(rows.length==0){
 			callback(null);
 		}

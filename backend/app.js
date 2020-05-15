@@ -82,10 +82,8 @@ function start(){
 						if(user2.isEmpty()){
 							res.status(400).send({message:"No"});
 						}else{
-							user.disconnectCookieFromUser((t)=>{
-								user2.connectUserWithCookie(cookie,(end)=>{
-									res.status(200).send({message:"Yes"});
-								});
+							user2.connectUserWithCookie(cookie,(end)=>{
+								res.status(200).send({message:"Yes"});
 							});
 						}
 					});
@@ -150,8 +148,10 @@ function start(){
 				let user=new User({"db":db,"username":username,"password":password,"security_answer":security_answer,"admin":false,"isTemporary":false,"isUsed":true});
 				user.addUser((id)=>{
 					user.id=id;
-					user.connectUserWithCookie((end)=>{
-						res.status(200).send({message:"User has been added"});
+					user.disconnectCookieFromUser(()=>{
+						user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
+							res.status(200).send({message:"User has been added"});
+						});
 					});
 				});
 				
