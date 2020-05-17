@@ -8,9 +8,6 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-//TODO
-// function deleteCookieIfTemp with POST /deleteCookie such that if the window closes the temp cookie is deleted, account is marked unused and warenkorb is deleted/marked unused
-
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
@@ -144,7 +141,7 @@ function start(){
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
 		let cats = req.query.category.toString();
-		let sfor = req.query.item;
+		let sfor = req.query.item+"%";
 
         splitCat = cats.split(",").forEach(x => {x = "'"+x+"'"});
         if(splitCat!=null){
@@ -155,7 +152,7 @@ function start(){
                 }
                 if(categories==[]){
                     console.log(categories);
-                    let item = db.search("select * from shop_items where category_id IN (" +categories+ ") AND name LIKE \""+sfor+"\"*", (rows)=>{
+                    let item = db.search("select * from shop_items where category_id IN (" +categories+ ") AND name LIKE \""+sfor+"\"", (rows)=>{
                         var items = new Array();
                         for (let index = 0; index < rows.length; index++) {
                             items.push(Object.assign(new Item(), rows[index]));
@@ -170,7 +167,7 @@ function start(){
                 }
             });
         } else {
-            let item = db.search("select * from shop_items where name LIKE \""+sfor+"\"*", (rows)=>{
+            let item = db.search("select * from shop_items where name LIKE \""+sfor+"\"", (rows)=>{
                 var items = new Array();
                 for (let index = 0; index < rows.length; index++) {
                     items.push(Object.assign(new Item(), rows[index]));
@@ -295,11 +292,10 @@ function start(){
 	});
 
 	// get item by id
-	//TODO give back URLs of images of item
 	app.get("/item/:id", function(req, res) {
 		let id = req.params.id;
 
-		item.getItem(id, db, function(item) {
+		new Item().getItem(id, db, function(item) {
 			if(item.id != undefined) {
 				res.status(200).send(item);
 			} else {
@@ -309,10 +305,10 @@ function start(){
 	});
 
 	// insert item
-	//TODO also need to be able to upload images (maybe in another function)
 	app.post("/item.insert", function(req, res) {
-		let shopItem = new ShopItem(
-			parseInt(req.query.creator_id),
+		let shopItem = new Item(
+			null,
+			null,
 			parseInt(req.query.category_id),
 			parseInt(req.query.price),
 			req.query.name,
@@ -326,7 +322,9 @@ function start(){
 				res.status(400).send({message:"no"});
 				return;
 			}else{
-				item.insertItem(shopItem, db, function(id) {
+				shopItem.creator_id=user.id;
+				shopItem.isAvailable=true;
+				shopItem.insertItem(shopItem, db, function(id) {
 					if(id >= 0) {
 						shopItem.id = id;
 						res.status(200).send(shopItem);
@@ -351,7 +349,7 @@ function start(){
 				res.status(400).send({message:"no"});
 				return;
 			}else{
-				item.deleteItem(id, db, function(success) {
+				new Item().deleteItem(id, db, function(success) {
 					if(success) {
 						res.status(200).send({message:"nice"});
 					} else {
@@ -378,16 +376,6 @@ function checkIfAlreadyLoggedIn(user_id,callback){
 	});
 }
 
-//gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
-function getImagesURL(item_id,callback){
-	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
-		result={};
-		for(let i =0;i<rows.length;i++){
-			result[i]=rows[i]["url"];
-		}
-		callback(result);
-	});
-}
 
 //checks if the cookie exists in the database and gives back the matching user_id
 function checkCookie(cookie,callback){

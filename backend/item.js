@@ -12,20 +12,14 @@ class ShopItem {
         this.isAvailable = isAvailable;
     }
 
-    getImagesURL(item_id,callback){
-        db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
-            result={};
-            for(let i =0;i<rows.length;i++){
-                result[i]=rows[i]["url"];
-            }
-            callback(result);
-        });
+    getImagesURL(item_id,db,callback){
+        getImagesURL(item_id,db,callback);
     }
     
     getItem(id, db, callback) {
         db.safeSearch("SELECT * FROM shop_items WHERE id=?", [id], function(rows) {
             let item = Object.assign(new ShopItem(), rows[0]);
-            getImagesURL(id, images => {
+            getImagesURL(id,db, images => {
                 item.urls=images;
                 callback(item);
             });
@@ -33,8 +27,8 @@ class ShopItem {
     }
     
     insertItem(item, db, callback) {
-        db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`) VALUES (?, ?, ?, ?, ?)",
-                    [item.creator_id, item.category_id, item.price, item.name, item.description],
+        db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`,`isAvailable`) VALUES (?, ?, ?, ?, ?,?)",
+                    [item.creator_id, item.category_id, item.price, item.name, item.description, item.isAvailable],
                     function(result) {
             callback(result.affectedRows > 0 ? result.insertId : -1);
         });
@@ -48,7 +42,7 @@ class ShopItem {
 
     setImage(image_string, order_id, db, callback){
                 let id = String(this.id);
-                let path = "images/"+id
+                let path = "../images/"+id
                 if(!fs.existsSync(path)){
                     if(!fs.existsSync("images")){
                         fs.mkdirSync("images");
@@ -66,7 +60,7 @@ class ShopItem {
                     base64_decode(image_string, path+"/"+order_id+".jpg");
                 }
                 db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
-                [id, path+"/"+(order_id)+".jpg", order_id], function(x){ console.log(">successfully added url to database<") });
+                [id, path+"/"+(order_id)+".jpg", order_id], function(x){ console.log(">successfully added url to database<");callback(true); });
     }
 
 }
@@ -77,6 +71,17 @@ function base64_encode(file) {
     var bitmap = fs.readFileSync(file);
     // convert binary data to base64 encoded string
     return new Buffer.from(bitmap).toString('base64');
+}
+
+//gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
+function getImagesURL(item_id,db,callback){
+	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
+		result={};
+		for(let i =0;i<rows.length;i++){
+			result[i]=rows[i]["url"];
+		}
+		callback(result);
+	});
 }
 
 //gets a base64 encoded String and puts out a jpg at the directory "file"
