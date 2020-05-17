@@ -9,7 +9,6 @@ class User {
 		if(this.cookie!==undefined&&this.db!==undefined&&callback!=undefined){
 			checkCookie(this.cookie,this.db,(rows)=>{
 				getUserByID(rows,this.db,(result)=>{
-					//console.log(result);
 					if(result!=null)Object.assign(this, result[0]);
 					callback(this);
 				});
@@ -134,6 +133,12 @@ class User {
 	getWarenkorb(callback){
 		getWarenkorb(this.id,this.db,callback);
 	}
+	
+	//merges the Warenkorb of *this* user with the Warenkorb of the other user
+	//deletes the items of the other user and writes them into *this* warenkorb
+	mergeWarenkorb(user,callback){
+		mergeWarenkorb(user.id,this.id,this.db,callback);
+	}
 }
 
 //checks if the cookie exists in the database and gives back the matching user_id
@@ -165,7 +170,7 @@ function getUserByID(id,db,callback){
 
 //creates a Warenkorb for the user with the id
 //doesnt check if the Warenkorb already existed beforehand
-//check with getWarenkorb
+//check if warenkorb exists with getWarenkorb
 function createWarenkorb(address,status,user_id,db,callback){
 	db.safeSearch("INSERT INTO shop_orders (`address`,`status`,`user_id`) VALUES (?,?,?)",[address,status,user_id],(result)=>{
 		callback(result);
@@ -179,11 +184,39 @@ function getWarenkorb(user_id,db,callback){
 	});
 }
 
-//deletes Warenkorb of current User
-function deleteWarenkorb(callback){
-	db.safeSearch("DELETE FROM shop_orders WHERE user_id=? AND status=0",[this.id],(res)=>{
+//adds the items from user_id1 to the warenkorb of user_id2
+//and deletes the items of the Warenkorb of user_id1
+function mergeWarenkorb(id1,id2,db,callback){
+	//select all items that need to overwritten
+	db.safeSearch("SELECT item_id FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id=? OR user_id=?) GROUP BY item_id HAVING COUNT(item_id)>1",[id1,id2],(res)=>{
+		let finished=0;
+		for(let i=0;i<res.length;i++){
+			//overwrite each item that needs to be overwritten
+			db.safeSearch("UPDATE shop_order_items SET amount=amount+(SELECT amount FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?) AND item_id=?) WHERE item_id=? AND order_id=(SELECT id FROM shop_orders WHERE user_id=?)",[id1,res[i]["item_id"],res[i]["item_id"],id2],(result)=>{
+				db.safeSearch("DELETE FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?) AND item_id=?",[id1,res[i]["item_id"]],(k)=>{
+					finished++;
+					//when all items have been overwritten, move all items that dont need to overwritten to user_id2
+					if(finished==res.length){
+						db.safeSearch("UPDATE shop_order_items SET order_id=(SELECT id FROM shop_orders WHERE user_id=?) WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?)",[id2,id1],(res2)=>{
+							callback(res2); 
+						});
+					}
+				});
+			});
+		}
+		if(res.length==0){
+			db.safeSearch("UPDATE shop_order_items SET order_id=(SELECT id FROM shop_orders WHERE user_id=?) WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?)",[id2,id1],(res2)=>{
+				callback(res2); 
+			});
+		}
+	});
+}
+
+//deletes items of Warenkorb of the user with the id
+function deleteWarenkorb(id,db,callback){
+	db.safeSearch("DELETE FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?)",[id],(res)=>{
 		callback(res); 
 	});
 }
 
-module.exports = User
+module.exports = User;

@@ -56,3 +56,9 @@
 ## isEmpty()
 	Gibt zurück, ob der jetzige User, außer der Datenbank und dem Cookie, leer ist.
 	Kann genutzt werden, um zu prüfen ob ein User durch den Cookie gefunden wurde.
+	
+## getWarenkorb(callback)
+	Gibt den Warenkorb des jetzigen Users im Callback zurück
+
+## mergeWarenkorb(user,callback)
+	fügt alle Items aus dem Warenkorb von user in den Warenkorb des jetzigen User (also *this* user)

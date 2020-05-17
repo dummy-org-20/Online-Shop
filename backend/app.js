@@ -14,7 +14,6 @@ app.use(cookieParser());
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
-		//console.log("im actually called");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -78,7 +77,6 @@ function start(){
 				res.status(400).send({message:"I dont think so m8"});
 			}else{
 				db.search("SELECT id FROM shop_users ORDER BY id ASC",(result)=>{
-					console.log(result);
 					allUsers=[];
 					for(let i=0;i<result.length;i++){
 						new User({"db":db}).getUserByID(result[i].id,(user2)=>{
@@ -114,7 +112,9 @@ function start(){
 						}else{
 							user.markUnused((e)=>{
 								user2.connectUserWithCookie(cookie,(end)=>{
-									res.status(200).send({message:"Yes"});
+									user2.mergeWarenkorb(user,(end2)=>{
+										res.status(200).send({message:"Yes"});
+									});
 								});
 							});
 						}
@@ -174,29 +174,39 @@ function start(){
 		if(username==undefined||password==undefined||security_answer==undefined){
 			res.status(400).send({message:"wrong parameters"});
 		}
-		new User({"db":db,"username":username}).exists((exist)=>{
-			if(exist){
-				res.status(400).send({message:"User already exists"});
-			}else{
-				let user=new User({"db":db,"username":username,"password":password,"security_answer":security_answer,"admin":false,"isTemporary":false,"isUsed":true});
-				user.addUser((id)=>{
-					user.id=id;
-					user.disconnectCookieFromUser(()=>{
-						if(user.getTemporary()){
-							user.markUnused((e)=>{
-								user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
-									res.status(200).send({message:"User has been added"});
-								});
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send({message:"No"});
+			}
+			else{
+				new User({"db":db,"username":username}).exists((exist)=>{
+					if(exist){
+						res.status(400).send({message:"User already exists"});
+					}else{
+						let newUser=new User({"db":db,"username":username,"password":password,"security_answer":security_answer,"admin":false,"isTemporary":false,"isUsed":true});
+						newUser.addUser((id)=>{
+							newUser.id=id;
+							user.disconnectCookieFromUser(()=>{
+								if(user.getTemporary()){
+									user.markUnused((e)=>{
+										newUser.connectUserWithCookie(cookie,(end)=>{
+											newUser.mergeWarenkorb(user,(end2)=>{
+												res.status(200).send({message:"Yes"});
+											});
+										});
+									});
+								}
+								else{
+									newUser.connectUserWithCookie(cookie,(end)=>{
+										res.status(200).send({message:"User has been added"});
+									});
+								}
 							});
-						}
-						else{
-							user.connectUserWithCookie(req.cookies["sessionID"],(end)=>{
-								res.status(200).send({message:"User has been added"});
-							});
-						}
-					});
+						});
+					}
 				});
-				
 			}
 		});
 	})
@@ -237,7 +247,6 @@ function start(){
 				res.status(400);
 				res.send();
 			}else{
-				console.log(user.id);
 				db.safeSearch("SELECT item_id from shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=? AND status=0) AND item_id=?",[user.id,item_id],(rows)=>{
 					if(rows.length==0){
 						if(count>0){
