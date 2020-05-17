@@ -2,7 +2,7 @@ Benötigte Module:
 	-mariadb
 
 Benötigte Dateien:
-	-config.json (mehr dazu bei config.json.rm)
+	-config.json (mehr dazu bei config.json.md)
 
 Das dbconnect Objekt besitzt 3 Funktionen:
 

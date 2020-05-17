@@ -210,7 +210,7 @@ function start(){
 				res.status(400).json(null);
 			}
 			else{
-				getWarenkorb(user.id,(result)=>{
+				user.getWarenkorb((result)=>{
 					res.status(200).json(result);
 				});
 			}
@@ -372,7 +372,16 @@ function checkCookie(cookie,callback){
 			callback(rows[0]["user_id"]);
 		}
 	});
-}*/
+}
+
+//gets all Items as item_ids with their amount the user currently has in his warenkorb
+function getWarenkorb(user_id,callback){
+	db.search("SELECT item_id,amount FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0)",(rows)=>{
+		callback(rows);
+	});
+}
+
+*/
 
 //creates new Cookie that doesnt already exist in the Database
 function createNewCookie(callback){
@@ -388,13 +397,6 @@ function createNewCookie(callback){
 		else{
 			callback(string);
 		}
-	});
-}
-
-//gets all Items as item_ids with their amount the user currently has in his warenkorb
-function getWarenkorb(user_id,callback){
-	db.search("SELECT item_id,amount FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0)",(rows)=>{
-		callback(rows);
 	});
 }
 

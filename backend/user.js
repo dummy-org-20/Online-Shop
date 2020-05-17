@@ -24,9 +24,11 @@ class User {
 	addUser(callback){
 		this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?)",
 		[this.username,this.password,this.security_answer,this.admin,this.isTemporary,this.isUsed],
-		function(res) {
-			console.log("added user number "+res["insertId"]);
-			callback(res["insertId"]);
+		(res)=> {
+			createWarenkorb("",0,res["insertId"],this.db,(s)=>{
+				console.log("added user number "+res["insertId"]);
+				callback(res["insertId"]);
+			});
 		});
 	}
 	
@@ -98,7 +100,7 @@ class User {
 	
 	//deletes cookie associated with *this* user
 	disconnectCookieFromUser(callback){
-		this.db.safeSearch("DELETE FROM shop_login_cookies WHERE user_id=?;",[this.id],(res)=>{
+		this.db.safeSearch("DELETE FROM shop_login_cookies WHERE user_id=?",[this.id],(res)=>{
 			callback(res);
 		});
 	}
@@ -128,6 +130,10 @@ class User {
 		}
 		return true;
 	}
+	
+	getWarenkorb(callback){
+		getWarenkorb(this.id,this.db,callback);
+	}
 }
 
 //checks if the cookie exists in the database and gives back the matching user_id
@@ -154,6 +160,29 @@ function getUserByID(id,db,callback){
 			callback(null);
 		}
 		else callback(rows);
+	});
+}
+
+//creates a Warenkorb for the user with the id
+//doesnt check if the Warenkorb already existed beforehand
+//check with getWarenkorb
+function createWarenkorb(address,status,user_id,db,callback){
+	db.safeSearch("INSERT INTO shop_orders (`address`,`status`,`user_id`) VALUES (?,?,?)",[address,status,user_id],(result)=>{
+		callback(result);
+	});
+}
+
+//gets all Items as item_ids with their amount the user currently has in his warenkorb
+function getWarenkorb(user_id,db,callback){
+	db.search("SELECT item_id,amount FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id="+user_id+" AND status=0)",(rows)=>{
+		callback(rows);
+	});
+}
+
+//deletes Warenkorb of current User
+function deleteWarenkorb(callback){
+	db.safeSearch("DELETE FROM shop_orders WHERE user_id=? AND status=0",[this.id],(res)=>{
+		callback(res); 
 	});
 }
 
