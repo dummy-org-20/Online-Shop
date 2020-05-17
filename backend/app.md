@@ -2,12 +2,16 @@
     Diese Funktion gibt den dezeitigen User mit den Attributen: id, username, admin
 	Kann ausgebaut werden, falls ein User mehr attribute haben soll.
 
-## app.get("/login", function(req, res)):
+## app.post("/login", function(req, res)):
     Hier wird zuerst durch einen Session-ID-Cookie geprüft, ob der Nutzer bereits eingeloggt ist und entsprechend status 200, message: "Yes" zurückgegeben oder es wird ein login mit username und passwort beantragt.
     Bei Login mit zwei query-Parametern (username, password) ausgeführt und auf die entsprechenden Einträge in der
     Datenbanktabelle zugegriffen. Sollte der User nicht existieren oder das Password falsch sein wird der HTML-Status
     400 und die Fehlermeldung "No" zurückgegeben. 
     Wenn die Authentifizierung erfolgreich war wird der HTML-Status 200 und die Meldung "Yes" zurückgegeben.
+
+## app.post("/logout"):
+	löscht die Cookie Verbindung vom derzeitigen User in der DB. 
+	Wenn der User ein temp-User wird dieser als unbenutzt markiert und sein Warenkorb wird gelöscht.
 
 ## app.post("/register"):
 	Hier wird ein neuer User erstellt. Benötigt die Parameter "username","password" und "security_answer". Wenn ein User mit dem Username schon existiert, wird die Antwort 400 "User already exists" gesendet.

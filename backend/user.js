@@ -139,6 +139,21 @@ class User {
 	mergeWarenkorb(user,callback){
 		mergeWarenkorb(user.id,this.id,this.db,callback);
 	}
+	
+	logout(callback){
+		this.disconnectCookieFromUser((e)=>{
+			if(this.getTemporary()){
+				this.markeUnused((p)=>{
+					deleteWarenkorb(this.id,this.db,(k)=>{
+						callback(e);
+					});
+				});
+			}
+			else{
+				callback(e);
+			}
+		});
+	}
 }
 
 //checks if the cookie exists in the database and gives back the matching user_id

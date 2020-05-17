@@ -62,3 +62,7 @@
 
 ## mergeWarenkorb(user,callback)
 	fügt alle Items aus dem Warenkorb von user in den Warenkorb des jetzigen User (also *this* user)
+	
+## logout(callback)
+	Löscht die Verbindung vom derzeitigen Cookie zum User in der Datenbank.
+	Außerdem wird, falls der User ein temporärer war, dieser als unbenutzt markiert und dessen Warenkorb items gelöscht.

@@ -123,6 +123,23 @@ function start(){
 			}
 		});
     });
+	
+	//logs the current user out
+	//if the current user is a temp user the user is marked as unused and his items in his Warenkorb will be deleted
+	app.post("/logout",function(req, res){
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send({message:"You weren't even logged in lmao"});
+			}
+			else{
+				user.logout((res)=>{
+					res.status(200).send({messsage:"you successfully logged out"});
+				});
+			}
+		});
+	});
 
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
