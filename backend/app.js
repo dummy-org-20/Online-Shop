@@ -290,6 +290,27 @@ function start(){
 			}
 		});
 	});
+	
+	//buys the items that are in the Warenkorb
+	//needs address as query parameter
+	app.post("/buy",function(req,res){
+		address=req.query["address"];
+		if(address==undefined){
+			res.status(400).send("address parameter is missing");
+		}
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()||user.getTemporary()){
+				res.status(400).json("Du kannst nichts kaufen");
+			}
+			else{
+				user.buy(address,(result)=>{
+					res.status(200).send("successfully bought the items");
+				});
+			}
+		});
+	});
 
 	// get item by id
 	app.get("/item/:id", function(req, res) {

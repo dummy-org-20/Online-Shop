@@ -154,6 +154,12 @@ class User {
 			}
 		});
 	}
+	
+	buy(address,callback){
+		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE user_id=?",[address,this.id],(res)=>{
+			createWarenkorb("",0,this.id,this.db,callback)
+		});
+	}
 }
 
 //checks if the cookie exists in the database and gives back the matching user_id
