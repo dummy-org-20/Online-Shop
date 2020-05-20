@@ -16,7 +16,6 @@ class MyAccount extends Component {
                     </tr>
                     </tbody>
                 </table>
-                <button type="button" className="btn btn-danger no-radius">Abmelden</button>
             </React.Fragment>
         )
     }
