@@ -48,7 +48,23 @@ class ShopItem {
             callback(result.affectedRows > 0)
         });
     }
+	
+	deleteImage(image_name,db,callback){
+		db.safeSearch("DELETE FROM shop_item_images WHERE url=? AND item_id=?",[this.id+"/"+image_name,this.id],(res)=>{
+			let index="";
+			for(let i =0;i<Object.keys(this.urls).length;i++){
+				if(this.urls[String(i)]==this.id+"/"+image_name)index=String(i);
+			}
+			if(index==""){
+				callback(false);
+				return;
+			}
+			fs.unlinkSync("../images/"+this.id+"/"+image_name);
+			changeOrder(-1,this.id,parseInt(index),db,()=>{callback(true);});
+		})
+	}
 
+	
     setImage(image_string, order_id, image_name, db, callback){
         let id = String(this.id);
         let path = "../images/";
@@ -60,9 +76,11 @@ class ShopItem {
 			fs.mkdirSync(path+id);
         }
         if(!fs.existsSync(fullpath)){
-			base64_decode(image_string,fullpath);
-			db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
-			[parseInt(id), id+"/"+image_name, order_id], function(x){ console.log(">successfully added url to database<");callback(true); });
+			changeOrder(+1,this.id,order_id-1,db,()=>{
+				base64_decode(image_string,fullpath);
+				db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
+				[parseInt(id), id+"/"+image_name, order_id], function(x){ console.log(">successfully added url to database<");callback(true); });
+			});
         } else {
 			fs.truncate(fullpath, 0, function() {
 				base64_decode(image_string, fullpath);
@@ -70,6 +88,12 @@ class ShopItem {
         }     
     }
 
+}
+
+function changeOrder(amount,item_id,order_id,db,callback){
+	db.safeSearch("UPDATE shop_item_images SET order_id=order_id+? WHERE item_id=? AND order_id>?",[amount,item_id,order_id],(e)=>{
+		callback();
+	});
 }
 
 //encodes the image given at the path "file" to a base64 encoded string 

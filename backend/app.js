@@ -32,15 +32,66 @@ function start(){
 
 	//change order of images of an item
 	//requires a query param called item_id a json in the body which is build like this:
-	//{url:order_id,url:order_id,...}
-	app.use(bodyParser.json({limit: '50mb'})).post("/order",function(req,res){
-		/*let item_id=req.query["item_id"];
-		let json=JSON.parse(req.body);
+	//{order_id:url,order_id:url,...} order_id startet bei 1
+	//die json muss aufsteigende order_ids haben
+	app.use(bodyParser.json({limit: '2mb'})).post("/order",function(req,res){
+		console.log("/order wird aufgerufen");
+		let item_id=req.query["item_id"];
+		let json=req.body;
 		db.safeSearch("SELECT url FROM shop_item_images WHERE item_id=? ORDER BY order_id ASC",[item_id],(rows)=>{
-			for(let i=0;i<rows.length;i++){
-				if(rows[i])
+			if(rows.length!=Object.keys(json).length){
+				res.status(400).send("zu wenig Einträge");
+				return;
 			}
-		});*/
+			/*for(let i=0;i<rows.length;i++){
+				if(json[String(i+1)]){
+					console.log(rows[i]["url"]);
+					console.log(json[String(i+1)]);
+					res.status(400).send("die Daten wurden nicht richtig gesendet");
+					return;
+				}
+			}*/
+			for(let i=0;i<rows.length;i++){
+				let finished=0
+				db.safeSearch("UPDATE shop_item_images SET order_id=? WHERE item_id=? AND url=?",[Object.keys(json)[i],item_id,json[String(i+1)]],(e)=>{
+					finished++;
+					if(finished==rows.length){
+						res.status(200).send("successfully updated the order_id");
+					}
+				})
+			}
+		});
+	});
+	
+	//deletes an image of an item that *this* user created
+	//needs item_id and image_name as query param
+	app.post("/deleteImage",function(req,res){
+		console.log("/deleteImage wird aufgerufen");
+		let item_id=parseInt(req.query["item_id"]);
+		let image_name=req.query["image_name"];
+		if(!Number.isInteger(item_id)){
+			res.status(400).send();
+			return;
+		}
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).json(null);;
+			}
+			else{
+				new Item().getItem(item_id,db,(item)=>{
+					if(user.id==item.creator_id){
+						item.deleteImage(image_name,db,(succ)=>{
+							if(succ)res.status(200).send("successfully deleted");
+							else res.status(400).send("image doesnt exist");
+						});
+					}else{
+						res.status(400).send("no");
+					}
+				});
+			}
+		});
 	});
 	
 	//posts a new image to the according item

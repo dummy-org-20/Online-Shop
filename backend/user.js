@@ -164,11 +164,11 @@ class User {
 
 //checks if the cookie exists in the database and gives back the matching user_id
 function checkCookie(cookie,db,callback){
-	if(cookie==null){
+	if(cookie==null||cookie.match(/^[a-zA-Z0-9]{32}$/)==null){
 		callback(null);
 		return;
 	}
-	db.search("SELECT user_id FROM shop_login_cookies WHERE cookie=\""+cookie+"\"",(rows)=>{
+	db.safeSearch("SELECT user_id FROM shop_login_cookies WHERE cookie=?",[cookie],(rows)=>{
 		if(rows.length==0){
 			callback(null);
 		}else{

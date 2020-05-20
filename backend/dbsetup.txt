@@ -257,3 +257,4 @@ INSERT INTO shop_item_images (item_id,url,order_id) Values(49,'49/71+BEA1hiAL._A
 INSERT INTO shop_item_images (item_id,url,order_id) Values(50,'50/71ouMt9HoeL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(50,'50/71cDo5746vL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(50,'50/51DMxUqiSzL._AC_SL1500_.jpg',3);
+UPDATE shop_items SET creator_id=6;
