@@ -6,7 +6,7 @@ import AddProduct from './AddProducts';
 import ManageUsers from './ManageUsers';
 import ManageProducts from './ManageProducts';
 import ManageOrders from './ManageOrders';
-
+import Auth from './Auth';
 
 class Account extends Component {
     render() {
@@ -38,6 +38,16 @@ class Account extends Component {
                         <a className="nav-link" id="bestellungen-verwalten-tab" data-toggle="tab" href="#bestellungen-verwalten" role="tab" aria-controls="bestellungen-verwalten" aria-selected="false">Bestellungen verwalten</a>
                         </li>
                     </ul>
+                    {/* Signout-Btn */}
+                    <div className="text-center">
+                        <button onClick={
+                            () => {
+                                    Auth.logout(() => {
+                                        this.props.history.push("/");
+                                });
+                            }
+                        } type="button" id="signout-btn" className="btn btn-danger no-radius text-center">Abmelden</button>
+                    </div>
                     </div>
                     {/* Content */}
                     <div className="col-md-9">

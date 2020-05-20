@@ -11,6 +11,7 @@ app.use(cookieParser());
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/", function (req, res) {
+		console.log("/ wird aufgerufen");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -36,21 +37,23 @@ function start(){
 	//the input image must be a base64 encoded string in the field "image" from a json in the html-body
 	//automatically merges the image's order_id into the rest if a conflict occurs
 	app.use(bodyParser.json({limit: '50mb'})).post("/uploadImage", function (req, res){
+		console.log("/uploadImage wird aufgerufen");
 		let item_id = req.query.item_id;
 		let order_id = req.query.order_id;
+		let image_name = req.query.image_name;
 		// image_name will be in query_params
 		let image_string = req.body.image.toString();
 		let item = db.safeSearch("select * from shop_items where id=?", [item_id], function(x){
 			itm = Object.assign(new Item(), x[0]);
-			console.log(itm);
-			itm.setImage(image_string, order_id, db, function(y){
-				res.status(200).send({message:"Image was successfully uploaded"})
+			itm.setImage(image_string, order_id, image_name, db, function(y){
+				res.status(200).send({message:"Image was successfully uploaded"});
 			});
 		});
 	});
 
 	//gets user-object from db that is associated with the cookie
 	app.get("/user", function (req, res) {
+		console.log("/user wird aufgerufen");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -67,6 +70,7 @@ function start(){
 	//gets all user-objects in ascending order in the db
 	//only usable as admin
 	app.get("/userAll", function (req, res) {
+		console.log("/userAll wird aufgerufen");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(us)=>{
@@ -91,6 +95,7 @@ function start(){
 	//login for the user
 	//if user isnt already logged in with cookie this request needs params username and password in order to get yes
 	app.post("/login", function(req, res){
+		console.log("/login wird aufgerufen");
         cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -124,6 +129,7 @@ function start(){
 	//logs the current user out
 	//if the current user is a temp user the user is marked as unused and his items in his Warenkorb will be deleted
 	app.post("/logout",function(req, res){
+		console.log("/logout wird aufgerufen");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -140,6 +146,7 @@ function start(){
 
     //search after itemName in single, multiple or all categories
     app.get("/search", function(req, res){
+		console.log("/search wird aufgerufen");
 		let cats = req.query.category.toString();
 		let sfor = req.query.item+"%";
 
@@ -182,6 +189,7 @@ function start(){
 	//changes current User to freshly created User
 	//need params username password and security_answer
 	app.post("/register", function(req, res) {
+		console.log("/register wird aufgerufen");
 		let username = req.query["username"];
 		let password = req.query["password"];
 		let security_answer = req.query["security_answer"];
@@ -227,6 +235,7 @@ function start(){
 	
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
 	app.get("/getWarenkorb", function(req,res) {
+		console.log("/getWarenkorb wird aufgerufen");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -247,6 +256,7 @@ function start(){
 	//Wenn ein Item entfernt werden sollen, muss ein negativer count angegeben werden.
 	//Warenkorb existiert hier schon
 	app.post("/setWarenkorb", function(req,res) {
+		console.log("/setWarenkorb wird aufgerufen");
 		cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie==null;
 		item_id=parseInt(req.query["item_id"]);
@@ -290,11 +300,38 @@ function start(){
 			}
 		});
 	});
+	
+	//buys the items that are in the Warenkorb
+	//needs address as query parameter
+	app.post("/buy",function(req,res){
+		console.log("/buy wird aufgerufen");
+		address=req.query["address"];
+		if(address==undefined){
+			res.status(400).send("address parameter is missing");
+		}
+		cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()||user.getTemporary()){
+				res.status(400).json("Du kannst nichts kaufen");
+			}
+			else{
+				user.buy(address,(result)=>{
+					res.status(200).send("successfully bought the items");
+				});
+			}
+		});
+	});
 
 	// get item by id
 	app.get("/item/:id", function(req, res) {
+		console.log("/item/:id wird aufgerufen");
 		let id = req.params.id;
-
+		if(!Number.isInteger(id)){
+			res.status(400);
+			res.send();
+			return;
+		}
 		new Item().getItem(id, db, function(item) {
 			if(item.id != undefined) {
 				res.status(200).send(item);
@@ -306,6 +343,7 @@ function start(){
 
 	// insert item
 	app.post("/item.insert", function(req, res) {
+		console.log("/item.insert wird aufgerufen");
 		let shopItem = new Item(
 			null,
 			null,
@@ -336,11 +374,35 @@ function start(){
 			}
 		});
 	});
+	
+	app.get('/image/:item_id/:image_name', function (req, res) {
+		console.log("/image/:item_id/:image_name");
+		item_id=req.params.item_id;
+		image_name=req.params.image_name;
+		var options = {
+			root: __dirname+"/..",
+			dotfiles: 'deny',
+			headers: {
+			  'x-timestamp': Date.now(),
+			  'x-sent': true
+			}
+		  }
+		res.sendFile("images/"+item_id+"/"+image_name,options, function (err) {
+			if (err) {
+			  res.status(400);
+			  res.send("Image existiert nicht");
+			  console.log(err);
+			} else {
+			  console.log('Sent:', image_name);
+			}
+		});
+	});
 
 	// delete item
 	//We may also not want to delete an Item so that items that arent on sale will still be in the buy history of the user
 	//we will will just mark them as unavaible
 	app.post("/item.delete", function(req, res) {
+		console.log("/item.delete");
 		let id = req.query.id;
 
 		cookie=req.cookies["sessionID"];

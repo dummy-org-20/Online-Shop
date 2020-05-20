@@ -54,3 +54,7 @@
     Damit kann ein Item gelöscht werden. Die ID wird den Query Parametern entnommen.
     Gibt "200" zurück, wenn es erfolgreich war.
     Benötigt eine "SessionId".
+	
+## app.post("/buy")
+	Benötigt den Parameter "address". Kauft alles im Warenkorb und erstellt einen neuen leeren Warenkorb für den User.
+	User muss eingeloggt sein um zu kaufen.
