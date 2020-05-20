@@ -2,7 +2,7 @@ var fs = require('fs');
 
 class ShopItem {
 
-    constructor(id, creator_id, category_id, price, name, description, isAvailable) {
+    constructor(id, creator_id, category_id, price, name, description, isAvailable,prc_Angebot) {
         this.id = id;
         this.creator_id = creator_id;
         this.category_id = category_id;
@@ -10,6 +10,7 @@ class ShopItem {
         this.name = name;
         this.description = description;
         this.isAvailable = isAvailable;
+		this.prc_Angebot=prc_Angebot;
     }
 
     getImagesURL(item_id,db,callback){
@@ -27,8 +28,8 @@ class ShopItem {
     }
     
     insertItem(item, db, callback) {
-        db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`,`isAvailable`) VALUES (?, ?, ?, ?, ?,?)",
-                    [item.creator_id, item.category_id, item.price, item.name, item.description, item.isAvailable],
+        db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`,`isAvailable`,`prc_Angebot`) VALUES (?, ?, ?, ?, ?,?)",
+                    [item.creator_id, item.category_id, item.price, item.name, item.description, item.isAvailable,item.prc_Angebot],
                     function(result) {
             callback(result.affectedRows > 0 ? result.insertId : -1);
         });
@@ -42,7 +43,7 @@ class ShopItem {
 
     setImage(image_string, order_id, db, callback){
                 let id = String(this.id);
-                let path = "../images/"+id
+                let path = "../images/"+id;
                 if(!fs.existsSync(path)){
                     if(!fs.existsSync("images")){
                         fs.mkdirSync("images");

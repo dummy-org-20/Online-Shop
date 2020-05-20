@@ -86,9 +86,9 @@ CREATE TABLE shop_categories (
 
 ## shop_items
 
-| id                  | creator_id | category_id | price | name        | description  | isAvailable |
-| ------------------- | --------   | ----------- | ----- | ----------- | ------------ | ----------- |
-| INT PRIMARY KEY     | INT        | INT         | INT   | VARCHAR(24) | VARCHAR(512) | BOOL        |
+| id                  | creator_id | category_id | price | name        | description  | isAvailable | prc_Angebot |
+| ------------------- | --------   | ----------- | ----- | ----------- | ------------ | ----------- | ------------|
+| INT PRIMARY KEY     | INT        | INT         | INT   | VARCHAR(24) | VARCHAR(512) | BOOL        | INT         |
 
 **Erstellen:**
 
@@ -99,7 +99,9 @@ CREATE TABLE shop_items (
     category_id INT,
     price INT,
     name VARCHAR(24),
-    description VARCHAR(128)
+    description VARCHAR(128),
+	isAvailable BOOL,
+	prc_Angebot INT
 );
 ```
 

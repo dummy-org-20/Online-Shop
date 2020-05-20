@@ -312,7 +312,8 @@ function start(){
 			parseInt(req.query.category_id),
 			parseInt(req.query.price),
 			req.query.name,
-			req.query.description
+			req.query.description,
+			100
 		);
 		
 		cookie=req.cookies["sessionID"];

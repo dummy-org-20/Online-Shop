@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS shop_items (
     price INT,
     name VARCHAR(42),
     description VARCHAR(512),
-    isAvailable BOOL
+    isAvailable BOOL,
+	prc_Angebot INT
 );
 CREATE TABLE IF NOT EXISTS shop_item_images (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,8 +59,8 @@ INSERT INTO shop_categories(name,description) Values('Nahrungsergänzungsmittel'
 INSERT INTO shop_categories(name,description) Values('Smartphones','Alle neuesten Handys vom Markt');
 INSERT INTO shop_categories(name,description) Values('Spielzeug','Spielzeuge für Kinder jeglichen Alters');
 INSERT INTO shop_categories(name,description) Values('TV','Die besten Smart-Tvs!');
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable) Values(0 ,0,6,'Bürgerliches Gesetzbuch BGB','Bürgerliches Gesetzbuch mit EinführungsG, Allgemeines GleichbehandlungsG, Produktha-tungsG, 
-UnterlassungsklagenG, WohnungseigentumsG, BeurkundungsG, ErbbaurechtsG, Rom I bis III, VOen (EG).', True);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,6,'Bürgerliches Gesetzbuch BGB','Bürgerliches Gesetzbuch mit EinführungsG, Allgemeines GleichbehandlungsG, Produktha-tungsG, 
+UnterlassungsklagenG, WohnungseigentumsG, BeurkundungsG, ErbbaurechtsG, Rom I bis III, VOen (EG).', True,100);
 
 
 
