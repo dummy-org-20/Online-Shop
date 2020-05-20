@@ -315,7 +315,7 @@ function start(){
 	// get item by id
 	app.get("/item/:id", function(req, res) {
 		let id = req.params.id;
-		if(!Number.isInteger(item_id)){
+		if(!Number.isInteger(id)){
 			res.status(400);
 			res.send();
 			return;
