@@ -10,14 +10,17 @@ var commands = require("./dbsetup.txt");
 commands=commands.split(";");
 
 function start(){
-	tablesCreated=[];
-	for(let i=0;i<commands.length-1;i++){
+	rekursiveSyncCreate(0,0);
+}
+
+function rekursiveSyncCreate(i){
+	if(i!=commands.length-1){
 		db.search(commands[i]+";",(rows)=>{
-			console.log("Die "+(i+1)+". Tabelle von "+(commands.length-1)+" wurde erstellt");
-			tablesCreated.push(i);
-			if(tablesCreated.length==commands.length-1){
-				process.exit()
+			console.log("Der "+(i+1)+". Befehl von "+(commands.length-1)+" wurde ausgeführt");
+			if(i==commands.length-1){
+				process.exit();
 			}
+			rekursiveSyncCreate(i+1);
 		});
 	}
 }
