@@ -12,7 +12,7 @@ app.use(cookieParser());
 function start(){
 	app.get("/", function (req, res) {
 		console.log("/ wird aufgerufen");
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
@@ -30,7 +30,18 @@ function start(){
 		});
 	});
 
-	//TODO function for changing order of images
+	//change order of images of an item
+	//requires a query param called item_id a json in the body which is build like this:
+	//{url:order_id,url:order_id,...}
+	app.use(bodyParser.json({limit: '50mb'})).post("/order",function(req,res){
+		/*let item_id=req.query["item_id"];
+		let json=JSON.parse(req.body);
+		db.safeSearch("SELECT url FROM shop_item_images WHERE item_id=? ORDER BY order_id ASC",[item_id],(rows)=>{
+			for(let i=0;i<rows.length;i++){
+				if(rows[i])
+			}
+		});*/
+	});
 	
 	//posts a new image to the according item
 	//order_id sets the order, in which the items are to be displayed
@@ -54,7 +65,7 @@ function start(){
 	//gets user-object from db that is associated with the cookie
 	app.get("/user", function (req, res) {
 		console.log("/user wird aufgerufen");
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
@@ -71,7 +82,7 @@ function start(){
 	//only usable as admin
 	app.get("/userAll", function (req, res) {
 		console.log("/userAll wird aufgerufen");
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(us)=>{
 			if(us.isEmpty()||!us.isAdmin()){
@@ -96,7 +107,7 @@ function start(){
 	//if user isnt already logged in with cookie this request needs params username and password in order to get yes
 	app.post("/login", function(req, res){
 		console.log("/login wird aufgerufen");
-        cookie=req.cookies["sessionID"];
+        let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
@@ -130,7 +141,7 @@ function start(){
 	//if the current user is a temp user the user is marked as unused and his items in his Warenkorb will be deleted
 	app.post("/logout",function(req, res){
 		console.log("/logout wird aufgerufen");
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
@@ -236,7 +247,7 @@ function start(){
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
 	app.get("/getWarenkorb", function(req,res) {
 		console.log("/getWarenkorb wird aufgerufen");
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
@@ -326,7 +337,7 @@ function start(){
 	// get item by id
 	app.get("/item/:id", function(req, res) {
 		console.log("/item/:id wird aufgerufen");
-		let id = req.params.id;
+		let id = parseInt(req.params.id);
 		if(!Number.isInteger(id)){
 			res.status(400);
 			res.send();
