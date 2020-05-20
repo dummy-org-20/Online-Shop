@@ -17,11 +17,10 @@ function rekursiveSyncCreate(i){
 	if(i!=commands.length-1){
 		db.search(commands[i]+";",(rows)=>{
 			console.log("Der "+(i+1)+". Befehl von "+(commands.length-1)+" wurde ausgeführt");
-			if(i==commands.length-1){
-				process.exit();
-			}
 			rekursiveSyncCreate(i+1);
 		});
+	}else{
+		process.exit();
 	}
 }
 
