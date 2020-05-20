@@ -2,20 +2,35 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 
 class ShoppingCartItem extends Component {
+    
+    state = {amount: this.props.item.menge}
+
+    increaseAmount() {
+        fetch("/setWarenkorb?item_id="+this.props.item.id+"&count="+ 1, {method: 'POST'}).then(response => {
+            this.setState({amount: this.state.amount + 1})
+        });
+    }
+
+    decreaseAmount() {
+        fetch("/setWarenkorb?item_id="+this.props.item.id+"&count="+ -1, {method: 'POST'}).then(response => {
+            this.setState({amount: this.state.amount - 1})
+        });
+    }
+
     render() {
         return (
             <tr>
                 <td>
-                    <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                    <span>{ this.props.item.titel }</span>
+                    <img src={ this.props.item.img } width={45} height={45} />
+                    <span> { this.props.item.titel }</span>
                 </td>
                 <td>
-                    <button type="button" className="btn btn-outline-dark no-radius">-</button>
-                    <span className="ammount">{ this.props.item.menge }</span>
-                    <button type="button" className="btn btn-outline-dark no-radius">+</button>
+                    <button type="button" className="btn btn-outline-dark no-radius" onClick={() => this.decreaseAmount()}>-</button>
+                    <span className="ammount">{ this.state.amount }</span>
+                    <button type="button" className="btn btn-outline-dark no-radius" onClick={() => this.increaseAmount()}>+</button>
                 </td>
                 <td>
-                    <p>{ this.props.item.preis }</p>
+                    <p>{ this.props.item.preis } €</p>
                 </td>
             </tr>
         )
