@@ -38,13 +38,13 @@ function start(){
 	app.use(bodyParser.json({limit: '50mb'})).post("/uploadImage", function (req, res){
 		let item_id = req.query.item_id;
 		let order_id = req.query.order_id;
+		let image_name = req.query.image_name;
 		// image_name will be in query_params
 		let image_string = req.body.image.toString();
 		let item = db.safeSearch("select * from shop_items where id=?", [item_id], function(x){
 			itm = Object.assign(new Item(), x[0]);
-			console.log(itm);
-			itm.setImage(image_string, order_id, db, function(y){
-				res.status(200).send({message:"Image was successfully uploaded"})
+			itm.setImage(image_string, order_id, image_name, db, function(y){
+				res.status(200).send({message:"Image was successfully uploaded"});
 			});
 		});
 	});
@@ -315,7 +315,11 @@ function start(){
 	// get item by id
 	app.get("/item/:id", function(req, res) {
 		let id = req.params.id;
-
+		if(!Number.isInteger(item_id)){
+			res.status(400);
+			res.send();
+			return;
+		}
 		new Item().getItem(id, db, function(item) {
 			if(item.id != undefined) {
 				res.status(200).send(item);
@@ -354,6 +358,28 @@ function start(){
 						res.status(400).send({message:"no"})
 					}
 				});
+			}
+		});
+	});
+	
+	app.get('/image/:item_id/:image_name', function (req, res) {
+		item_id=req.params.item_id;
+		image_name=req.params.image_name;
+		var options = {
+			root: __dirname+"/..",
+			dotfiles: 'deny',
+			headers: {
+			  'x-timestamp': Date.now(),
+			  'x-sent': true
+			}
+		  }
+		res.sendFile("images/"+item_id+"/"+image_name,options, function (err) {
+			if (err) {
+			  res.status(400);
+			  res.send("Image existiert nicht");
+			  console.log(err);
+			} else {
+			  console.log('Sent:', image_name);
 			}
 		});
 	});
