@@ -1,23 +1,28 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import Cookies from 'js-cookie';
 
 class Details extends Component {
 
     constructor() {
         super()
         this.state = {
+            id: -1,
             name: "",
             price: 0,
-            description: ""
+            description: "",
+            amount: 1
         }
     }
 
     componentDidMount() {
         fetch("/item/" + this.props.match.params.id).then(response => response.json()).then(data => {
             this.setState({ 
+                id: this.props.match.params.id,
                 name: data.name,
                 description: data.description,
-                price: data.price
+                price: data.price,
+                amount: 1
             });
         }).catch(function (error) {
             console.log(error.message)
@@ -29,6 +34,44 @@ class Details extends Component {
         let cent = price % 100
         if(cent == 0) return euro + "€"
         return euro + "," + cent + "€"
+    }
+
+    increaseAmount() {
+        this.setState({
+            amount: this.state.amount + 1
+        });
+    }
+
+    decreaseAmount() {
+        if(this.state.amount == 1) return;
+        this.setState({
+            amount: this.state.amount - 1
+        });
+    }
+
+    addToCart() {
+        let sessionID = Cookies.get("sessionID")
+        let item_id = this.state.id
+        let count = this.state.amount
+
+        const options = {
+            method: "POST",
+            headers: {
+                cookie: "sessionID=" + sessionID
+            }
+        }
+
+        fetch("/setWarenkorb?item_id=" + item_id + "&count=" + count, options).then(response => {
+            let status = response.status
+            if(status != 200) {
+                console.log("no user, you idiot")
+                return
+            }
+            console.log("nice shot")
+        })
+        .catch(function (error) {
+            console.log(error.message)
+        });
     }
 
     render() {
@@ -95,10 +138,10 @@ class Details extends Component {
                     <h1>{this.formatPrice(this.state.price)}</h1>
                     <h5>Beschreibung</h5>
                     <p>{this.state.description}</p>
-                    <button type="button" className="btn btn-outline-dark no-radius btn-lg">-</button>
-                    <span className="ammount">1</span>
-                    <button type="button" className="btn btn-outline-dark no-radius btn-lg">+</button>
-                    <button id="add-to-cart" type="button" className="btn btn-dark no-radius btn-lg" data-toggle="modal" data-target="#myModal">IN DEN EINKAUFSWAGEN</button>
+                    <button type="button" className="btn btn-outline-dark no-radius btn-lg" onClick={() => this.decreaseAmount()}>-</button>
+                    <span className="ammount">{this.state.amount}</span>
+                    <button type="button" className="btn btn-outline-dark no-radius btn-lg" onClick={() => this.increaseAmount()}>+</button>
+                    <button id="add-to-cart" type="button" className="btn btn-dark no-radius btn-lg" data-toggle="modal" data-target="#myModal" onClick={() => this.addToCart()}>IN DEN EINKAUFSWAGEN</button>
                     </div>
                 </div>
                 </main>
