@@ -72,7 +72,7 @@ Optional, falls es nicht funktioniert, einfach droppen und dann `category` als `
 
 | id              | name        | description  |
 | --------------- | ----------- | ------------ |
-| INT PRIMARY KEY | VARCHAR(24) | VARCHAR(128) |
+| INT PRIMARY KEY | VARCHAR(24) | VARCHAR(800) |
 
 **Erstellen:**
 
@@ -109,7 +109,7 @@ CREATE TABLE shop_items (
 
 | id                  | item_id  | url         | order_id | 
 | ------------------- | -------- | ----------- | -------- |
-| INT PRIMARY KEY     | INT      | VARCHAR(24) | INT      |
+| INT PRIMARY KEY     | INT      | VARCHAR(32) | INT      |
 
 **Erstellen:**
 

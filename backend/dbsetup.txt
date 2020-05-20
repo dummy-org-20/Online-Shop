@@ -18,14 +18,14 @@ CREATE TABLE IF NOT EXISTS shop_items (
     category_id INT,
     price INT,
     name VARCHAR(42),
-    description VARCHAR(512),
+    description VARCHAR(800),
     isAvailable BOOL,
 	prc_Angebot INT
 );
 CREATE TABLE IF NOT EXISTS shop_item_images (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
-    url VARCHAR(24),
+    url VARCHAR(32),
     order_id INT
 );
 CREATE TABLE IF NOT EXISTS shop_order_items (
@@ -61,29 +61,13 @@ INSERT INTO shop_categories(name,description) Values('Spielzeug','Spielzeuge fü
 INSERT INTO shop_categories(name,description) Values('TV','Die besten Smart-Tvs!');
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,10,'Bürgerliches Gesetzbuch BGB','Bürgerliches Gesetzbuch mit EinführungsG, Allgemeines GleichbehandlungsG, Produktha-tungsG, 
 UnterlassungsklagenG, WohnungseigentumsG, BeurkundungsG, ErbbaurechtsG, Rom I bis III, VOen (EG).', True,100);
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,6,'Café am Rande der Welt','
-Ein kleines Café mitten im Nirgendwo wird zum Wendepunkt im Leben von John, einem Werbemanager, 
-der stets in Eile ist. Eigentlich will er nur kurz Rast machen, doch dann entdeckt er auf der 
-Speisekarte neben dem Menü des Tages drei Fragen: »Warum bist du hier? Hast du Angst vor dem Tod? 
-Führst du ein erfülltes Leben?« Wie seltsam – doch einmal neugierig geworden, will John mithilfe des 
-Kochs, der Bedienung und eines Gastes dieses Geheimnis ergründen.', True,100);
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,13,'Das NEINhorn','Im Herzwald kommt ein kleines, schnickeldischnuckeliges Einhorn zur Welt. Aber 
-obwohl alle ganz lilalieb zu ihm sind und es ständig mit gezuckertem Glücksklee füttern, 
-benimmt sich das Tierchen ganz und gar nicht einhornmäßig. Es sagt einfach immer Nein, 
-sodass seine Familie es bald nur noch NEINhorn nennt.', True,80);
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,7,'Rico und Oscar','Eigentlich soll Rico ja nur ein Ferientagebuch führen. Aber für einen, der 
-ständig den Faden verliert, ist das gar nicht so leicht! Als er dann auch noch 
-Oskar mit dem blauen Helm kennenlernt und die beiden dem berüchtigten ALDI-Kidnapper 
-auf die Spur kommen, weiß Rico gar nicht mehr, wo vorne und hinten ist. Wenigstens verlieren
- mit Oskar die Tieferschatten etwas von ihrem Schrecken - und so entsteht aus dem ganzen 
-Chaos eine wunderbare Freundschaft.', True,100);
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,13,'Vielleicht','Diese Geschichte möchte dir zeigen, wie viele Begabungen in dir schlummern. Lerne dich kennen, 
-träume und lass dich von dir und dem Leben überraschen. Vielleicht, ja vielleicht, 
-wirst du deine kühnsten Träume übertreffen', True,100);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,6,'Café am Rande der Welt','Ein kleines Café mitten im Nirgendwo wird zum Wendepunkt im Leben von John, einem Werbemanager, der stets in Eile ist. Eigentlich will er nur kurz Rast machen, doch dann entdeckt er auf der Speisekarte neben dem Menü des Tages drei Fragen: »Warum bist du hier? Hast du Angst vor dem Tod? Führst du ein erfülltes Leben?« Wie seltsam – doch einmal neugierig geworden, will John mithilfe des Kochs, der Bedienung und eines Gastes dieses Geheimnis ergründen.', True,100);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,13,'Das NEINhorn','Im Herzwald kommt ein kleines, schnickeldischnuckeliges Einhorn zur Welt. Aber obwohl alle ganz lilalieb zu ihm sind und es ständig mit gezuckertem Glücksklee füttern, benimmt sich das Tierchen ganz und gar nicht einhornmäßig. Es sagt einfach immer Nein, sodass seine Familie es bald nur noch NEINhorn nennt.', True,80);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,7,'Rico und Oscar','Eigentlich soll Rico ja nur ein Ferientagebuch führen. Aber für einen, der ständig den Faden verliert, ist das gar nicht so leicht! Als er dann auch noch Oskar mit dem blauen Helm kennenlernt und die beiden dem berüchtigten ALDI-Kidnapper auf die Spur kommen, weiß Rico gar nicht mehr, wo vorne und hinten ist. Wenigstens verlieren mit Oskar die Tieferschatten etwas von ihrem Schrecken - und so entsteht aus dem ganzen Chaos eine wunderbare Freundschaft.', True,100);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,0,13,'Vielleicht','Diese Geschichte möchte dir zeigen, wie viele Begabungen in dir schlummern. Lerne dich kennen, träume und lass dich von dir und dem Leben überraschen. Vielleicht, ja vielleicht, wirst du deine kühnsten Träume übertreffen', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,1,290,'AOC Gaming C32G1','31,5 Full HD Gaming Display mit 1800R Krümmung, FlickerFree und Low-Blue-Light Technologie für unbegrenzten Spiele Spaß, VA Panel, Full HD, mattes Display, Headphone out, VESA 100 x 100, Standfuss abnehmbar, schlanker Rahmen, 144 Hertz ,Helligkeit/Kontrast: 250 cd/m², 3.000:1, Anschlüsse: 1 x VGA (Analog), 2 x HDMI 1.4, 1 x Displayport 1.2, Herstellergarantie: 3 Jahre.', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,1,65,'AUKEY TASTATUR','RGB-Hintergrundbeleuchtung: Die KM-G12 bietet 7 Farbvoreinstellungen und 12 Voreinstellungen für die Beleuchtungskonfiguration. Blaue Schalter (Outemu): Bekannt für das präzise taktile Feedback, den spürbaren Anschlag und das charakteristische Klickgeräusch, Uneingeschränktes n-key-Rollover: Dank dem 104-key-Rollover mit Anti-Ghosting bleiben weder Tastenbetätigungen noch Tastenkombinationen unerkannt, egal wofür Sie die Tastatur nutzen.', True,100);
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,1,55,'Logitech G502','
-100-5000 Dpi, RGB Beleuchtung, Gaming Mouse, Schwarz', True,100);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,1,55,'Logitech G502','100-5000 Dpi, RGB Beleuchtung, Gaming Mouse, Schwarz', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,1,49,'Razer Deathadder','Optischer Sensor in eSports-Qualität, der mit 16.000 dpi und echtem Tracking mit 450 Zoll pro Sekunde (IPS). Esports Maus mit einer Auflösungsgenauigkeit von 99,4 Prozent für neue Maßstäbe, Leichtes geflochtenes Glasfaserkabel von 2,13 m Länge', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,1,52,'Z-88 Tastatur','( US Layout ) Kompaktes und ergonomisches Design 81 Tasten Tastatur für Gaming und produktives Arbeiten, gesteckten switches , Taktil und nicht klickend Outemu Braun Schalter , einfach zu ersetzen und anzupassen (nur Outemu)', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,2,27,'Auchentoshan Scotch','Der 12-Jährige Auchentoshan Single Malt lagerte sowohl in Ex-Bourbon- als auch in gebrauchten Sherryfässern, Karamellgeschmack, Rosenwasseraroma und ein Duft nach Milchschokolade, Puderzucker und Heu verleihen diesem Single Malt ein prickelndes Gefühl mit einem Hauch von Sherry', True,100);
@@ -99,7 +83,7 @@ INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,4,713,'Canon EOS 77D','Gestochen Scharf - Beeindruckende Leistung für Ihre Fotografie: Das schnellste Live View AF-System der Welt* ermöglicht Ihnen gestochen scharfe Ergebnisse (*Unter Digitalkameras für Wechselobjektive mit APS-C-Sensor. Stand Februar 2017, basierend auf Canon Untersuchungen), Technologien - Verwirklichen Sie Ihr Potenzial als Fotograf. Erkunden Sie neue Motive und Aufnahmestile mit Technologien der neuesten Generation in Full HD', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,4,490,'Canon EOS 750D','Sensor: Der APS-C-Sensor mit 24,2 Megapixeln und DIGIC 6 Bildprozessor sorgt für erstklassige Ergebnisse in Aufnahmesituation, Objektiv: EF und EF-S Objektiv, Brennweite - abhängig vom Objektiv, Brennweitenumrechnungsfaktor 1,6fach. Ladezeit des internen Blitzes: ca. 3 Sekunden, Display: Dreh- und schwenkbarer 7,7 cm (3,0 Zoll) großer Clear View II TFT Touchscreen mit Seitenverhältnis 3:2, ca. 1.040.000 Bildpunkte', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,4,247,'Canon SX540','Lieferumfang: Canon PowerShot SX540 HS Digitalkamera, Umhängegurt NS-DC11, Objektivabdeckung (mit Befestigungsband), Akku NB-6LH, AkkuladegerätCB-2LYE, Netzkabel, Bedienungsanleitung Konnektivität: Hi-Speed ??USB-Composite-Anschluss (Mini-B-kompatibel), HDMI Mini (Typ C) Anschluss A/V-Ausgang, Composite-Anschluss (PAL / NTSC), Wi-Fi (IEEE802.11b/g/n), (2.4 GHz only), with Dynamic NFC support', True,100);
-INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,4,550,'Nikon D5600','24,2 MP DX CMOS Sensor; SnapBridge-kompatibel (Bluetooth und WiFi); neig-/drehbarer Touchmonitor (8,1 cm/3,2 Zoll), ISO-Empfindlichkeit 100-25.600; 39 AF-Messfelder mit 9 Kreuzsensoren; Zeitraffer-Aufnahme', True,100);
+INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,4,550,'Nikon D5600','24,2 MP DX CMOS Sensor, SnapBridge-kompatibel (Bluetooth und WiFi), neig-/drehbarer Touchmonitor (8,1 cm/3,2 Zoll), ISO-Empfindlichkeit 100-25.600, 39 AF-Messfelder mit 9 Kreuzsensoren, Zeitraffer-Aufnahme', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,4,255,'Sony DSC-HX350','Digitalkamera mit einem 50fach-Zoom. Die ZEISS Qualität gewährleistet brillante Bilder reich an Detail und Kontrast. Stabilisiert mit Optical SteadyShot. Der EXMOR R CMOS Sensor der Digitalkamera mit 20,4 Megapixeln und Hintergrundbeleuchtung verfügt über große lichtempfindliche Bereiche, um bei jedem Bild mehr Licht und Details einfangen zu können. BIONZ X Bildprozessor - 3 mal schnellere Bildverarbeitung im Vergleich zum Vorgänger', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,5,11,'Gräwe Burgerpresse','Hamburger-Presse aus Aluguss, Antihaftbeschichtung, Griff aus Kunststoff, Außendurchmesser: 12 cm, Innendurchmesser: 11 cm, Gesamthöhe: 8,5 cm, Gewicht: 250 g, inklusive 50 Blatt Backpapier, Gebrauchsanleitung, 2 Rezepte. Der Hamburger Patty Maker ist vollständig antihaftbeschichtet, sodass sich die Rohlinge wie von selbst lösen. Der handliche Komfortgriff aus Kunststoff sorgt für eine angenehmere Druckverteilung beim Pressen', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,5,43,'Krups 3 Mix 5500','Handrührgerät mit 500-W-Motor für Schnelligkeit und Effizienz: Eischnee in 60 Sekunden! (getestet mit 4 Eiweiß und Geschwindigkeitsstufe 5). Vielseitig einsetzbar: Der ideale Mixer für eine große Bandbreite von Rezepten mit Einhandbedienung und einfach zugänglichem 5-Stufen-Geschwindigkeitsregler, Turbotaste und Auswurf', True,100);
@@ -112,253 +96,164 @@ INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,6,19,'Multivitamin','MULTIVITAMIN TABLETTEN HOCHDOSIERT - NUR EINE TABLETTE PRO TAG: Unsere hochdosierten Vitamintabletten liefern alle für den Körper wichtigen Vitamine und Mineralien vereint zu einem wertvollen Vitalstoff-Komplex in einer Tablette. * Vergleichssieger 02/2020 in der Kategorie Multivitamin bei vergleich1.de   450 TABLETTEN A-Z VITAMINE UND MINERALIEN - 450 Tabletten reichen für 15 Monate Multivitamin Versorgung. Nur eine kleine leicht zu schluckende Tablette pro Tag! Vitamin A, B1,B2, B3, B5, B6, B7, B9, B12, C, D, E, Calcium, Zink und Selen INKLUSIVE MULTIVITAMIN-EBOOK: Zusätzlich erhalten Sie das eBook zum Produkt zum herunterladen auf gloryfeel.de', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,6,22,'nu3 Whey','HIGH PROTEIN: Unser hochwertiges Whey Proteinkonzentrat enthält 74,4 g Wheyprotein je 100g – Dazu kommt es ganz ohne unnötige Zusätze wie Aspartam, Zuckerzusatz, Konservierungsstoffe oder Geschmacksverstärker aus. Damit ist unser Proteinpulver auch für Vegetarier geeignet. WENIGER KALORIEN: durch kalorienfreie Sucralose statt Zucker - dazu auch aspartamfrei. 1 Kg Whey Pulver kommt im wiederverschließbaren Zip Beutel - Übrigens, auch bei Cardiotraining wie Laufen, Radfahren oder Schwimmen entsteht ein erhöhter Proteinbedarf. Daher ist es auch besonders bei Ausdauersportlern beliebt.', True,100);
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,7,760,'Iphone 11','6,1" Liquid Retina HD LCD Display (15,5 cm Diagonale), Wasser- und Staubschutz (2 Meter bis zu 30 Minuten, IP68), 12 Megapixel Zwei-Kamera-System mit Ultraweitwinkel- und Weitwinkelobjektiv, Nachtmodus, Porträtmodus und 4K Video bis zu 60 fps', True,70);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,7,619,'Pixel 4 XL','Display: 16 cm (6,3 Zoll), Prozessor: Qualcomm Snapdragon 855, Hauptkamera: 16 MP + 12.2 MP, Frontkamera: 8 MP, Bauart: Smartphone', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,7,200,'Honor 9x','Rahmenloses FHD+ 19, 5: 9 FullView-Display (6, 59 Zoll/16, 7 cm), 2340 x 1080 Pixel Auflösung und 16, 7 Millionen Farben, Ai triple-kamera mit 48 MP Hauptkamera + 8 MP Superweitwinkel + 2 MP tiefenassistent und 16 MP pop-up Frontkamera mit 3D portrait-beleuchtung, Max. Auflösung 2340 x 1080 Pixel (1080P)', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,7,690,'OnePlus 8','Faszinierendes Display – hohe Auflösung mit einer 90Hz Bildwiederholrate – das Scrollen, Wischen und Wechseln durch Apps und Anwendungen ist super flüssig (keine Verzögerungen)16, 6 cm AMOLED Power Screen – Für ein atemberaubendes Multimedia-Erlebnis, sofortige Touch-Reaktion, mehr Geschwindigkeit und eine faszinierende Klarheit. Ultraklare Dreifach-Kamera - 48MP Hauptkamera, 16MP Ultraweitwinkelkamera, 2MP Makro und 16MP Frontkamera, Nachtsichtmodus 2. 0, Studiobeleuchtung, Super Slow Motion mit bis zu 460 FPS, RAW Image, AI Szenen Erkennung', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,7,890,'Galaxy S20+','Ein Meilenstein der Fotografie: Das Galaxy S20+ hat eine Kamera, die mehr sieht. Erleben Sie Videos in 8K, Fotos mit 64 Megapixel, Space Zoom und Bright Night. Weit Entferntes nah heranholen: Mit dem 3-fachen Hybrid Optic Zoom können Sie fantastische Nahaufnahmen ohne Qualitätsverlust machen und mit dem 30-fachen Space Zoom* bringen Sie sich direkt ins Geschehen.', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,8,45,'LEGO 21052','Der berühmte Burj Khalifa, das Jumeirah Emirates Towers Hotel, das Burj Al Arab Jumeirah Hotel, der Dubai Frame und die Dubai Fountain sind in diesem Architektur-Modellbausatz enthalten. Dieses Set vereint detailgetreue Modelle berühmter Gebäude und Wahrzeichen Dubais, um alle Bewunderer dieser aufregenden, modernen Stadt zu inspirieren', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,8,75,'LEGO 42111','Der LEGO Technic Modellbausatz „Dom’s Dodge Charger“ (42111) enthält eine faszinierende Nachbildung des klassischen Muscle-Cars und inspiriert Fans dazu, ihre Lieblingsszenen aus der Filmreihe „The Fast and the Furious“ nachzustellen. Dieses Bauset aus 1.077 Teilen bietet Kindern und Fans, die sich für Spielzeug-Modellautos begeistern, eine unterhaltsame Bauherausforderung. Diese originalgetreue Nachbildung des Dodge Charger R/T strotzt nur so vor realistischen Details.', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,8,35,'Playmobil 70067','mit Polizei-Licht und Sound (1 x 1,5V Micro-Batterie nötig) und viel Zubehör. Die Vorder- und Rücklichter sowie das Armaturenbrett leuchten (3 x 1,5-V-Micro-Batterien nötig)', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,8,37,'PLAYMOBIL 9360','Spielspaß für kleine Polizisten: PLAYMOBIL SEK-Truck mit coolen Licht- & Soundeffekten und vielen Zubehörteilen für detailgetreues Nachspielen. SEK-Team mit 3 Polizisten, Platzbietend für 4 Figuren, Abnehmbares Dach, 2 Sirenen-Töne, SEK-Ausrüstung, uvm., Passend zu SEK-Schlauchboot (9362)', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,8,13,'PLAYMOBIL 6876','Spielspaß für kleine Polizeifans: PLAYMOBIL Motorradstreife mit LED-Blinklicht und passenden Zubehörteilen für detailgetreues Nachspielen. Polizist mit Motorradhelm und Pistole, Motorrad mit blinkenden Lichtern an der Seitenverkleidung sowie am Heck, Ausklappbarer Ständer zum Parken', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,9,285,'Hisense H43BE7000','Typ: 4K Ultra HD (UHD) Fernseher, VIDAA U 3. 0 Smart-TV, auf 108 cm (43 Zoll) Bildschirmdiagonale. Auflösung und Bild: 3. 840 x 2. 160 Pixel, 4K Upscaling, High Dynamic Range (HDR10, HDR10+, HLG), DIRECT LED Backlight für gleichmäßige Bildausleuchtung', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,9,370,'Hisense H55BE7000','Typ: 4K Ultra HD (UHD) Fernseher, VIDAA U 3. 0 Smart-TV, auf 138 cm (55 Zoll) Bildschirmdiagonale. Auflösung und Bild: 3. 840 x 2. 160 Pixel, 4K Upscaling, High Dynamic Range (HDR10, HDR10+, HLG), DIRECT LED Backlight für gleichmäßige Bildausleuchtung', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,9,298,'Samsung RU7099','Typ: 4K UHD, Flat, LED Fernseher, Charcoal black, Auflösung 3.840 x 2.160 Pixel (4K/Ultra HD), HDR, PurColor, UHD Upscaling, UHD Dimming, Auto Game Mode', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,9,345,'Samsung RU7179','Typ: 4K UHD, Flat, LED Fernseher, Charcoal black. Auflösung 3.840 x 2.160 Pixel (4K/Ultra HD), HDR, PurColor, UHD Upscaling, UHD Dimming, Auto Game Mode', True,100);
-
 INSERT INTO shop_items(creator_id,category_id,price,name,description,isAvailable,prc_Angebot) Values(0 ,9,380,'Xiaomi Mi','Typ: HD LED TV - 31, 5 Zoll (80cm), Flat, LED FernseherAuflösung: 1. 366 x 768 Pixel (HD-ready/720p), Digitaler Empfang: HD Triple Tuner für DVB-S2, DVB-C und DVB-T2 mit HEVC', True,100);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(1,'1/71HjtujKQhL.jpg',1);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(2,'2/91eUKlKQrEL.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(2,'2/81sUDHQprPL.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(2,'2/81mzPgo-cgL.jpg',3);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(2,'2/41Dx5tPNv9L.jpg',4);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(3,'3/81JI69cAAWL.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(3,'3/81kJrOJK3CL.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(3,'3/71gQVNo-z1L.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(4,'4/51w+oEiAG7L.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(4,'4/71eRSudYFhL.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(4,'4/81iXTlsVIfL.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(5,'5/71YZkX0FDcL.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(5,'5/71PhsUSBxxL.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(5,'5/71y0ijGuwAL.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(6,'6/61Ia7mS7MxL._AC_SL1000_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(6,'6/71hrMsZ0UYL._AC_SL1428_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(6,'6/810NOJQybkL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(7,'7/71mKWcAo50L._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(7,'7/71EsrDlVVQL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(7,'7/616T808JUuL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(8,'8/71O23Hqq3jL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(8,'8/71xso-1L7SL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(8,'8/616qbBtYsML._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(9,'9/71v3BNUaarL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(9,'9/71o5vkKRJGL._AC_SL1342_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(9,'9/71KC9aA13+L._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(10,'10/71v2co6rALL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(10,'10/61NNfba+UvL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(10,'10/71UR9Sw0NHL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(11,'11/61+YYowdpkL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(11,'11/61WvJGztxgL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(11,'11/710ttxqLGcL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(12,'12/31lRRyBvy0L._AC_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(12,'12/31ngvbzdplL._AC_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(12,'12/71bNLst9giL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(13,'13/1.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(13,'13/71bw19W3pEL._AC_SL1000_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(13,'13/71x8QUIxf7L._AC_SL1000_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(14,'14/81KH9gFNzlL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(14,'14/31UJ8Y0gTNL._AC_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(14,'14/41EdISaXZNL._AC_SL1050_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(15,'15/71-CrZa54-L._AC_SL1000_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(15,'15/81CpPviW+9L._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(15,'15/81vJarFK5PL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(16,'16/71WPGXQLcLL._AC_SL1384_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(16,'16/716hAjT1uUL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(16,'16/61-jkNrO3NL._AC_SL1108_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(17,'17/71oWq24uCCL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(17,'17/91pwVvj2FBL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(17,'17/91H-OeNaKUL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(18,'18/81Ow6q0U4mL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(18,'18/816+4G4b6UL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(18,'18/71-Djlwrd0L._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(19,'19/71Px9aEe8zL._AC_SL1000_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(19,'19/71Kv30dnAnL._AC_SL1000_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(19,'19/610jvvJW6EL._AC_SL1000_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(20,'20/71RsweT83eL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(20,'20/81RJfB4IWbL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(20,'20/71c0ZcBh2OL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(21,'21/91re8M+tB-L._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(21,'21/91bmOgIvIKL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(21,'21/91syKYZfhiL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(22,'22/71I+q5aWgML._AC_SL1500_.jpg',1);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(23,'23/71FofmfGGxL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(23,'23/31cGEzDX0sL._AC_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(23,'23/312FeK0ZrAL._AC_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(24,'24/71L1PbXlVpL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(24,'24/81I9zqUZX-L._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(24,'24/81j72m1UjrL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(25,'25/41PpEKDv-LL._AC_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(25,'25/51pznafFweL._AC_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(25,'25/816FRpEJ+cL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(26,'26/61hFo5EZtRL._AC_SL1077_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(26,'26/81TcnNxE1EL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(26,'26/81ZN6P4UljL._AC_SL1500_',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(27,'27/61Wgq1KbwgL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(27,'27/71y1q8UPI-L._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(27,'27/71I8bggAGDL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(28,'28/61aVr-PDOdL._AC_SL1000_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(28,'28/51V3kMQ5b5L._AC_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(28,'28/71hnvedB+LL._AC_SL1148_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(29,'29/91DW3l5lRuL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(29,'29/61hjI3IkRvL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(29,'29/91heMKWRCnL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(30,'30/61VQKtMHyiL._AC_SL1080_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(30,'30/71utlfYtOZL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(30,'30/81ftHjVMjML._AC_SL1500_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(31,'31/81RZyrxeB4L._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(31,'31/71D6gPEHCVL._AC_SL1200_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(31,'31/81U1mKbOSSL._AC_SL1200_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(32,'32/81+OJey4iuL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(32,'32/81XfP1BGDPL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(32,'32/91fqNWUmZBL._AC_SL1500_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(33,'33/81MlPkYnAiL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(33,'33/81JzFq4M9CL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(33,'33/81L8V-Ks+PL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(34,'34/617llOCTF3L._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(34,'34/711L4qYYWgL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(34,'34/71pLWUnfF3L._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(35,'35/71Ul5RVBUwL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(35,'35/91Amnqd3xxL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(35,'35/817J-aRwDXL._AC_SL1500_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(36,'36/71kZfQA-Y7L._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(36,'36/71N+bxT7c-L._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(36,'36/71PPFlDKQQL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(37,'37/61hY1x8ivxL._AC_SL1133_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(37,'37/61VizB8YDHL._AC_SL1200_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(37,'37/31kNX09wYEL._AC_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(38,'38/41jfPXw+M9L._AC_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(38,'38/31oGs9DBKYL._AC_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(38,'38/21kmyWNdI+L._AC_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(39,'39/71qasNMU1yL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(39,'39/71C8Q1ugvSL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(39,'39/71W6uLjF-7L._AC_SL1500_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(40,'40/71i3rNAAwgL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(40,'40/71ME4jeUmrL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(40,'40/71qlbzgQV1L._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(41,'41/71lnv+lk-FL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(41,'41/71o6jUEIwBL._AC_SL1499_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(41,'41/71Sbjvu5P8L._AC_SL1499_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(42,'42/811MDcXVavL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(42,'42/71d+CH3-cwL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(42,'42/71e76mbx+ZL._AC_SL1500_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(43,'43/81AgNEAiHcL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(43,'43/61vfMytgcuL._AC_SL1000_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(43,'43/61NtmaKIjyL._AC_SL1000_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(44,'44/819hAs7C78L._AC_SL1500_.jpg',1);
-INSERT INTO shop_item_images (item_id,url,order_id) Values(44'44/715RizwLK-L._AC_SL1006_.jpg',2);
+INSERT INTO shop_item_images (item_id,url,order_id) Values(44,'44/715RizwLK-L._AC_SL1006_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(44,'44/61NIn718PkL._AC_SL1000_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(45,'45/81g4CZYrXUL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(45,'45/71qnk33B47L._AC_SL1000_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(45,'45/71ADU-R3NUL._AC_SL1000_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(46,'46/61DHQPjWsmL._AC_SL1440_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(46,'46/71HerXZDvHL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(46,'46/71tHSb27O-L._AC_SL1500_.jpg',3);
-
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(47,'47/71qjmtFijML._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(47,'47/61wv5ilu6eL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(47,'47/71tHSb27O-L._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(48,'48/91j173ySeXL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(48,'48/613fANASDcL._AC_SL1440_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(48,'48/91eG6ePM-FL._AC_SL1500_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(49,'49/81rTnzcXXfL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(49,'49/61BOMlZudoL._AC_SL1160_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(49,'49/71+BEA1hiAL._AC_SL1160_.jpg',3);
-
 INSERT INTO shop_item_images (item_id,url,order_id) Values(50,'50/71ouMt9HoeL._AC_SL1500_.jpg',1);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(50,'50/71cDo5746vL._AC_SL1500_.jpg',2);
 INSERT INTO shop_item_images (item_id,url,order_id) Values(50,'50/51DMxUqiSzL._AC_SL1500_.jpg',3);
-
-
-
-
-
-
-
-
-
-
-
-
-
