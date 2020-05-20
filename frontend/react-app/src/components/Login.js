@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Auth from './Auth';
 
 class Login extends Component {
     render() {
@@ -28,7 +29,13 @@ class Login extends Component {
                         <input type="password" className="form-control" id="inputNr" placeholder="Passwort" />
                         </div>
                     </div>
-                    <button type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Anmelden</button>
+                    <button onClick={
+                        () => {
+                            Auth.login(() => {
+                                this.props.history.push("/account");
+                            });
+                        }
+                    } type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Anmelden</button>
                     </form>
                 </div>
                 {/* SignUp */}
