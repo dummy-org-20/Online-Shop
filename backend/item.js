@@ -34,6 +34,14 @@ class ShopItem {
             callback(result.affectedRows > 0 ? result.insertId : -1);
         });
     }
+	
+	changeItem(item,db,callback){
+		db.safeSearch("UPDATE shop_items SET category_id=?, price=?, name=?, description=?,isAvailable=?, prc_Angebot=?",
+		[item.category_id, item.price, item.name, item.description, item.isAvailable,item.prc_Angebot],
+		(res)=>{
+			callback(res);
+		});
+	}
     
     deleteItem(id, db, callback) {
         db.safeSearch("UPDATE shop_items SET isAvailable=0 WHERE id=?", [id], function(result) {
@@ -41,27 +49,25 @@ class ShopItem {
         });
     }
 
-    setImage(image_string, order_id, db, callback){
-                let id = String(this.id);
-                let path = "../images/"+id;
-                if(!fs.existsSync(path)){
-                    if(!fs.existsSync("images")){
-                        fs.mkdirSync("images");
-                    } 
-                    fs.mkdirSync(path);
-                }
-                if(!fs.existsSync(path+"/"+order_id+".jpg")){
-                    base64_decode(image_string, path+"/"+order_id+".jpg");
-                } else {
-                    var x = parseInt(order_id);
-                    while(fs.existsSync(`${path}/${x}.jpg`)){
-                        fs.renameSync(`${path}/${x}.jpg`,`${path}/${x+1}.jpg`);
-                        x=x+2;
-                    }
-                    base64_decode(image_string, path+"/"+order_id+".jpg");
-                }
-                db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
-                [id, path+"/"+(order_id)+".jpg", order_id], function(x){ console.log(">successfully added url to database<");callback(true); });
+    setImage(image_string, order_id, image_name, db, callback){
+        let id = String(this.id);
+        let path = "../images/";
+		let fullpath=path+id+"/"+image_name;
+        if(!fs.existsSync(path+id)){
+			if(!fs.existsSync(path)){
+				fs.mkdirSync(path);
+            } 
+			fs.mkdirSync(path+id);
+        }
+        if(!fs.existsSync(fullpath)){
+			base64_decode(image_string,fullpath);
+			db.safeSearch("INSERT INTO shop_item_images (`item_id`, `url`, `order_id`) VALUES (?,?,?)", 
+			[parseInt(id), id+"/"+image_name, order_id], function(x){ console.log(">successfully added url to database<");callback(true); });
+        } else {
+			fs.truncate(fullpath, 0, function() {
+				base64_decode(image_string, fullpath);
+			});	
+        }     
     }
 
 }
