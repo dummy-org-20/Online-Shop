@@ -171,7 +171,7 @@ function start(){
 					let username = req.query["username"];
 					let password = req.query["password"];
 					new User({"db":db}).getUser(username,password,(user2)=>{
-						if(user2.isEmpty()){
+						if(user2.isEmpty()||user2.getTemporary()){
 							res.status(400).send({message:"No"});
 						}else{
 							user.markUnused((e)=>{

@@ -1,3 +1,5 @@
+const crypto =require('crypto');
+
 class User {
 	//create a user or create user with a cookie, and get the user that is associated with the cookie
 	//example:
@@ -21,21 +23,30 @@ class User {
 	//funktion geht davon aus, das alles, bis auf das ID attribut in dem derzeitigen User eingetragen ist.
 	//gibt im callback die id des neuen kreierten User zurück
 	addUser(callback){
-		this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?)",
-		[this.username,this.password,this.security_answer,this.admin,this.isTemporary,this.isUsed],
-		(res)=> {
-			createWarenkorb("",0,res["insertId"],this.db,(s)=>{
-				console.log("added user number "+res["insertId"]);
-				callback(res["insertId"]);
+		if(!this.isTemporary){
+			var salt = crypto.randomBytes(16);
+			salt=salt.toString('hex');
+			this.salt=salt;
+			crypto.pbkdf2(this.password, salt, 1000000, 64, 'sha512', (err, derivedKey) => {
+				if (err) throw err;
+				this.password=derivedKey.toString('hex');
+				this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`salt`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+					[this.username,this.password,this.salt,this.security_answer,this.admin,this.isTemporary,this.isUsed],
+					(res)=> {
+						createWarenkorb("",0,res["insertId"],this.db,(s)=>{
+							console.log("added user number "+res["insertId"]);
+							callback(res["insertId"]);
+						});
+				});
 			});
-		});
+		}
 	}
 	
 	//gibt die id eines tempusers zurück die genutzt werden kann
 	getTempUser(callback){
 		this.db.search("SELECT MIN(id) FROM shop_users WHERE isTemporary=1 AND isUsed=0",(result)=>{
 			if(result[0]["MIN(id)"]==null){
-				new User({"username":"temp","password":"temp","security_answer":"","admin":false,"isTemporary":true,"isUsed":true,"db":this.db}).addUser((id)=>{
+				new User({"username":"temp","password":"temp","salt":"","security_answer":"","admin":false,"isTemporary":true,"isUsed":true,"db":this.db}).addUser((id)=>{
 					callback(id);
 				});
 			}else{
@@ -63,14 +74,20 @@ class User {
 	//password for temp user is temp
 	//function which changes *this* user to the user with the username and password
 	getUser(username,password,callback){
-		this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{
-			if(result.length==0){
-				callback(this);
-			}else{
-				Object.assign(this,result[0]);
-				callback(this);
-			}
-		});
+		getSalt(username,this.db,(salt)=>{
+			crypto.pbkdf2(password, salt, 1000000, 64, 'sha512', (err, derivedKey) => {
+				if (err) throw err;
+				password=derivedKey.toString('hex');
+				this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{
+					if(result.length==0){
+						callback(this);
+					}else{
+						Object.assign(this,result[0]);
+						callback(this);
+					}
+				});
+			});
+		})
 	}
 	
 	//gives back user in callback without changing this user
@@ -160,6 +177,12 @@ class User {
 			createWarenkorb("",0,this.id,this.db,callback)
 		});
 	}
+}
+
+function getSalt(username,db,callback){
+	db.safeSearch("SELECT salt FROM shop_users WHERE username=?",[username],(res)=>{
+		callback(res[0]["salt"]);
+	})
 }
 
 //checks if the cookie exists in the database and gives back the matching user_id

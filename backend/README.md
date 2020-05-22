@@ -36,6 +36,7 @@ Derzeitige Module:
 - mariadb
 - express
 - express cookie-parser
+- crypto
 
 
 # Datenbankstruktur
@@ -48,9 +49,9 @@ CREATE DATABASE shop;
 
 ## shop_users
 
-| id              | username    | password   | security_answer   | admin | isTemporary | isUsed |
-| --------------- | ----------- | ---------- | ----------------- | ----- | ----------- | ------ |
-| INT PRIMARY KEY | VARCHAR(25) | VARCHAR(64)| VARCHAR(64)       | BOOL  | BOOL        | BOOL   |
+| id              | username    | password    | salt       | security_answer   | admin | isTemporary | isUsed |
+| --------------- | ----------- | ----------  | -----------|----------------- | ----- | ----------- | ------ |
+| INT PRIMARY KEY | VARCHAR(25) | VARCHAR(128)| VARCHAR(32)| VARCHAR(64)       | BOOL  | BOOL        | BOOL   |
 
 **Erstellen:**
 
@@ -58,7 +59,8 @@ CREATE DATABASE shop;
 CREATE TABLE shop_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
-    password VARCHAR(64) NOT NULL,
+    password VARCHAR(128) NOT NULL,
+	salt VARCHAR(32) NOT NULL,
     security_answer VARCHAR(64),
     admin BOOL,
 	isTemporary BOOl,

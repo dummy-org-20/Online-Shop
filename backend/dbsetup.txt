@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS shop_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
-    password VARCHAR(64) NOT NULL,
+    password VARCHAR(128) NOT NULL,
+	salt VARCHAR(32) NOT NULL,
     security_answer VARCHAR(64),
     admin BOOL,
 	isTemporary BOOl,
@@ -43,12 +44,12 @@ CREATE TABLE IF NOT EXISTS shop_login_cookies (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     cookie VARCHAR(32)
 );
-INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values('ChristianAt','Passwort1','Lüdenscheid',False,False,True);
-INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values('AleksST','Passwort2','Frankfurt',False,False,True);
-INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values('TobiasBü','Passwort3','Gummersbach',False,False,True);
-INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values('DominikJe','Passwort4','Weinheim',False,False,True);
-INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values('ThomasMe','Passwort5','Bitburg',False,False,True);
-INSERT INTO shop_users(username,password,security_answer,admin,isTemporary,isUsed) Values('AchimderAdmin','Passwort6','AdminTown',True,False,True);
+INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('ChristianAt','40194cea9f3efd50c7b254283d0306aa352b18ad2bd89498498f4a08173c91669f331b70a9dbe440e1bb543347eee138dbb79d36ec9ab2f10b9fd3356108a988','5a8bd93934a9202b602f151d94def4f3','Lüdenscheid',False,False,True);
+INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('AleksST','9a9955687a22b3b2eb44269757a45a0c5c2abb31716795b95245fe92f3e911db62b649b5360c1edb17235ea9e7dbd27e3e0ce1117cfe6695ad68f77cc95b57d1','106530b80be5afe9913f7fd739c0b056','Frankfurt',False,False,True);
+INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('TobiasBü','f2da31dee56670a66c73183e9c7e4ff15d1b5f55f9ac0a5d2a633c7a2569ee6f90a85fae7df21b0bf8f8d8c65f945bf1713d88b197ea71bbca6f493e1f437bdb','ed3853103e3b3932a44c874fb93f6362','Gummersbach',False,False,True);
+INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('DominikJe','8e8ddecd681b9f08b5db4255abf2f6648c6f11c1c1ab27db3ba0b20c48e7e995bf8c9807208c8a0ffafd2ab78eb64d0378d1acabbefd0888c0db3760bdfdf93f','bd8c0e1d70e35d840b20334c686f2203','Weinheim',False,False,True);
+INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('ThomasMe','0caf6a39bace1c24e0207d7ce39c89b0e0ebe76dc287c9a75a2df29fbbf25afb1e79d8728d3124e6ab6b5c661f361fc4f1cbc57c41ac84dc00826ef9e5cc5632','16c35774373523d53bbedef370aafd8d','Bitburg',False,False,True);
+INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('AchimderAdmin','1f2a7dbb0d71989d1037551660b55eda753e1a27f5fd4edc0e7714674fb035d2a06a67373e366a24297d43c920df81e3408bf1cf9aeab5c9cd745dd4203c8cbe','96d60544816af413091d5777818fa42c','AdminTown',True,False,True);
 INSERT INTO shop_categories(name,description) Values('Bücher','Romane und Taschenbücher für jeden Lesespaß');
 INSERT INTO shop_categories(name,description) Values('Gaming','Mäuse, Tastaturen und Monitore');
 INSERT INTO shop_categories(name,description) Values('Getränke','Verschiedene Spirituosen und Weine');
