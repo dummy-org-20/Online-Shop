@@ -38,27 +38,45 @@ function start(){
 		console.log("/order wird aufgerufen");
 		let item_id=req.query["item_id"];
 		let json=req.body;
-		db.safeSearch("SELECT url FROM shop_item_images WHERE item_id=? ORDER BY order_id ASC",[item_id],(rows)=>{
-			if(rows.length!=Object.keys(json).length){
-				res.status(400).send("zu wenig Einträge");
-				return;
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send(null);
 			}
-			/*for(let i=0;i<rows.length;i++){
-				if(json[String(i+1)]){
-					console.log(rows[i]["url"]);
-					console.log(json[String(i+1)]);
-					res.status(400).send("die Daten wurden nicht richtig gesendet");
-					return;
-				}
-			}*/
-			for(let i=0;i<rows.length;i++){
-				let finished=0
-				db.safeSearch("UPDATE shop_item_images SET order_id=? WHERE item_id=? AND url=?",[Object.keys(json)[i],item_id,json[String(i+1)]],(e)=>{
-					finished++;
-					if(finished==rows.length){
-						res.status(200).send("successfully updated the order_id");
+			else{
+				new Item().getItem(item_id,db,(item)=>{
+					if(item.creator_id==user.id){
+						db.safeSearch("SELECT url FROM shop_item_images WHERE item_id=? ORDER BY order_id ASC",[item_id],(rows)=>{
+							if(rows.length!=Object.keys(json).length){
+								res.status(400).send("zu wenig Einträge");
+								return;
+							}
+							let values=[];
+							for(let i=0;i<rows.length;i++){
+								values.push(json[String(i+1)]);
+							}
+							for(let i=0;i<rows.length;i++){
+								if(!values.includes(rows[i]["url"])){
+									res.status(400).send("falsche Einträge");
+									return;
+								}
+							}
+							for(let i=0;i<rows.length;i++){
+								finished=0;
+								db.safeSearch("UPDATE shop_item_images SET order_id=? WHERE item_id=? AND url=?",[Object.keys(json)[i],item_id,json[String(i+1)]],(e)=>{
+									finished++;
+									if(finished==rows.length){
+										res.status(200).send("successfully updated the order_id");
+									}
+								})
+							}
+						});
 					}
-				})
+					else{
+						res.status(400).send(null);
+					}
+				});
 			}
 		});
 	});
@@ -69,7 +87,7 @@ function start(){
 		console.log("/deleteImage wird aufgerufen");
 		let item_id=parseInt(req.query["item_id"]);
 		let image_name=req.query["image_name"];
-		if(!Number.isInteger(item_id)){
+		if(!Number.isInteger(item_id)||image_name==undefined||image_name.match(/[a-zA-Z0-9]\.\w+$/)==null){
 			res.status(400).send();
 			return;
 		}
@@ -100,16 +118,33 @@ function start(){
 	//automatically merges the image's order_id into the rest if a conflict occurs
 	app.use(bodyParser.json({limit: '50mb'})).post("/uploadImage", function (req, res){
 		console.log("/uploadImage wird aufgerufen");
-		let item_id = req.query.item_id;
-		let order_id = req.query.order_id;
+		let item_id = parseInt(req.query.item_id);
+		let order_id = parseInt(req.query.order_id);
 		let image_name = req.query.image_name;
+		if(!Number.isInteger(item_id)||!Number.isInteger(order_id)||image_name.match(/[a-zA-Z0-9]\.\w+$/)==null||req.body.image==undefined){
+			res.status(400).send();
+			return;
+		}
 		// image_name will be in query_params
 		let image_string = req.body.image.toString();
-		let item = db.safeSearch("select * from shop_items where id=?", [item_id], function(x){
-			itm = Object.assign(new Item(), x[0]);
-			itm.setImage(image_string, order_id, image_name, db, function(y){
-				res.status(200).send({message:"Image was successfully uploaded"});
-			});
+		
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send("no");
+			}
+			else{
+				new Item().getItem(item_id,db,(item)=>{
+					if(item.creator_id==user.id){
+						item.setImage(image_string, order_id, image_name, db, function(y){
+							res.status(200).send({message:"Image was successfully uploaded"});
+						});
+					}else{
+						res.status(400).send({message:"no"});
+					}
+				});
+			}
 		});
 	});
 
@@ -170,7 +205,12 @@ function start(){
 				}else{
 					let username = req.query["username"];
 					let password = req.query["password"];
-					new User({"db":db}).getUser(username,password,(user2)=>{
+					let security_answer= req.query["security_answer"];
+					if(username==undefined || (password==undefined && security_answer==undefined)){
+						res.status(400).send({message:"No"});
+					}
+					if(security_answer==undefined)security_answer="";
+					new User({"db":db}).getUser(username,password,security_answer,(user2)=>{
 						if(user2.isEmpty()||user2.getTemporary()){
 							res.status(400).send({message:"No"});
 						}else{

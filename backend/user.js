@@ -30,14 +30,28 @@ class User {
 			crypto.pbkdf2(this.password, salt, 1000000, 64, 'sha512', (err, derivedKey) => {
 				if (err) throw err;
 				this.password=derivedKey.toString('hex');
-				this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`salt`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?, ?)",
-					[this.username,this.password,this.salt,this.security_answer,this.admin,this.isTemporary,this.isUsed],
-					(res)=> {
-						createWarenkorb("",0,res["insertId"],this.db,(s)=>{
-							console.log("added user number "+res["insertId"]);
-							callback(res["insertId"]);
-						});
+				crypto.pbkdf2(this.security_answer, salt, 1000000, 64, 'sha512', (err, derivedKey2) => {
+					if (err) throw err;
+					this.security_answer=derivedKey2.toString('hex');
+					this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`salt`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+						[this.username,this.password,this.salt,this.security_answer,this.admin,this.isTemporary,this.isUsed],
+						(res)=> {
+							createWarenkorb("",0,res["insertId"],this.db,(s)=>{
+								console.log("added user number "+res["insertId"]);
+								callback(res["insertId"]);
+							});
+					});
 				});
+			});
+		}
+		else{
+			this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`salt`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+				[this.username,this.password,this.salt,this.security_answer,this.admin,this.isTemporary,this.isUsed],
+				(res)=> {
+					createWarenkorb("",0,res["insertId"],this.db,(s)=>{
+						console.log("added user number "+res["insertId"]);
+						callback(res["insertId"]);
+					});
 			});
 		}
 	}
@@ -73,21 +87,36 @@ class User {
 	
 	//password for temp user is temp
 	//function which changes *this* user to the user with the username and password
-	getUser(username,password,callback){
+	getUser(username,password,security_answer,callback){
 		getSalt(username,this.db,(salt)=>{
 			crypto.pbkdf2(password, salt, 1000000, 64, 'sha512', (err, derivedKey) => {
 				if (err) throw err;
 				password=derivedKey.toString('hex');
-				this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{
-					if(result.length==0){
-						callback(this);
-					}else{
-						Object.assign(this,result[0]);
-						callback(this);
-					}
-				});
+				if(security_answer!=""){
+					crypto.pbkdf2(security_answer, salt, 1000000, 64, 'sha512', (err, derivedKey2) => {
+						if (err) throw err;
+						security_answer=derivedKey2.toString('hex');
+						this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND (password=? OR security_answer=?)",[username,password,security_answer],(result)=>{
+							if(result.length==0){
+								callback(this);
+							}else{
+								Object.assign(this,result[0]);
+								callback(this);
+							}
+						});
+					});
+				}else{
+					this.db.safeSearch("SELECT * FROM shop_users WHERE username=? AND password=?",[username,password],(result)=>{
+						if(result.length==0){
+							callback(this);
+						}else{
+							Object.assign(this,result[0]);
+							callback(this);
+						}
+					});
+				}
 			});
-		})
+		});
 	}
 	
 	//gives back user in callback without changing this user

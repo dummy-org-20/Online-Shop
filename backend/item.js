@@ -84,6 +84,7 @@ class ShopItem {
         } else {
 			fs.truncate(fullpath, 0, function() {
 				base64_decode(image_string, fullpath);
+				callback(true);
 			});	
         }     
     }
