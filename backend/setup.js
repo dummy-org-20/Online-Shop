@@ -15,7 +15,7 @@ function start(){
 
 function rekursiveSyncCreate(i){
 	if(i!=commands.length-1){
-		db.search(commands[i]+";",(rows)=>{
+		db.search(commands[i]+";",()=>{
 			console.log("Der "+(i+1)+". Befehl von "+(commands.length-1)+" wurde ausgeführt");
 			rekursiveSyncCreate(i+1);
 		});

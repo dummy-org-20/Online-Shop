@@ -36,7 +36,7 @@ class User {
 					this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`salt`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?, ?)",
 						[this.username,this.password,this.salt,this.security_answer,this.admin,this.isTemporary,this.isUsed],
 						(res)=> {
-							createWarenkorb("",0,res["insertId"],this.db,(s)=>{
+							createWarenkorb("",0,res["insertId"],this.db,()=>{
 								console.log("added user number "+res["insertId"]);
 								callback(res["insertId"]);
 							});
@@ -48,7 +48,7 @@ class User {
 			this.db.safeSearch("INSERT INTO shop_users (`username`, `password`,`salt`,`security_answer`,`admin`,`isTemporary`,`isUsed`) VALUES (?, ?, ?, ?, ?, ?, ?)",
 				[this.username,this.password,this.salt,this.security_answer,this.admin,this.isTemporary,this.isUsed],
 				(res)=> {
-					createWarenkorb("",0,res["insertId"],this.db,(s)=>{
+					createWarenkorb("",0,res["insertId"],this.db,()=>{
 						console.log("added user number "+res["insertId"]);
 						callback(res["insertId"]);
 					});
@@ -64,7 +64,7 @@ class User {
 					callback(id);
 				});
 			}else{
-				this.db.safeSearch("UPDATE shop_users SET isUsed=1 WHERE id=?",[result[0]["MIN(id)"]],(res)=>{
+				this.db.safeSearch("UPDATE shop_users SET isUsed=1 WHERE id=?",[result[0]["MIN(id)"]],()=>{
 					callback(result[0]["MIN(id)"]);
 				});
 			}
@@ -129,7 +129,7 @@ class User {
 	//connects the id of *this* user to the cookie
 	connectUserWithCookie(cookie,callback){
 		this.db.safeSearch("SELECT user_id FROM shop_login_cookies WHERE cookie=?",[cookie],(result)=>{
-			new User({"db":this.db,"id":this.id}).disconnectCookieFromUser((e)=>{
+			new User({"db":this.db,"id":this.id}).disconnectCookieFromUser(()=>{
 				if(result.length==0){
 					this.db.safeSearch("INSERT INTO shop_login_cookies (`user_id`,`cookie`) VALUES (?,?)",[this.id,cookie],(result)=>{
 						callback(result);
@@ -170,8 +170,7 @@ class User {
 	isEmpty(){
 		for(var prop in this) {
 			if(this[prop]==null||this[prop]==this["db"]||prop=="cookie")continue;
-			if(this.hasOwnProperty(prop))
-				return false;
+			if(Object.prototype.hasOwnProperty.call(this, prop)) return false;
 		}
 		return true;
 	}
@@ -189,8 +188,8 @@ class User {
 	logout(callback){
 		this.disconnectCookieFromUser((e)=>{
 			if(this.getTemporary()){
-				this.markeUnused((p)=>{
-					deleteWarenkorb(this.id,this.db,(k)=>{
+				this.markeUnused(()=>{
+					deleteWarenkorb(this.id,this.db,()=>{
 						callback(e);
 					});
 				});
@@ -202,7 +201,7 @@ class User {
 	}
 	
 	buy(address,callback){
-		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE user_id=?",[address,this.id],(res)=>{
+		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE user_id=?",[address,this.id],()=>{
 			createWarenkorb("",0,this.id,this.db,callback)
 		});
 	}
@@ -266,7 +265,7 @@ function mergeWarenkorb(id1,id2,db,callback){
 		for(let i=0;i<res.length;i++){
 			//overwrite each item that needs to be overwritten
 			db.safeSearch("UPDATE shop_order_items SET amount=amount+(SELECT amount FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?) AND item_id=?) WHERE item_id=? AND order_id=(SELECT id FROM shop_orders WHERE user_id=?)",[id1,res[i]["item_id"],res[i]["item_id"],id2],(result)=>{
-				db.safeSearch("DELETE FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?) AND item_id=?",[id1,res[i]["item_id"]],(k)=>{
+				db.safeSearch("DELETE FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?) AND item_id=?",[id1,res[i]["item_id"]],()=>{
 					finished++;
 					//when all items have been overwritten, move all items that dont need to overwritten to user_id2
 					if(finished==res.length){

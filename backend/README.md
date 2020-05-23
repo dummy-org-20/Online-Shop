@@ -37,6 +37,7 @@ Derzeitige Module:
 - express
 - express cookie-parser
 - crypto
+- express-rate-limiter
 
 
 # Datenbankstruktur

@@ -50,7 +50,7 @@ class ShopItem {
     }
 	
 	deleteImage(image_name,db,callback){
-		db.safeSearch("DELETE FROM shop_item_images WHERE url=? AND item_id=?",[this.id+"/"+image_name,this.id],(res)=>{
+		db.safeSearch("DELETE FROM shop_item_images WHERE url=? AND item_id=?",[this.id+"/"+image_name,this.id],()=>{
 			let index="";
 			for(let i =0;i<Object.keys(this.urls).length;i++){
 				if(this.urls[String(i)]==this.id+"/"+image_name)index=String(i);
@@ -108,7 +108,7 @@ function base64_encode(file) {
 //gets item_id returns array in callback with urls of all images that belong to the item_id in the right order
 function getImagesURL(item_id,db,callback){
 	db.search("SELECT url FROM shop_item_images WHERE item_id="+item_id+" ORDER BY order_id ASC",(rows)=>{
-		result={};
+		let result={};
 		for(let i =0;i<rows.length;i++){
 			result[i]=rows[i]["url"];
 		}

@@ -1,12 +1,35 @@
 const app = require("express")()
 const db = require('./dbconnect');
 const User = require('./user');
-const Category = require('./category');
+//const Category = require('./category');
 const item = require('./item');
 const Item = item.ShopItem;
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
+const rateLimit = require("express-rate-limit");
+ 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message:
+	"Too many request in a short amount of time, you are blocked for 15 minutes"
+});
+app.use(apiLimiter);
+ 
+const createAccountLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 5, // start blocking after 5 requests
+  message:
+    "Too many accounts created from this IP, please try again after an hour"
+});
+
+const loginLimiter = rateLimit({
+  windowMs: 20 * 60 * 1000, // 20 min window
+  max: 5, // start blocking after 5 requests
+  message:
+    "Too many attempts, try again in 20 min"
+});
 
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
@@ -63,8 +86,8 @@ function start(){
 								}
 							}
 							for(let i=0;i<rows.length;i++){
-								finished=0;
-								db.safeSearch("UPDATE shop_item_images SET order_id=? WHERE item_id=? AND url=?",[Object.keys(json)[i],item_id,json[String(i+1)]],(e)=>{
+								let finished=0;
+								db.safeSearch("UPDATE shop_item_images SET order_id=? WHERE item_id=? AND url=?",[Object.keys(json)[i],item_id,json[String(i+1)]],()=>{
 									finished++;
 									if(finished==rows.length){
 										res.status(200).send("successfully updated the order_id");
@@ -95,7 +118,7 @@ function start(){
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
-				res.status(400).json(null);;
+				res.status(400).json(null);
 			}
 			else{
 				new Item().getItem(item_id,db,(item)=>{
@@ -137,7 +160,7 @@ function start(){
 			else{
 				new Item().getItem(item_id,db,(item)=>{
 					if(item.creator_id==user.id){
-						item.setImage(image_string, order_id, image_name, db, function(y){
+						item.setImage(image_string, order_id, image_name, db, function(){
 							res.status(200).send({message:"Image was successfully uploaded"});
 						});
 					}else{
@@ -158,7 +181,7 @@ function start(){
 				res.status(400).json(null);
 			}
 			else{
-				userWithLessInfo=new User({"id":user.id,"username":user.username,"admin":user.admin})
+				let userWithLessInfo=new User({"id":user.id,"username":user.username,"admin":user.admin})
 				res.status(200).json(userWithLessInfo);
 			}
 		});
@@ -175,7 +198,7 @@ function start(){
 				res.status(400).send({message:"I dont think so m8"});
 			}else{
 				db.search("SELECT id FROM shop_users ORDER BY id ASC",(result)=>{
-					allUsers=[];
+					let allUsers=[];
 					for(let i=0;i<result.length;i++){
 						new User({"db":db}).getUserByID(result[i].id,(user2)=>{
 							allUsers.push(user2);
@@ -191,7 +214,7 @@ function start(){
 
 	//login for the user
 	//if user isnt already logged in with cookie this request needs params username and password in order to get yes
-	app.post("/login", function(req, res){
+	app.post("/login",loginLimiter,function(req, res){
 		console.log("/login wird aufgerufen");
         let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -201,6 +224,7 @@ function start(){
 			}
 			else{
 				if(!user.getTemporary()){
+					loginLimiter.resetKey(req.ip);
 					res.status(200).send({message:"Yes"});
 				}else{
 					let username = req.query["username"];
@@ -214,9 +238,10 @@ function start(){
 						if(user2.isEmpty()||user2.getTemporary()){
 							res.status(400).send({message:"No"});
 						}else{
-							user.markUnused((e)=>{
-								user2.connectUserWithCookie(cookie,(end)=>{
-									user2.mergeWarenkorb(user,(end2)=>{
+							user.markUnused(()=>{
+								user2.connectUserWithCookie(cookie,()=>{
+									user2.mergeWarenkorb(user,()=>{
+										loginLimiter.resetKey(req.ip);
 										res.status(200).send({message:"Yes"});
 									});
 								});
@@ -252,16 +277,16 @@ function start(){
 		let cats = req.query.category.toString();
 		let sfor = req.query.item+"%";
 
-        splitCat = cats.split(",").forEach(x => {x = "'"+x+"'"});
+        let splitCat = cats.split(",").forEach(x => {x = "'"+x+"'"});
         if(splitCat!=null){
-            let category = db.search("select * from shop_categories where name IN ("+splitCat+")", (rows)=>{
+            db.search("select * from shop_categories where name IN ("+splitCat+")", (rows)=>{
                 var categories = new Array();
                 for (let index = 0; index < rows.length; index++) {
                     categories.push(rows[index].id);
                 }
                 if(categories==[]){
                     console.log(categories);
-                    let item = db.search("select * from shop_items where category_id IN (" +categories+ ") AND name LIKE \""+sfor+"\"", (rows)=>{
+                    db.search("select * from shop_items where category_id IN (" +categories+ ") AND name LIKE \""+sfor+"\"", (rows)=>{
                         var items = new Array();
                         for (let index = 0; index < rows.length; index++) {
                             items.push(Object.assign(new Item(), rows[index]));
@@ -276,7 +301,7 @@ function start(){
                 }
             });
         } else {
-            let item = db.search("select * from shop_items where name LIKE \""+sfor+"\"", (rows)=>{
+            db.search("select * from shop_items where name LIKE \""+sfor+"\"", (rows)=>{
                 var items = new Array();
                 for (let index = 0; index < rows.length; index++) {
                     items.push(Object.assign(new Item(), rows[index]));
@@ -290,7 +315,7 @@ function start(){
     //create new User in db
 	//changes current User to freshly created User
 	//need params username password and security_answer
-	app.post("/register", function(req, res) {
+	app.post("/register",createAccountLimiter, function(req, res) {
 		console.log("/register wird aufgerufen");
 		let username = req.query["username"];
 		let password = req.query["password"];
@@ -298,7 +323,7 @@ function start(){
 		if(username==undefined||password==undefined||security_answer==undefined){
 			res.status(400).send({message:"wrong parameters"});
 		}
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
@@ -314,16 +339,16 @@ function start(){
 							newUser.id=id;
 							user.disconnectCookieFromUser(()=>{
 								if(user.getTemporary()){
-									user.markUnused((e)=>{
-										newUser.connectUserWithCookie(cookie,(end)=>{
-											newUser.mergeWarenkorb(user,(end2)=>{
+									user.markUnused(()=>{
+										newUser.connectUserWithCookie(cookie,()=>{
+											newUser.mergeWarenkorb(user,()=>{
 												res.status(200).send({message:"Yes"});
 											});
 										});
 									});
 								}
 								else{
-									newUser.connectUserWithCookie(cookie,(end)=>{
+									newUser.connectUserWithCookie(cookie,()=>{
 										res.status(200).send({message:"User has been added"});
 									});
 								}
@@ -359,10 +384,10 @@ function start(){
 	//Warenkorb existiert hier schon
 	app.post("/setWarenkorb", function(req,res) {
 		console.log("/setWarenkorb wird aufgerufen");
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie==null;
-		item_id=parseInt(req.query["item_id"]);
-		count=parseInt(req.query["count"]);
+		let item_id=parseInt(req.query["item_id"]);
+		let count=parseInt(req.query["count"]);
 		if(!Number.isInteger(item_id)||item_id<1||!Number.isInteger(count)){
 			res.status(400);
 			res.send();
@@ -378,7 +403,7 @@ function start(){
 						if(count>0){
 							db.safeSearch("INSERT INTO shop_order_items (`order_id`, `item_id`, `amount`) VALUES ((SELECT id FROM shop_orders WHERE user_id=? AND status=0), ?, ?)",
 							[user.id,item_id,count],
-							function(result) {
+							function() {
 								res.status(200);
 								res.send();
 							});
@@ -389,9 +414,9 @@ function start(){
 					}else{
 						db.safeSearch("UPDATE shop_order_items SET amount=amount+? WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=? AND status=0) AND item_id=?",
 						[count,user.id,item_id],
-						function(result) {
+						function() {
 							db.search("DELETE FROM shop_order_items WHERE amount<=0",
-								function(result) {
+								function() {
 									res.status(200);
 									res.send();
 								}
@@ -407,18 +432,18 @@ function start(){
 	//needs address as query parameter
 	app.post("/buy",function(req,res){
 		console.log("/buy wird aufgerufen");
-		address=req.query["address"];
+		let address=req.query["address"];
 		if(address==undefined){
 			res.status(400).send("address parameter is missing");
 		}
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()||user.getTemporary()){
 				res.status(400).json("Du kannst nichts kaufen");
 			}
 			else{
-				user.buy(address,(result)=>{
+				user.buy(address,()=>{
 					res.status(200).send("successfully bought the items");
 				});
 			}
@@ -456,7 +481,7 @@ function start(){
 			100
 		);
 		
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()||!user.isAdmin()){
@@ -479,23 +504,23 @@ function start(){
 	
 	app.get('/image/:item_id/:image_name', function (req, res) {
 		console.log("/image/:item_id/:image_name");
-		item_id=req.params.item_id;
-		image_name=req.params.image_name;
+		let item_id=req.params.item_id;
+		let image_name=req.params.image_name;
 		var options = {
 			root: __dirname+"/..",
 			dotfiles: 'deny',
 			headers: {
-			  'x-timestamp': Date.now(),
-			  'x-sent': true
+				'x-timestamp': Date.now(),
+				'x-sent': true
 			}
-		  }
+		}
 		res.sendFile("images/"+item_id+"/"+image_name,options, function (err) {
 			if (err) {
-			  res.status(400);
-			  res.send("Image existiert nicht");
-			  console.log(err);
+				res.status(400);
+				res.send("Image existiert nicht");
+				console.log(err);
 			} else {
-			  console.log('Sent:', image_name);
+				console.log('Sent:', image_name);
 			}
 		});
 	});
@@ -507,7 +532,7 @@ function start(){
 		console.log("/item.delete");
 		let id = req.query.id;
 
-		cookie=req.cookies["sessionID"];
+		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()||!user.isAdmin()){
@@ -564,8 +589,8 @@ function getWarenkorb(user_id,callback){
 
 //creates new Cookie that doesnt already exist in the Database
 function createNewCookie(callback){
-	letters="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9".split(",");
-	string="";
+	let letters="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9".split(",");
+	let string="";
 	for(let i=0;i<32;i++){
 		string+=letters[getRandomInt(31)];
 	}
