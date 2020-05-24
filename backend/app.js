@@ -10,8 +10,8 @@ app.use(cookieParser());
 const rateLimit = require("express-rate-limit");
 
 const createAccountLimiter = rateLimit({
-	windowMs: 60 * 60 * 1000, // 1 hour window
-	max: 3, // start blocking after 5 requests
+	windowMs: 24*60 * 60 * 1000, // 1 hour window
+	max: 5, // start blocking after 5 requests
 	message:
 		"Too many accounts created from this IP, please try again tomorrow",
 	onLimitReached: function (req, res, options) {
@@ -413,7 +413,7 @@ function start(){
 				res.status(400).send({message:"You weren't even logged in lmao"});
 			}
 			else{
-				user.logout((res)=>{
+				user.logout(()=>{
 					res.status(200).send({messsage:"you successfully logged out"});
 				});
 			}
