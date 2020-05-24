@@ -8,32 +8,180 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const rateLimit = require("express-rate-limit");
- 
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  message:
-	"Too many request in a short amount of time, you are blocked for 15 minutes"
-});
-app.use(apiLimiter);
- 
+
 const createAccountLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour window
-  max: 5, // start blocking after 5 requests
-  message:
-    "Too many accounts created from this IP, please try again after an hour"
+	windowMs: 60 * 60 * 1000, // 1 hour window
+	max: 3, // start blocking after 5 requests
+	message:
+		"Too many accounts created from this IP, please try again tomorrow",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /register too many times: "+String(req.ip));
+	}
 });
 
 const loginLimiter = rateLimit({
-  windowMs: 20 * 60 * 1000, // 20 min window
-  max: 5, // start blocking after 5 requests
-  message:
-    "Too many attempts, try again in 20 min"
+	windowMs: 10 * 60 * 1000, // 10 min window
+	max: 5, // start blocking after 5 requests
+	message:
+		"Too many attempts, try again in 10 min",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /login too many times: "+String(req.ip));
+	}
+});
+
+const tempUserLimiter = rateLimit({
+	windowMs: 20 * 60 * 1000, // 20 min window
+	max: 50, // start blocking after 50 requests
+	message:
+		"You are a bad Person",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called / too many times: "+String(req.ip));
+	}
+});
+
+const uploadImageLimiter = rateLimit({
+	windowMs: 20 * 60 * 1000, // 20 min window
+	max: 30, // start blocking after 30 requests
+	message:
+		"Sorry but these are too many Images to handle, please try again in 20 Minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /uploadImage too many times: "+String(req.ip));
+	}
+});
+
+const orderLimiter = rateLimit({
+	windowMs: 20 * 60 * 1000, // 20 min window
+	max: 5, // start blocking after 5 requests
+	message:
+		"You are a bad Person",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /order too many times: "+String(req.ip));
+	}
+});
+
+const deleteImageLimiter = rateLimit({
+	windowMs: 20 * 60 * 1000, // 20 min window
+	max: 30, // start blocking after 30 requests
+	message:
+		"Sorry but these are too many Images to handle, please try again in 20 Minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /deleteImage too many times: "+String(req.ip));
+	}
+});
+
+const userLimiter = rateLimit({
+	windowMs: 20 * 60 * 1000, // 20 min window
+	max: 50, // start blocking after 30 requests
+	message:
+		"Sorry but you tried to gain information about your user too often, please try again in 20 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /user too many times: "+String(req.ip));
+	}
+});
+
+const userAllLimiter = rateLimit({
+	windowMs: 20 * 60 * 1000, // 20 min window
+	max: 20, // start blocking after 20 requests
+	message:
+		"Sorry but you tried to gain information about all users too often, please try again in 20 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /userAll too many times: "+String(req.ip));
+	}
+});
+
+const getWarenkorbLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 min window
+	max: 50, // start blocking after 50 requests
+	message:
+		"Sorry but you tried to access your Warenkorb too many times, please try again in 10 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /getWarenkorb too many times: "+String(req.ip));
+	}
+});
+
+const setWarenkorbLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 min window
+	max: 100, // start blocking after 100 requests
+	message:
+		"Sorry but you tried to gain information about all users too often, please try again in 20 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /setWarenkorb too many times: "+String(req.ip));
+	}
+});
+
+const logoutLimiter = rateLimit({
+	windowMs: 10 * 60 * 1000, // 10 min window
+	max: 5, // start blocking after 5 requests
+	message:
+		"Sorry but you tried logout too many times, try again in 10 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /user too many times: "+String(req.ip));
+	}
+});
+
+const searchLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 min window
+	max: 100, // start blocking after 100 requests
+	message:
+		"Sorry but searched too many times, please try again in 5 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /search too many times: "+String(req.ip));
+	}
+});
+
+const buyLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 min window
+	max: 5, // start blocking after 5 requests
+	message:
+		"Sorry but you tried to buy too many times, please try again in 5 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /buy too many times: "+String(req.ip));
+	}
+});
+
+const itemLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000, // 5 min window
+	max: 100, // start blocking after 100 requests
+	message:
+		"Please wait 5 minutes and try again",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /item too many times: "+String(req.ip));
+	}
+});
+
+const itemInsertLimiter = rateLimit({
+	windowMs: 30 * 60 * 1000, // 20 min window
+	max: 10, // start blocking after 30 requests
+	message:
+		"Sorry but you tried to insert an Item too many times, try again in 30 min",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /itemInsert too many times: "+String(req.ip));
+	}
+});
+
+const itemDeleteLimiter = rateLimit({
+	windowMs: 10 * 60 * 1000, // 10 min window
+	max: 30, // start blocking after 30 requests
+	message:
+		"Sorry but you tried to delete Images too many Times, try again in 10 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /itemDelete too many times: "+String(req.ip));
+	}
+});
+
+const imageLimiter = rateLimit({
+	windowMs: 2 * 60 * 1000, // 2 min window
+	max: 100, // start blocking after 100 requests
+	message:
+		"Sorry but you tried to access to many Images in a short amount of time, please try again in 2 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /image too many times: "+String(req.ip));
+	}
 });
 
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
-	app.get("/", function (req, res) {
+	app.get("/",tempUserLimiter, function (req, res) {
 		console.log("/ wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -43,11 +191,12 @@ function start(){
 					//TODO fix header issue
 					res.cookie("sessionID",cookiee).send("lemme give you a cookie");
 					user.getTempUser((user_id)=>{
-					new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{});
+						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{});
 					});
 				});
 			}
 			else{
+				tempUserLimiter.options.store.decrement(req.ip);
 				res.send("you already have a cookie dont be greedy");
 			}
 		});
@@ -57,7 +206,7 @@ function start(){
 	//requires a query param called item_id a json in the body which is build like this:
 	//{order_id:url,order_id:url,...} order_id startet bei 1
 	//die json muss aufsteigende order_ids haben
-	app.use(bodyParser.json({limit: '2mb'})).post("/order",function(req,res){
+	app.use(bodyParser.json({limit: '2mb'})).post("/order",orderLimiter,function(req,res){
 		console.log("/order wird aufgerufen");
 		let item_id=req.query["item_id"];
 		let json=req.body;
@@ -139,7 +288,7 @@ function start(){
 	//order_id sets the order, in which the items are to be displayed
 	//the input image must be a base64 encoded string in the field "image" from a json in the html-body
 	//automatically merges the image's order_id into the rest if a conflict occurs
-	app.use(bodyParser.json({limit: '50mb'})).post("/uploadImage", function (req, res){
+	app.use(bodyParser.json({limit: '10mb'})).post("/uploadImage",uploadImageLimiter,function (req, res){
 		console.log("/uploadImage wird aufgerufen");
 		let item_id = parseInt(req.query.item_id);
 		let order_id = parseInt(req.query.order_id);
@@ -172,7 +321,7 @@ function start(){
 	});
 
 	//gets user-object from db that is associated with the cookie
-	app.get("/user", function (req, res) {
+	app.get("/user",userLimiter, function (req, res) {
 		console.log("/user wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -189,7 +338,7 @@ function start(){
 	
 	//gets all user-objects in ascending order in the db
 	//only usable as admin
-	app.get("/userAll", function (req, res) {
+	app.get("/userAll",userAllLimiter ,function (req, res) {
 		console.log("/userAll wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -255,7 +404,7 @@ function start(){
 	
 	//logs the current user out
 	//if the current user is a temp user the user is marked as unused and his items in his Warenkorb will be deleted
-	app.post("/logout",function(req, res){
+	app.post("/logout",logoutLimiter,function(req, res){
 		console.log("/logout wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -272,7 +421,7 @@ function start(){
 	});
 
     //search after itemName in single, multiple or all categories
-    app.get("/search", function(req, res){
+    app.get("/search", searchLimiter,function(req, res){
 		console.log("/search wird aufgerufen");
 		let cats = req.query.category.toString();
 		let sfor = req.query.item+"%";
@@ -332,6 +481,7 @@ function start(){
 			else{
 				new User({"db":db,"username":username}).exists((exist)=>{
 					if(exist){
+						createAccountLimiter.options.store.decrement(req.ip);
 						res.status(400).send({message:"User already exists"});
 					}else{
 						let newUser=new User({"db":db,"username":username,"password":password,"security_answer":security_answer,"admin":false,"isTemporary":false,"isUsed":true});
@@ -342,7 +492,7 @@ function start(){
 									user.markUnused(()=>{
 										newUser.connectUserWithCookie(cookie,()=>{
 											newUser.mergeWarenkorb(user,()=>{
-												res.status(200).send({message:"Yes"});
+												res.status(200).send({message:"User has been added"});
 											});
 										});
 									});
@@ -361,7 +511,7 @@ function start(){
 	})
 	
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
-	app.get("/getWarenkorb", function(req,res) {
+	app.get("/getWarenkorb", getWarenkorbLimiter,function(req,res) {
 		console.log("/getWarenkorb wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
@@ -382,7 +532,7 @@ function start(){
 	//Es wird automatisch ein existierendes Item geupdatet.
 	//Wenn ein Item entfernt werden sollen, muss ein negativer count angegeben werden.
 	//Warenkorb existiert hier schon
-	app.post("/setWarenkorb", function(req,res) {
+	app.post("/setWarenkorb",setWarenkorbLimiter, function(req,res) {
 		console.log("/setWarenkorb wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie==null;
@@ -430,7 +580,7 @@ function start(){
 	
 	//buys the items that are in the Warenkorb
 	//needs address as query parameter
-	app.post("/buy",function(req,res){
+	app.post("/buy",buyLimiter,function(req,res){
 		console.log("/buy wird aufgerufen");
 		let address=req.query["address"];
 		if(address==undefined){
@@ -451,7 +601,7 @@ function start(){
 	});
 
 	// get item by id
-	app.get("/item/:id", function(req, res) {
+	app.get("/item/:id",itemLimiter, function(req, res) {
 		console.log("/item/:id wird aufgerufen");
 		let id = parseInt(req.params.id);
 		if(!Number.isInteger(id)){
@@ -469,7 +619,7 @@ function start(){
 	});
 
 	// insert item
-	app.post("/item.insert", function(req, res) {
+	app.post("/item.insert",itemInsertLimiter, function(req, res) {
 		console.log("/item.insert wird aufgerufen");
 		let shopItem = new Item(
 			null,
@@ -502,7 +652,7 @@ function start(){
 		});
 	});
 	
-	app.get('/image/:item_id/:image_name', function (req, res) {
+	app.get('/image/:item_id/:image_name',imageLimiter, function (req, res) {
 		console.log("/image/:item_id/:image_name");
 		let item_id=req.params.item_id;
 		let image_name=req.params.image_name;
@@ -528,7 +678,7 @@ function start(){
 	// delete item
 	//We may also not want to delete an Item so that items that arent on sale will still be in the buy history of the user
 	//we will will just mark them as unavaible
-	app.post("/item.delete", function(req, res) {
+	app.post("/item.delete",itemDeleteLimiter, function(req, res) {
 		console.log("/item.delete");
 		let id = req.query.id;
 
@@ -550,9 +700,14 @@ function start(){
 		});
 	});
 
+	app.use(function (err, req, res, next) {
+		console.error(err.stack);
+		res.status(400).send();
+	});
+	
 	app.listen(8000, function () {
 		console.log("App started at localhost:8000");
-	})
+	});
 }
 
 //DEPRICATED
