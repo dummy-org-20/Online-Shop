@@ -631,7 +631,10 @@ function start(){
 	// insert item
 	app.post("/item.insert",itemInsertLimiter, function(req, res) {
 		console.log("/item.insert wird aufgerufen");
-		console.log(req.query);
+		if(req.query.category_id==undefined||req.query.price==undefined||req.query.name==undefined||req.query.description==undefined){
+			res.status(400).send();
+			return;
+		}
 		let shopItem = new Item(
 			null,
 			null,
@@ -639,6 +642,7 @@ function start(){
 			parseInt(req.query.price),
 			req.query.name,
 			req.query.description,
+			true,
 			100
 		);
 		
