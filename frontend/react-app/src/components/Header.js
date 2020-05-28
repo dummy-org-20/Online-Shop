@@ -16,11 +16,11 @@ class Header extends Component {
                     {/* Message, Profile-Pic, Shoppingcart-Icon */}
                     <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <p id="welcome">Wilkommen, Paul</p>
+                        <p id="welcome">Willkommen</p>
                     </li>
                     <li className="nav-item">
                         <Link to="/account">
-                        <img id="profil-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRdOvjx-Ooi0vYqAiqSAZFXeDlbRJnskm2blrI-QBmf91TedpD-&usqp=CAU" width={45} height={45} />
+                        <img id="profil-img" src="https://stafforgserv.com.au/wp-content/uploads/2018/09/user-img.png" width={45} height={45} />
                         </Link>
                     </li>
                     <li className="nav-item">
@@ -40,7 +40,14 @@ class Header extends Component {
                     </div>
                     {/* Search-Bar */}
                     <div id="search-bar" className="mx-auto order-0">
-                    <input className="form-control" id="myInput" type="text" placeholder="Suche" />
+                    <input className="form-control" id="myInput" type="text" placeholder="Suche" onKeyPress={function (event) {
+                                                                                                                    if (event.which == 13 || event.keyCode == 13) {
+                                                                                                                        var input = document.getElementById('myInput').value;
+                                                                                                                        fetch("/search?item="+input+"&category=", {method: 'GET'}).then(response => response.json()).then(data => {
+                                                                                                                            console.log(data);
+                                                                                                                        });  
+                                                                                                                    }
+                                                                                                                }}/>
                     </div>
                     {/* Sort */}
                     <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">

@@ -3,6 +3,54 @@ import { Link } from 'react-router-dom';
 import Auth from './Auth';
 
 class Login extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            user: '',
+            pwd: '',
+            newUser: '',
+            newPwd: '',
+            newQuestion: ''
+        };
+    
+        this.handleChange = this.handleChange.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+    }
+    
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+    
+    handleLogin(event) {
+        const { user, pwd } = this.state;
+
+
+        // API Call here
+
+
+        // Soll nur ausgefuehrt werden, wenn API-Call erfolgreich war
+        Auth.login(() => {
+            this.props.history.push("/account");
+        });
+    }
+
+    handleSignup(event) {
+        const { newUser, newPwd, newQuestion } = this.state;
+        
+
+        // API Call here
+
+
+        // Soll nur ausgefuehrt werden, wenn API-Call erfolgreich war
+        Auth.login(() => {
+            this.props.history.push("/account");
+        });
+    }
+    
     render() {
         return (
             <main id="login-signup">
@@ -23,19 +71,31 @@ class Login extends Component {
                     <form>
                     <div className="form-row">
                         <div className="form-group col-md-12">
-                        <input type="text" className="form-control" id="inputStraße" placeholder="Nutzername" />
+                        <input 
+                            name="user"
+                            type="text" 
+                            className="form-control"
+                            id="inputStraße" 
+                            placeholder="Nutzername" 
+                            value={this.state.user} 
+                            onChange={this.handleChange} 
+                            required 
+                        /> 
                         </div>
                         <div className="form-group col-md-12">
-                        <input type="password" className="form-control" id="inputNr" placeholder="Passwort" />
+                        <input 
+                            name="pwd"
+                            type="password" 
+                            className="form-control" 
+                            id="inputNr" 
+                            placeholder="Passwort" 
+                            value={this.state.pwd} 
+                            onChange={this.handleChange} 
+                            required 
+                        />
                         </div>
                     </div>
-                    <button onClick={
-                        () => {
-                            Auth.login(() => {
-                                this.props.history.push("/account");
-                            });
-                        }
-                    } type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Anmelden</button>
+                    <button onClick={this.handleLogin} type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Anmelden</button>
                     </form>
                 </div>
                 {/* SignUp */}
@@ -43,17 +103,17 @@ class Login extends Component {
                     <form>
                     <div className="form-row">
                         <div className="form-group col-md-12">
-                        <input type="text" className="form-control" id="inputStraße" placeholder="Nutzername" />
+                        <input name="newUser" type="text" className="form-control" id="inputStraße" placeholder="Nutzername" />
                         </div>
                         <div className="form-group col-md-12">
-                        <input type="password" className="form-control" id="inputNr" placeholder="Passwort" />
+                        <input name="newPwd" type="password" className="form-control" id="inputNr" placeholder="Passwort" />
                         </div>
                         <div className="form-group col-md-12">
                         <label htmlFor="inputPassword4">Sicherheitsfrage:</label>
-                        <input type="text" className="form-control" id="inputOrt" placeholder="Wie heißt Ihr Geburtsort?" />
+                        <input name="newQuestion" type="text" className="form-control" id="inputOrt" placeholder="Wie heißt Ihr Geburtsort?" />
                         </div>
                     </div>
-                    <button type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Registrieren</button>
+                    <button onClick={this.handleSignup} type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Registrieren</button>
                     </form>
                 </div>
                 </div>
