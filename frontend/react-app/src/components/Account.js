@@ -42,9 +42,9 @@ class Account extends Component {
                     <div className="text-center">
                         <button onClick={
                             () => {
-                                    Auth.logout(() => {
-                                        this.props.history.push("/");
-										fetch("/logout");
+                                Auth.logout(() => {
+                                    this.props.history.push("/");
+									fetch("/logout");
                                 });
                             }
                         } type="button" id="signout-btn" className="btn btn-danger no-radius text-center">Abmelden</button>

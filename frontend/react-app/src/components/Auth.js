@@ -4,13 +4,19 @@ class Auth {
     }
 
     login(cb) {
+        console.log();
         this.authenticated = true;
-        cb(); // call bach für spaeter
+        cb(); // call back für spaeter
     }
 
     logout(cb) {
         this.authenticated = false;
-        cb(); // call bach für spaeter
+        cb(); // call back für spaeter
+    }
+
+    signup(cb) {
+        this.authenticated = true;
+        cb(); // call back für spaeter
     }
 
     isAuthenticated() {
