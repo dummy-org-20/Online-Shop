@@ -157,6 +157,7 @@ const toBase64 = file => new Promise((resolve, reject) => {
 const sendImage = (base64,item_id,order_id,image_name) => new Promise((resolve, reject) => {
 	let json={"image":base64.substring(base64.search(",")+1)};
 	json = JSON.stringify(json);
+	console.log(json);
     $.ajax({
 	  type: "POST",
 	  url: encodeURI("/uploadImage?item_id="+item_id+"&order_id="+order_id+"&image_name="+image_name),
@@ -164,7 +165,7 @@ const sendImage = (base64,item_id,order_id,image_name) => new Promise((resolve, 
 	  dataType: 'json',
 	  success: function(data){resolve(true)},
 	  error: function(data) {
-		  console.log(data);
+		  alert("Das Bild "+order_id+" konnte nicht hochgeladen werden");
 		  reject(data);
 		}
 	});
