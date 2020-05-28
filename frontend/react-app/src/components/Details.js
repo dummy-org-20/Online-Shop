@@ -11,7 +11,8 @@ class Details extends Component {
             name: "",
             price: 0,
             description: "",
-            amount: 1
+            amount: 1,
+            urls: []
         }
     }
 
@@ -22,17 +23,28 @@ class Details extends Component {
                 name: data.name,
                 description: data.description,
                 price: data.price,
-                amount: 1
+                amount: 1,
+                urls: this.urlsToArray(data.urls)
             });
+            console.log(this.state.urls)
         }).catch(function (error) {
             console.log(error.message)
         });
+    }
+
+    urlsToArray(urls, id) {
+        let array = [];
+        for(let i in urls) {
+            array[i] = "/image/" + urls[i];
+        }
+        return array
     }
 
     formatPrice(price) {
         let euro = Number.parseInt(price / 100)
         let cent = price % 100
         if(cent == 0) return euro + "€"
+        if(cent < 10) return euro + ",0" + cent + "€" 
         return euro + "," + cent + "€"
     }
 
@@ -95,18 +107,13 @@ class Details extends Component {
                             <div id="thumbcarousel" className="carousel slide" data-interval="false">
                                 <div className="carousel-inner">
                                 <div className="item">
-                                    <div data-target="#carousel" data-slide-to={0} className="thumb">
-                                    <img src="https://www.sony.de/image/2c01991ee6c32a1ad0f6a9f198086f96?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF" />
-                                    </div>
-                                    <div data-target="#carousel" data-slide-to={1} className="thumb">
-                                    <img src="https://media.alltricks.com/hd/11069105d528f97290107.69498196.jpg" />
-                                    </div>
-                                    <div data-target="#carousel" data-slide-to={2} className="thumb">
-                                    <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto/i1-512bfa8a-01a0-4971-bd34-9cef18a159e0/air-force-1-07-damenschuh-sg6nmr.jpg" />
-                                    </div>
-                                    <div data-target="#carousel" data-slide-to={3} className="thumb">
-                                    <img src="https://cdn.eglobalcentral.de/images/magictoolbox_cache/8c95d73fec130487c102a73bf1ab42ce/3/1/31631/thumb360x360/3245460558/apple-iphone-11-128gb-a2223-dual-sim-black.jpg" />
-                                    </div>
+                                    {
+                                        this.state.urls.map((item, index) => (
+                                            <div data-target="#carousel" data-slide-to={index} className="thumb">
+                                                <img src={item} />
+                                            </div>
+                                        ))
+                                    }
                                 </div>
                                 </div>
                             </div>
@@ -115,18 +122,18 @@ class Details extends Component {
                         {/* Image-Slider-Image */}
                         <div id="image-slider-img" className="col-10">
                             <div className="carousel-inner">
-                            <div className="carousel-item active">
-                                <img className="d-block w-100 carousel-img" src="https://www.sony.de/image/2c01991ee6c32a1ad0f6a9f198086f96?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF" alt="Second slide" />
-                            </div>
-                            <div className="carousel-item">
-                                <img className="d-block w-100 carousel-img" src="https://media.alltricks.com/hd/11069105d528f97290107.69498196.jpg" alt="First slide" />
-                            </div>
-                            <div className="carousel-item">
-                                <img className="d-block w-100 carousel-img" src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto/i1-512bfa8a-01a0-4971-bd34-9cef18a159e0/air-force-1-07-damenschuh-sg6nmr.jpg" alt="Third slide" />
-                            </div>
-                            <div className="carousel-item">
-                                <img className="d-block w-100 carousel-img" src="https://cdn.eglobalcentral.de/images/magictoolbox_cache/8c95d73fec130487c102a73bf1ab42ce/3/1/31631/thumb360x360/3245460558/apple-iphone-11-128gb-a2223-dual-sim-black.jpg" alt="Third slide" />
-                            </div>
+                            {
+                                this.state.urls.map((item, index) => {
+                                    return index == 0 ?
+                                        <div className="carousel-item active">
+                                            <img className="d-block w-100 carousel-img" src={item} alt={index} />
+                                        </div>
+                                        :
+                                        <div className="carousel-item">
+                                            <img className="d-block w-100 carousel-img" src={item} alt={index} />
+                                        </div>
+                                })
+                            }
                             </div>
                         </div>
                         </div>
