@@ -303,7 +303,6 @@ function start(){
 		let item_id = parseInt(req.query.item_id);
 		let order_id = parseInt(req.query.order_id);
 		let image_name = req.query.image_name;
-		console.log(req.body);
 		if(!Number.isInteger(item_id)||!Number.isInteger(order_id)||image_name.match(/[a-zA-Z0-9]+\.\w+$/)==null||req.body.image==undefined){
 			res.status(400).send();
 			return;

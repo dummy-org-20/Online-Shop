@@ -162,7 +162,8 @@ const sendImage = (base64,item_id,order_id,image_name) => new Promise((resolve, 
 	  type: "POST",
 	  url: encodeURI("/uploadImage?item_id="+item_id+"&order_id="+order_id+"&image_name="+image_name),
 	  data: json,
-	  dataType: 'json',
+	  contentType: 'application/json',
+	  processData: false,
 	  success: function(data){resolve(true)},
 	  error: function(data) {
 		  alert("Das Bild "+order_id+" konnte nicht hochgeladen werden");
