@@ -191,8 +191,8 @@ const categoryLimiter = rateLimit({
 
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
-	app.get("/",tempUserLimiter, function (req, res) {
-		console.log("/ wird aufgerufen");
+	app.get("/getCookie",tempUserLimiter, function (req, res) {
+		console.log("/getCookie wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
