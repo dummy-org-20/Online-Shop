@@ -12,7 +12,18 @@ import {ProtectedRoute} from "./components/ProtectedRoute";
 
 
 class App extends Component {
+
+  getCookie(){
+      fetch("/getCookie").then(response => {});
+  }
+
+  cnt = 0;
+
   render() {
+    if(document.cookie.includes("sessionID")==false&&this.cnt==0){
+      this.getCookie();
+      this.cnt++;
+    }
     return (
       <Router>
         <div className="App">
