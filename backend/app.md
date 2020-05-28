@@ -58,3 +58,6 @@
 ## app.post("/buy")
 	Benötigt den Parameter "address". Kauft alles im Warenkorb und erstellt einen neuen leeren Warenkorb für den User.
 	User muss eingeloggt sein um zu kaufen.
+	
+## app.get("/categories")
+	Holt alle Kategorien mit der jeweiligen Id aus der Datenbank

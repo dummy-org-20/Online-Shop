@@ -140,7 +140,7 @@ const buyLimiter = rateLimit({
 });
 
 const itemLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, // 5 min window
+	windowMs: 2 * 60 * 1000, // 5 min window
 	max: 100, // start blocking after 100 requests
 	message:
 		"Please wait 5 minutes and try again",
@@ -176,6 +176,16 @@ const imageLimiter = rateLimit({
 		"Sorry but you tried to access to many Images in a short amount of time, please try again in 2 minutes",
 	onLimitReached: function (req, res, options) {
 		console.log("this ip called /image too many times: "+String(req.ip));
+	}
+});
+
+const categoryLimiter = rateLimit({
+	windowMs: 2 * 60 * 1000, // 2 min window
+	max: 100, // start blocking after 100 requests
+	message:
+		"Sorry but you tried to access this api too many times, please try again in 2 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /categories too many times: "+String(req.ip));
 	}
 });
 
@@ -621,6 +631,7 @@ function start(){
 	// insert item
 	app.post("/item.insert",itemInsertLimiter, function(req, res) {
 		console.log("/item.insert wird aufgerufen");
+		console.log(req.query);
 		let shopItem = new Item(
 			null,
 			null,
@@ -700,6 +711,12 @@ function start(){
 		});
 	});
 
+	app.get("/categories",categoryLimiter,function(req,res){
+		db.search("SELECT id,name FROM shop_categories",(result)=>{
+			res.status(200).json(result);
+		})
+	});
+	
 	app.use(function (err, req, res, next) {
 		console.error(err.stack);
 		res.status(400).send();
