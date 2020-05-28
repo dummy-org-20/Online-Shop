@@ -8,22 +8,23 @@ class ShoppingCart extends Component {
 
     constructor() {
         super();
-            this.state = {items: []
+            this.state = {items: [],
+                          sum: 0
         }
     }
 
     componentDidMount() {
         fetch("/getWarenkorb").then(response => response.json()).then(data => {
+                var item_sum = 0;
                 var item_array = new Array();
                 for (let index = 0; index < data.length; index++) {
                     var finished = 0;
                     fetch("/item/"+ data[index].item_id).then(response => response.json()).then(data2 => {
                         item_array[index] = {id: data2.id, titel: data2.name, preis: data2.price, menge: data[index].amount, img: "http://localhost:8000/image/" + data2.urls[0]};
-                        console.log(data2.urls[0])
+                        item_sum += (parseInt(data[index].amount) * parseInt(data2.price));
                         finished++;
                         if(finished==data.length){
-                            console.log(item_array)
-                            this.setState({items: item_array});
+                            this.setState({items: item_array, sum: item_sum});
                         }
                     });
                     
