@@ -189,6 +189,16 @@ const categoryLimiter = rateLimit({
 	}
 });
 
+const userItemsDelimiter = rateLimit({
+	windowMs: 2 * 60 * 1000, // 2 min window
+	max: 50, // start blocking after 100 requests
+	message:
+		"Sorry but you tried to access this api too many times, please try again in 2 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /userItems too many times: "+String(req.ip));
+	}
+});
+
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/getCookie",tempUserLimiter, function (req, res) {
@@ -668,7 +678,7 @@ function start(){
 	});
 	
 	app.get('/image/:item_id/:image_name',imageLimiter, function (req, res) {
-		console.log("/image/:item_id/:image_name");
+		console.log("/image/:item_id/:image_name wird aufgerufen");
 		let item_id=req.params.item_id;
 		let image_name=req.params.image_name;
 		var options = {
@@ -694,7 +704,7 @@ function start(){
 	//We may also not want to delete an Item so that items that arent on sale will still be in the buy history of the user
 	//we will will just mark them as unavaible
 	app.post("/item.delete",itemDeleteLimiter, function(req, res) {
-		console.log("/item.delete");
+		console.log("/item.delete wird aufgerufen");
 		let id = req.query.id;
 
 		let cookie=req.cookies["sessionID"];
@@ -716,10 +726,28 @@ function start(){
 	});
 
 	app.get("/categories",categoryLimiter,function(req,res){
+		console.log("/categories wird aufgerufen");
 		db.search("SELECT id,name FROM shop_categories",(result)=>{
 			res.status(200).json(result);
 		})
 	});
+	
+	app.get("/userItems",userItemsDelimiter, function(req, res) {
+		console.log("userItems wird aufgerufen");
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send({message:"no"});
+				return;
+			}else{
+				new Item().getAllItemsTheUserMade(user.id,db,(items)=>{
+					res.status(200).json(items.sort(function(a,b){return a["id"]-b["id"];}));
+				})	
+			}
+		});
+	});
+
 	
 	app.use(function (err, req, res, next) {
 		console.error(err.stack);
