@@ -84,6 +84,11 @@ class Details extends Component {
         .catch(function (error) {
             console.log(error.message)
         });
+
+        this.setState({
+            amount: 1
+        });
+        this.props.history.push("/shopping-cart")
     }
 
     render() {
@@ -141,14 +146,14 @@ class Details extends Component {
                     </div>
                     {/* Details-Info */}
                     <div id="details-info" className="col-6">
-                    <h2><b>{this.state.name}</b></h2>
-                    <h1>{this.formatPrice(this.state.price)}</h1>
-                    <h5>Beschreibung</h5>
-                    <p>{this.state.description}</p>
-                    <button type="button" className="btn btn-outline-dark no-radius btn-lg" onClick={() => this.decreaseAmount()}>-</button>
-                    <span className="ammount">{this.state.amount}</span>
-                    <button type="button" className="btn btn-outline-dark no-radius btn-lg" onClick={() => this.increaseAmount()}>+</button>
-                    <button id="add-to-cart" type="button" className="btn btn-dark no-radius btn-lg" data-toggle="modal" data-target="#myModal" onClick={() => this.addToCart()}>IN DEN EINKAUFSWAGEN</button>
+                        <h2><b>{this.state.name}</b></h2>
+                        <h1>{this.formatPrice(this.state.price)}</h1>
+                        <h5>Beschreibung</h5>
+                        <p>{this.state.description}</p>
+                        <button type="button" className="btn btn-outline-dark no-radius btn-lg" onClick={() => this.decreaseAmount()}>-</button>
+                        <span className="ammount">{this.state.amount}</span>
+                        <button type="button" className="btn btn-outline-dark no-radius btn-lg" onClick={() => this.increaseAmount()}>+</button>
+                        <button id="add-to-cart" type="button" className="btn btn-dark no-radius btn-lg" data-toggle="modal" data-target="#myModal" onClick={() => this.addToCart()}>IN DEN EINKAUFSWAGEN</button>
                     </div>
                 </div>
                 </main>
