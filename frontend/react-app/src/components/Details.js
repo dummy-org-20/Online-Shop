@@ -26,7 +26,6 @@ class Details extends Component {
                 amount: 1,
                 urls: this.urlsToArray(data.urls)
             });
-            console.log(this.state.urls)
         }).catch(function (error) {
             console.log(error.message)
         });
