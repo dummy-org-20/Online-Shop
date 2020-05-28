@@ -44,6 +44,7 @@ class Account extends Component {
                             () => {
                                     Auth.logout(() => {
                                         this.props.history.push("/");
+										fetch("/logout");
                                 });
                             }
                         } type="button" id="signout-btn" className="btn btn-danger no-radius text-center">Abmelden</button>

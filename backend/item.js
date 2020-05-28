@@ -28,7 +28,7 @@ class ShopItem {
     }
     
     insertItem(item, db, callback) {
-        db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`,`isAvailable`,`prc_Angebot`) VALUES (?, ?, ?, ?, ?,?)",
+        db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`,`isAvailable`,`prc_Angebot`) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     [item.creator_id, item.category_id, item.price, item.name, item.description, item.isAvailable,item.prc_Angebot],
                     function(result) {
             callback(result.affectedRows > 0 ? result.insertId : -1);
