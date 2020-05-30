@@ -171,7 +171,7 @@ const itemDeleteLimiter = rateLimit({
 
 const imageLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000, // 2 min window
-	max: 100, // start blocking after 100 requests
+	max: 300, // start blocking after 300 requests
 	message:
 		"Sorry but you tried to access to many Images in a short amount of time, please try again in 2 minutes",
 	onLimitReached: function (req, res, options) {
@@ -443,40 +443,43 @@ function start(){
     //search after itemName in single, multiple or all categories
     app.get("/search", searchLimiter,function(req, res){
 		console.log("/search wird aufgerufen");
-		let cats = req.query.category.toString();
-		let sfor = req.query.item+"%";
-
-        let splitCat = cats.split(",").forEach(x => {x = "'"+x+"'"});
-        if(splitCat!=null){
-            db.search("select * from shop_categories where name IN ("+splitCat+")", (rows)=>{
-                var categories = new Array();
-                for (let index = 0; index < rows.length; index++) {
-                    categories.push(rows[index].id);
-                }
-                if(categories==[]){
-                    console.log(categories);
-                    db.search("select * from shop_items where category_id IN (" +categories+ ") AND name LIKE \""+sfor+"\"", (rows)=>{
-                        var items = new Array();
-                        for (let index = 0; index < rows.length; index++) {
-                            items.push(Object.assign(new Item(), rows[index]));
-                        }
-                        console.log(items);
-                        res.status(200).json(items);
-                    });
-                } else {
-                    let err = "Error: category >>"+cats+"<< does not exist";
-                    console.log(err);
-                    res.status(400).send({message:err});
-                }
-            });
+		if(req.query.category==undefined||req.query.item==undefined){
+			res.status(400).send();
+			return;
+		}
+		let cats = String(req.query.category);
+		let sfor = String(req.query.item)+"%";
+		if(cats!=""){
+			let splitCat = cats.split(",");
+			splitCat.forEach((x,i,a)=>{a[i]="\'"+String(x)+"\'"});
+            db.search("select * from shop_items where category_id IN (" +String(splitCat)+ ") AND isAvailable=1 AND name LIKE \""+sfor+"\"", (rows)=>{
+				var items = new Array();
+				let item= new Item();
+				for (let index = 0; index < rows.length; index++) {
+					item.getItem(rows[index]["id"],db,(item)=>{
+						items.push(item);
+						if(items.length==rows.length){
+							res.status(200).json(items);
+							return;
+						}
+					});
+				}
+				if(rows.length==0)res.status(200).json(items);
+			});
         } else {
-            db.search("select * from shop_items where name LIKE \""+sfor+"\"", (rows)=>{
+            db.search("select * from shop_items where name LIKE \""+sfor+"\" AND isAvailable=1", (rows)=>{
                 var items = new Array();
-                for (let index = 0; index < rows.length; index++) {
-                    items.push(Object.assign(new Item(), rows[index]));
-                }
-                console.log(items);
-                res.status(200).json(items);
+				let item= new Item();
+				for (let index = 0; index < rows.length; index++) {
+					item.getItem(rows[index]["id"],db,(item)=>{
+						items.push(item);
+						if(items.length==rows.length){
+							res.status(200).json(items);
+							return;
+						}
+					});
+				}
+				if(rows.length==0)res.status(200).json(items);
             });
         }
     })

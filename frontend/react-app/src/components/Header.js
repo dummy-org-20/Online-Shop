@@ -1,7 +1,43 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import $ from 'jquery';
+import { useHistory } from "react-router-dom";
+
 
 class Header extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            redirect:false,
+            categories:[],
+            search:""    
+        };
+    
+        this.handleSearchBar = this.handleSearchBar.bind(this);
+    }
+
+    handleSearchBar= (event)=>{
+        if (event.which == 13 || event.keyCode == 13) {
+            this.setState({
+                search: $(".form-control#myInput")[0].value,
+                redirect:true
+            })
+        }
+    }
+
+    renderRedirect(){
+        if(window.location.pathname=="/products"&&this.state.redirect){
+            this.props.update();
+        }
+        if(this.state.redirect){
+            this.state.redirect=false;
+            return <Redirect to={'/products?categories='+String(this.state.categories)+"&search="+String(this.state.search)} />
+        }
+    }
+
     render() {
         return (
             <div>
@@ -40,14 +76,8 @@ class Header extends Component {
                     </div>
                     {/* Search-Bar */}
                     <div id="search-bar" className="mx-auto order-0">
-                    <input className="form-control" id="myInput" type="text" placeholder="Suche" onKeyPress={function (event) {
-                                                                                                                    if (event.which == 13 || event.keyCode == 13) {
-                                                                                                                        var input = document.getElementById('myInput').value;
-                                                                                                                        fetch("/search?item="+input+"&category=", {method: 'GET'}).then(response => response.json()).then(data => {
-                                                                                                                            console.log(data);
-                                                                                                                        });  
-                                                                                                                    }
-                                                                                                                }}/>
+                    {this.renderRedirect()}
+                    <input className="form-control" id="myInput" type="text" placeholder="Suche" onKeyPress={this.handleSearchBar}/>
                     </div>
                     {/* Sort */}
                     <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">
@@ -58,9 +88,10 @@ class Header extends Component {
                             Sortieren
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="#">Preis absteigend</a>
-                            <a className="dropdown-item" href="#">Preis aufsteigend</a>
-                            <a className="dropdown-item" href="#">Alphabetisch</a>
+                            <a className="dropdown-item" id="1" href="#" onClick={()=>this.props.sorting("ASC")}>Preis aufsteigend</a>
+                            <a className="dropdown-item" id="2" href="#" onClick={()=>this.props.sorting("DESC")}>Preis absteigen</a>
+                            <a className="dropdown-item" id="3" href="#" onClick={()=>this.props.sorting("ALPHASC")}>Alphabetisch aufsteigend</a>
+                            <a className="dropdown-item" id="4" href="#" onClick={()=>this.props.sorting("ALPHDESC")}>Alphabetisch absteigend</a>
                             </div>
                         </div>
                         </li>

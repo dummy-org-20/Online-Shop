@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class ProductCard extends Component {
     render() {
         return (
             <React.Fragment>
                 <div className="col-3">
-                    <Link to="/details/abc">
+                    <Link to={"/details/"+String(this.props.id)}>
                     <div className="card no-radius">
                         <div className="zoom">
-                        <img className="card-img-top" src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto/i1-512bfa8a-01a0-4971-bd34-9cef18a159e0/air-force-1-07-damenschuh-sg6nmr.jpg" alt="Kein Bild" />
+                        <img className="card-img-top" style={{"max-width":"100%","max-height":"100%","object-fit": "contain"}} src={this.props.url} alt={this.props.alt} name={this.props.name} />
                         </div>
                         <div className="card-body">
-                        <h5>Nike Air Force 1</h5>
-                        <h5>99,99€</h5>
+                            <h5>{this.props.name}</h5>
+                            <h5>{this.props.price}</h5>
                         </div>
                     </div>
                     </Link>
@@ -21,6 +22,13 @@ class ProductCard extends Component {
             </React.Fragment>
         )
     }
+}
+
+ProductCard.protoTypes = {
+    url: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    id : PropTypes.number.isRequired
 }
 
 export default ProductCard;
