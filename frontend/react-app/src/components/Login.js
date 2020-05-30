@@ -59,7 +59,7 @@ class Login extends Component {
         }
         $.ajax({
             type:"POST",
-            url : encodeURI("/register?username="+String(newUser)+"&password="+String(newPwd)+"security_answer="+String(newQuestion)),
+            url : encodeURI("/register?username="+String(newUser)+"&password="+String(newPwd)+"&security_answer="+String(newQuestion)),
             success : (data)=>{
                 Auth.login(() => {
                     this.props.history.push("/account");

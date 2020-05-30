@@ -1,6 +1,13 @@
 class Auth {
     constructor() {
         this.authenticated = false;
+
+        // Check if User is already logged in
+        fetch("/user", {method: 'GET'}).then(response => response.json()).then(data => {
+            if (data.username !== 'temp') {
+                this.authenticated = true;
+            }
+        });
     }
 
     login(cb) {
