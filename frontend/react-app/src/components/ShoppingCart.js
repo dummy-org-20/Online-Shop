@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import ShoppingCartItems from './ShoppingCartItems';
-import ShoppingCartModal from './ShoppingCartModal';
-import $ from 'jquery';
 
 class ShoppingCart extends Component {
 
