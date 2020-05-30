@@ -492,6 +492,9 @@ function start(){
 		if(username==undefined||password==undefined||security_answer==undefined){
 			res.status(400).send({message:"wrong parameters"});
 		}
+		username=String(username);
+		password=String(password);
+		security_answer=String(security_answer);
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -650,8 +653,8 @@ function start(){
 			null,
 			parseInt(req.query.category_id),
 			parseInt(req.query.price),
-			req.query.name,
-			req.query.description,
+			String(req.query.name),
+			String(req.query.description),
 			true,
 			100
 		);
@@ -747,6 +750,7 @@ function start(){
 			}
 		});
 	});
+
 
 	
 	app.use(function (err, req, res, next) {

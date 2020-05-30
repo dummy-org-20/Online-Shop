@@ -18,6 +18,7 @@ class Login extends Component {
     
         this.handleChange = this.handleChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleSignup = this.handleSignup.bind(this);
     }
     
     handleChange(event) {
