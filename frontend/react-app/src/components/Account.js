@@ -41,10 +41,11 @@ class Account extends Component {
                     {/* Signout-Btn */}
                     <div className="text-center">
                         <button onClick={
-                            () => {
+                            async () => {
+                                await fetch("/logout",{method:"POST"});
+                                await fetch("/getCookie",{method:"GET"});
                                 Auth.logout(() => {
                                     this.props.history.push("/");
-									fetch("/logout");
                                 });
                             }
                         } type="button" id="signout-btn" className="btn btn-danger no-radius text-center">Abmelden</button>

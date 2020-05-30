@@ -82,6 +82,7 @@ class AddProducts extends Component {
 		$(".custom-file-input#customFile3").unbind("change");
 		$(".custom-file-input#customFile4").unbind("change");
 		$("#iteminsert").submit(function(e) {
+			$("btn.btn-outline-dark.no-radius.btn-lg").disable = true;
 			e.preventDefault(); // avoid to execute the actual submit of the form.
 			if(($(".form-control#price")[0].value).match(/^[0-9]+,?[0-9]{2}$/)==null){
 				alert("Bitte geben sie beim Preis einen richtigen Wert ein");
@@ -111,8 +112,10 @@ class AddProducts extends Component {
 					if(file3!=undefined)await sendImage(file3,item_id,3,$(".custom-file-input#customFile3")[0].files[0].name);
 					if(file4!=undefined)await sendImage(file4,item_id,4,$(".custom-file-input#customFile4")[0].files[0].name);
 					alert("Die Items würden Erfolgreich hinzugefügt");
+					window.location.reload();
 				   },
 				   error: function(data){
+						$("btn.btn-outline-dark.no-radius.btn-lg").disable = false;
 					   if(data.status==429){
 						   alert("Zu viele Anfragen gesendet, bitte warten sie 20 Minuten");
 					   }else {
@@ -157,7 +160,6 @@ const toBase64 = file => new Promise((resolve, reject) => {
 const sendImage = (base64,item_id,order_id,image_name) => new Promise((resolve, reject) => {
 	let json={"image":base64.substring(base64.search(",")+1)};
 	json = JSON.stringify(json);
-	console.log(json);
     $.ajax({
 	  type: "POST",
 	  url: encodeURI("/uploadImage?item_id="+item_id+"&order_id="+order_id+"&image_name="+image_name),
@@ -170,7 +172,6 @@ const sendImage = (base64,item_id,order_id,image_name) => new Promise((resolve, 
 		  reject(data);
 		}
 	});
-	console.log(encodeURI("/uploadImage?item_id="+item_id+"&order_id="+order_id+"&image_name="+image_name));
 });
 
 export default AddProducts;

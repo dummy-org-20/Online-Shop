@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Auth from './Auth';
+import $ from 'jquery';
 
 class Login extends Component {
 
@@ -28,26 +29,49 @@ class Login extends Component {
     handleLogin(event) {
         const { user, pwd } = this.state;
 
-
-        // API Call here
-
-
-        // Soll nur ausgefuehrt werden, wenn API-Call erfolgreich war
-        Auth.login(() => {
-            this.props.history.push("/account");
+        $.ajax({
+            type:"POST",
+            url : encodeURI("/login?username="+String(user)+"&password="+String(pwd)),
+            success : (data)=>{
+                Auth.login(() => {
+                    this.props.history.push("/account");
+                });
+            },
+            error : function(data){
+                if(data.status==400){
+                    alert("Username oder Passwort ist falsch");
+                }else if(data.status==429){
+                    alert("Too many attemps. Try again in 10 minutes");
+                }else{
+                    alert("There is an internal server issue. Please wait while we resolve the issue");
+                }
+            }
         });
     }
 
     handleSignup(event) {
         const { newUser, newPwd, newQuestion } = this.state;
-        
-
-        // API Call here
-
-
-        // Soll nur ausgefuehrt werden, wenn API-Call erfolgreich war
-        Auth.login(() => {
-            this.props.history.push("/account");
+        if(newUser==undefined||newPwd==undefined||newQuestion==undefined){
+            alert("Bitte füllen sie alle Felder aus");
+            return;
+        }
+        $.ajax({
+            type:"POST",
+            url : encodeURI("/register?username="+String(newUser)+"&password="+String(newPwd)+"security_answer="+String(newQuestion)),
+            success : (data)=>{
+                Auth.login(() => {
+                    this.props.history.push("/account");
+                });
+            },
+            error : function(data){
+                if(data.status==429){
+                    alert("You made too many new Accounts, try again in a day")
+                }else if(data.status==400){
+                    alert("Dieser Nutzername existiert bereits")
+                }else{
+                    alert("There is an internal server issue. Please wait while we resolve the issue");
+                }
+            }
         });
     }
     

@@ -89,6 +89,10 @@ class User {
 	//function which changes *this* user to the user with the username and password
 	getUser(username,password,security_answer,callback){
 		getSalt(username,this.db,(salt)=>{
+			if(salt==null){
+				callback(this);
+				return;
+			}
 			crypto.pbkdf2(password, salt, 1000000, 64, 'sha512', (err, derivedKey) => {
 				if (err) throw err;
 				password=derivedKey.toString('hex');
@@ -209,7 +213,8 @@ class User {
 
 function getSalt(username,db,callback){
 	db.safeSearch("SELECT salt FROM shop_users WHERE username=?",[username],(res)=>{
-		callback(res[0]["salt"]);
+		if(res.length==0)callback(null);
+		else callback(res[0]["salt"]);
 	})
 }
 
