@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Auth from './Auth';
+import logo from '../logo.png';
 import $ from 'jquery';
 
 class Login extends Component {
@@ -81,7 +82,7 @@ class Login extends Component {
             <main id="login-signup">
                 {/* Logo */}
                 <Link to="/">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png" width={150} height={45} alt="Shop" />
+                    <img src={logo} height={45} alt="Shop" />
                 </Link>
                 {/* Tabs */}
                 <nav>

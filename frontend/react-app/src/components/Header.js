@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../logo.png';
 
 class Header extends Component {
     render() {
@@ -11,7 +12,7 @@ class Header extends Component {
                 <div className="container">
                     {/* Logo */}
                     <Link to="/">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png" width={150} height={45} alt="Shop" />
+                    <img src={logo} height={45} alt="Logo" />
                     </Link>
                     {/* Message, Profile-Pic, Shoppingcart-Icon */}
                     <ul className="navbar-nav ml-auto">
