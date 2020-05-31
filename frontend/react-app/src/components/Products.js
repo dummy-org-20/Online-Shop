@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './Header';
 import $ from 'jquery';
 import ProductCard from './ProducCard';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 const url="http://localhost:8000";
 let oldCat=[];
@@ -38,14 +38,15 @@ class Products extends Component {
     }
 
     update = ()=>{
-        if(areArraysEqualSets(oldCat,this.state.checkedCategories)&&oldSearch==$(".form-control#myInput")[0].value)return;
+        if(arraysEqual(oldCat,this.state.checkedCategories)&&oldSearch==$(".form-control#myInput")[0].value)return;
         this.setState({
             items:[],
             search: $(".form-control#myInput")[0].value,
         },()=>{
-            oldCat=this.state.checkedCategories
+            oldCat=this.state.checkedCategories.concat();
             oldSearch=this.state.search;
             this.searchAndDisplay(()=>{this.sorting(this.state.sort)});
+            this.props.history.push("/products?categories="+String(this.state.checkedCategories)+"search="+String(this.state.search));
         })
     }
 
@@ -174,28 +175,20 @@ class Products extends Component {
     }
 }
 
-function areArraysEqualSets(a1, a2) {
-    let superSet = {};
-    for (let i = 0; i < a1.length; i++) {
-      const e = a1[i] + typeof a1[i];
-      superSet[e] = 1;
-    }
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
   
-    for (let i = 0; i < a2.length; i++) {
-      const e = a2[i] + typeof a2[i];
-      if (!superSet[e]) {
-        return false;
-      }
-      superSet[e] = 2;
-    }
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
   
-    for (let e in superSet) {
-      if (superSet[e] === 1) {
-        return false;
-      }
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
     }
-  
     return true;
   }
 
-export default Products;
+  export default withRouter(Products);

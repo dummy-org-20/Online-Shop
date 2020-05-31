@@ -16,7 +16,6 @@ class Header extends Component {
             categories:[],
             search:"", 
         };
-        console.log("Header is created")
         this.handleSearchBar = this.handleSearchBar.bind(this);
     }
 
