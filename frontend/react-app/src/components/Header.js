@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
-import { useHistory } from "react-router-dom";
+
 
 import logo from '../logo.png';
 
@@ -14,9 +14,9 @@ class Header extends Component {
         this.state = {
             redirect:false,
             categories:[],
-            search:""    
+            search:"", 
         };
-    
+        console.log("Header is created")
         this.handleSearchBar = this.handleSearchBar.bind(this);
     }
 
@@ -24,13 +24,15 @@ class Header extends Component {
         if (event.which == 13 || event.keyCode == 13) {
             this.setState({
                 search: $(".form-control#myInput")[0].value,
-                redirect:true
+                redirect:true,
             })
+            console.log("searchbar is updating")
         }
     }
 
     renderRedirect(){
         if(window.location.pathname=="/products"&&this.state.redirect){
+            this.state.redirect=false;
             this.props.update();
         }
         if(this.state.redirect){

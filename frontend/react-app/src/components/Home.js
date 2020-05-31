@@ -28,8 +28,6 @@ class Home extends Component {
         for(let i=1;i<9;i++){
             fetch("/item/"+i,{method:"GET"}).then(response=>response.json()).then((element)=>{
                 element["price"]=this.formatPrice(parseInt(element["price"]));
-                console.log(element)
-                console.log(element.urls);
                 if(element["urls"]["0"]==undefined){
                     this.setState({
                         items:this.state.items.concat(<ProductCard url={url+"/image/Test/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>)
@@ -40,7 +38,6 @@ class Home extends Component {
                     });
                 }
                 if(this.state.items.length==8){
-                    console.log(this.state.items)
                     this.setState({
                         items:this.state.items.sort(function(a,b){return a.props["id"]-b.props["id"]})
                     })

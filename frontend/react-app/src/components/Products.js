@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Header from './Header';
 import $ from 'jquery';
 import ProductCard from './ProducCard';
+import { Redirect } from 'react-router-dom';
 
 const url="http://localhost:8000";
+let oldCat=[];
+let oldSearch="";
 
 const SortingAlgorithm={
-    "ASC": function(a,b){return a["price"]-b["price"]},
-    "DESC": function(a,b){return b["price"]-a["price"]},
-    "ALPHASC" : function(a,b){return a["name"].localeCompare(b["name"])},
-    "ALPHDESC" : function(a,b){return b["name"].localeCompare(a["name"])},
+    "ASC": function(a,b){return parseFloat(a.props["price"].substring(0,a.props["price"].length-1).replace(",",".")-b.props["price"].substring(0,b.props["price"].length-1).replace(",","."))},
+    "DESC": function(a,b){return parseFloat(b.props["price"].substring(0,b.props["price"].length-1).replace(",",".")-a.props["price"].substring(0,a.props["price"].length-1).replace(",","."))},
+    "ALPHASC" : function(a,b){return a.props["name"].localeCompare(b.props["name"])},
+    "ALPHDESC" : function(a,b){return b.props["name"].localeCompare(a.props["name"])},
 }
 
 class Products extends Component {
@@ -20,7 +22,7 @@ class Products extends Component {
         this.state={categories:[],
         checkedCategories:[],
         search:"",
-        sort:"ALPHASC",
+        sort:"",
         items:[]}
     }
 
@@ -36,15 +38,15 @@ class Products extends Component {
     }
 
     update = ()=>{
-        console.log("im called");
-        $(window).unbind("change");
-        $(window).on('change',()=>{
-            this.setState({
-                items:[],
-                search: $(".form-control#myInput")[0].value,
-            })
-            this.searchAndDisplay();
-        });
+        if(areArraysEqualSets(oldCat,this.state.checkedCategories)&&oldSearch==$(".form-control#myInput")[0].value)return;
+        this.setState({
+            items:[],
+            search: $(".form-control#myInput")[0].value,
+        },()=>{
+            oldCat=this.state.checkedCategories
+            oldSearch=this.state.search;
+            this.searchAndDisplay(()=>{this.sorting(this.state.sort)});
+        })
     }
 
     componentDidMount() {
@@ -65,7 +67,6 @@ class Products extends Component {
                                         checkedCategories:this.state.checkedCategories.concat([checkbox.id.substring(checkbox.id.length-1)])
                                     })
                                 }
-                                console.log(this.state.checkedCategories)
                             }
                         } />
                     <label className="form-check-label" htmlFor="defaultCheck1">{data[i]["name"]}</label>
@@ -77,13 +78,20 @@ class Products extends Component {
             this.setState({
                 checkedCategories: searchParams.get("categories").split(","),
                 search:searchParams.get("search")
+            },()=>{
+                oldSearch=this.state.search;
+                oldCat=this.state.checkedCategories;
+                $(".form-control#myInput")[0].value=this.state.search;
+                this.checkBoxes();
+                this.searchAndDisplay(()=>{this.sorting("ALPHASC")});
             })
-            $(".form-control#myInput")[0].value=this.state.search;
-            this.checkBoxes();
-            this.searchAndDisplay();
         }).catch(function (error) {
             console.log(error)
         });
+    }
+
+    getCategories=()=>{
+        return this.state.checkedCategories
     }
 
     formatPrice(price) {
@@ -95,19 +103,16 @@ class Products extends Component {
     }
 
     sorting=(sort)=>{
-        if(this.state.sort==sort)return;
         this.setState({
             sort:sort,
-            items:[]
+            items:this.state.items.sort(SortingAlgorithm[sort])
         })
-        this.searchAndDisplay();
+        //this.searchAndDisplay();
     }    
 
-    searchAndDisplay(){
-        console.log(this.state.search);
+    searchAndDisplay(callback){
         fetch("/search?category="+String(this.state.checkedCategories)+"&item="+String(this.state.search),{method:"GET"}).then(response => response.json()).then((data)=>{
-            let sortedData=data.sort(SortingAlgorithm[this.state.sort]);
-            sortedData.forEach(element => {
+            data.forEach(element => {
                 element["price"]=this.formatPrice(parseInt(element["price"]));
                 if(element["urls"]["0"]==undefined){
                     this.setState({
@@ -119,6 +124,7 @@ class Products extends Component {
                     });
                 }
             });
+            if(callback!=undefined)callback();
         });
     }
 
@@ -167,5 +173,29 @@ class Products extends Component {
         )
     }
 }
+
+function areArraysEqualSets(a1, a2) {
+    let superSet = {};
+    for (let i = 0; i < a1.length; i++) {
+      const e = a1[i] + typeof a1[i];
+      superSet[e] = 1;
+    }
+  
+    for (let i = 0; i < a2.length; i++) {
+      const e = a2[i] + typeof a2[i];
+      if (!superSet[e]) {
+        return false;
+      }
+      superSet[e] = 2;
+    }
+  
+    for (let e in superSet) {
+      if (superSet[e] === 1) {
+        return false;
+      }
+    }
+  
+    return true;
+  }
 
 export default Products;
