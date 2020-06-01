@@ -26,20 +26,17 @@ class Home extends Component {
 
     componentDidMount(){
         for(let i=1;i<9;i++){
+            var item=[]
             fetch("/item/"+i,{method:"GET"}).then(response=>response.json()).then((element)=>{
                 element["price"]=this.formatPrice(parseInt(element["price"]));
                 if(element["urls"]["0"]==undefined){
-                    this.setState({
-                        items:this.state.items.concat(<ProductCard url={url+"/image/Test/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>)
-                    });
+                item=item.concat([<ProductCard url={url+"/image/Test/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
                 }else{
-                    this.setState({
-                        items:this.state.items.concat(<ProductCard url={url+"/image/"+element["urls"]["0"]} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>)
-                    });
+                item=item.concat([<ProductCard url={url+"/image/"+element["urls"]["0"]} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
                 }
-                if(this.state.items.length==8){
+                if(item.length==8){
                     this.setState({
-                        items:this.state.items.sort(function(a,b){return a.props["id"]-b.props["id"]})
+                        items:item.sort(function(a,b){return a.props["id"]-b.props["id"]})
                     })
                 }
             });
@@ -55,7 +52,7 @@ class Home extends Component {
                 <HomeCarousel />
                 <div className="container">
                     <HomeCategories />
-                    <Link to="/products">
+                    <Link to="/products?categories=&search=">
                         <button type="button" id="products-btn" className="btn btn-secondary btn-lg no-radius">Alle Produkte</button>
                     </Link>
                     <div className="row">

@@ -685,8 +685,12 @@ function start(){
 	
 	app.get('/image/:item_id/:image_name',imageLimiter, function (req, res) {
 		console.log("/image/:item_id/:image_name wird aufgerufen");
-		let item_id=req.params.item_id;
-		let image_name=req.params.image_name;
+		let item_id=String(req.params.item_id);
+		let image_name=String(req.params.image_name);
+		if(item_id.match(/^[0-9]+$/)==null||image_name.match(/[a-zA-Z0-9\-_\.]+\.\w+$/)==null){
+			res.status(400).send();
+			return;
+		}
 		var options = {
 			root: __dirname+"/..",
 			dotfiles: 'deny',
@@ -697,8 +701,6 @@ function start(){
 		}
 		res.sendFile("images/"+item_id+"/"+image_name,options, function (err) {
 			if (err) {
-				res.status(400);
-				res.send("Image existiert nicht");
 				console.log(err);
 			} else {
 				console.log('Sent:', image_name);

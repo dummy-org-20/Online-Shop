@@ -25,7 +25,6 @@ class Header extends Component {
                 search: $(".form-control#myInput")[0].value,
                 redirect:true,
             })
-            console.log("searchbar is updating")
         }
     }
 
