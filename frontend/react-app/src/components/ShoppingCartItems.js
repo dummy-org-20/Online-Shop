@@ -6,7 +6,7 @@ class ShoppingCartItems extends Component {
     render() {
         return this.props.items.map((item) =>(
             (
-                <ShoppingCartItem key={item.id} changeSum={this.props.changeSum} item={item} />
+                <ShoppingCartItem key={item.id} changeSum={this.props.changeSum} item={item} delete={this.props.delete} />
             )
         ));
     }

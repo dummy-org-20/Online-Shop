@@ -15,7 +15,11 @@ class ShoppingCartItem extends Component {
     decreaseAmount() {
         this.props.changeSum(-1*parseInt(this.state.price));
         fetch("/setWarenkorb?item_id="+this.state.id+"&count="+ -1, {method: 'POST'}).then(response => {
-            this.setState({amount: this.state.amount - 1})
+            this.setState({amount: this.state.amount - 1},()=>{
+            if(this.state.amount==0){
+                this.props.delete(this.state.id);
+                return;
+            }})
         });
     }
 
@@ -30,9 +34,9 @@ class ShoppingCartItem extends Component {
     render() {
         return (
             <tr>
-                <td onClick={() => window.location.href='../details/'+this.state.item.id}>
+                <td onClick={() => window.location.href='../details/'+this.state.id}>
                     <img src={ this.state.img } width={45} height={45} alt="This is where the item would be displayed"/>
-                    <span> { this.state.titel }</span>
+                    <span> { this.state.title }</span>
                 </td>
                 <td>
                     <button type="button" className="btn btn-outline-dark no-radius" onClick={() => this.decreaseAmount()}>-</button>

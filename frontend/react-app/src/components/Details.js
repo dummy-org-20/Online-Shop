@@ -79,15 +79,14 @@ class Details extends Component {
                 return
             }
             console.log("nice shot")
+            this.setState({
+                amount: 1
+            });
+            this.props.history.push("/shopping-cart")
         })
         .catch(function (error) {
             console.log(error.message)
         });
-
-        this.setState({
-            amount: 1
-        });
-        this.props.history.push("/shopping-cart")
     }
 
     render() {

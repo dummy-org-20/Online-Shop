@@ -90,7 +90,22 @@ class AddProducts extends Component {
 			}
 			let oldPreis=$(".form-control#price")[0].value;
 			let preis= parseFloat(($(".form-control#price")[0].value.replace(",",".")));
-			$(".form-control#price")[0].value = parseInt(preis*100);
+			if((".custom-file-input#customFile1")[0].files[0]!=undefined&&$(".custom-file-input#customFile1")[0].files[0].name.length>32){
+				alert("Der Bildname 1 ist zu lang");
+				return;
+			}
+			if((".custom-file-input#customFile2")[0].files[0]!=undefined&&$(".custom-file-input#customFile2")[0].files[0].name.length>32){
+				alert("Der Bildname 2 ist zu lang");
+				return;
+			}
+			if((".custom-file-input#customFile3")[0].files[0]!=undefined&&$(".custom-file-input#customFile3")[0].files[0].name.length>32){
+				alert("Der Bildname 3 ist zu lang");
+				return;
+			}
+			if((".custom-file-input#customFile4")[0].files[0]!=undefined&&$(".custom-file-input#customFile4")[0].files[0].name.length>32){
+				alert("Der Bildname 4 ist zu lang");
+				return;
+			}
 			var form = $(this);
 			var url = form.attr('action');
 			console.log(encodeURI(url+"?"+form.serialize()))

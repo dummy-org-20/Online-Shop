@@ -18,7 +18,7 @@ class ShoppingCart extends Component {
                 for (let index = 0; index < data.length; index++) {
                     var finished = 0;
                     fetch("/item/"+ data[index].item_id).then(response => response.json()).then(data2 => {
-                        item_array[index] = {id: data2.id, title: data2.name, price: data2.price, amount: data[index].amount, img: "http://localhost:8000/image/" + data2.urls[0]};
+                        item_array[index] = {id: data2.id, title: data2.name, price: data2.price, amount: data[index].amount, img: "/image/" + data2.urls[0]};
                         item_sum += (parseInt(data[index].amount) * parseInt(data2.price));
                         finished++;
                         if(finished==data.length){
@@ -32,6 +32,11 @@ class ShoppingCart extends Component {
         });
     }
 
+    delete(id){
+        var index=this.state.items.findIndex(element=>element.id==id);
+        this.state.items.splice(index,1);
+        this.forceUpdate();
+    }
     /* state = {
         items: [
             {
@@ -74,7 +79,7 @@ class ShoppingCart extends Component {
                     <tbody>
                         <ShoppingCartItems changeSum={(diff)=>{this.setState({
                             sum:this.state.sum+diff
-                        })}} items={this.state.items}/>
+                        })}} items={this.state.items} delete={(id)=>this.delete(id)}/>
                     </tbody>
                     </table>
                     <div id="shopping-cart-options">
