@@ -171,7 +171,7 @@ const itemDeleteLimiter = rateLimit({
 
 const imageLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000, // 2 min window
-	max: 300, // start blocking after 300 requests
+	max: 500, // start blocking after 300 requests
 	message:
 		"Sorry but you tried to access to many Images in a short amount of time, please try again in 2 minutes",
 	onLimitReached: function (req, res, options) {
@@ -313,7 +313,7 @@ function start(){
 		let item_id = parseInt(req.query.item_id);
 		let order_id = parseInt(req.query.order_id);
 		let image_name = req.query.image_name;
-		if(!Number.isInteger(item_id)||!Number.isInteger(order_id)||image_name.match(/[a-zA-Z0-9]+\.\w+$/)==null||req.body.image==undefined){
+		if(!Number.isInteger(item_id)||!Number.isInteger(order_id)||image_name.match(/[a-zA-Z0-9]+\.\w+$/)==null||image_name.length>32||req.body.image==undefined){
 			res.status(400).send();
 			return;
 		}

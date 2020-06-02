@@ -4,7 +4,6 @@ import $ from 'jquery';
 import ProductCard from './ProducCard';
 import { withRouter } from "react-router-dom";
 
-const url="http://localhost:8000";
 
 const SortingAlgorithm={
     "ASC": function(a,b){return parseFloat(a.props["price"].substring(0,a.props["price"].length-1).replace(",",".")-b.props["price"].substring(0,b.props["price"].length-1).replace(",","."))},
@@ -129,10 +128,6 @@ class Products extends Component {
         });
     }
 
-    getCategories=()=>{
-        return this.state.checkedCategories
-    }
-
     formatPrice(price) {
         let euro = Number.parseInt(price / 100)
         let cent = price % 100
@@ -156,16 +151,13 @@ class Products extends Component {
                     if(this.state.minPrice>(data[i]["price"]/100))continue
                 }
                 if(this.state.maxPrice!=undefined){
-                    console.log((data[i]["price"]/100))
-                    console.log(this.state.maxPrice)
-                    console.log(this.state.maxPrice<(data[i]["price"]/100));
                     if(this.state.maxPrice<(data[i]["price"]/100))continue
                 }
                 data[i]["price"]=this.formatPrice(parseInt(data[i]["price"]));
                 if(data[i]["urls"]["0"]==undefined){
-                        item=item.concat(<ProductCard url={url+"/image/Test/test.jpg"} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
+                        item=item.concat(<ProductCard url={"/image/Test/test.jpg"} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
                 }else{
-                    item=item.concat(<ProductCard url={url+"/image/"+data[i]["urls"]["0"]} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
+                    item=item.concat(<ProductCard url={"/image/"+data[i]["urls"]["0"]} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
                 }
             }
             this.setState({
