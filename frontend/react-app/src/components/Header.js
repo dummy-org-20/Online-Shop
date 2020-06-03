@@ -6,6 +6,7 @@ import $ from 'jquery';
 
 
 import logo from '../logo.png';
+import userImg from '../user-img.png';
 
 class Header extends Component {
 
@@ -16,7 +17,7 @@ class Header extends Component {
             redirect:false,
             categories:[],
             search:"",
-            username:"" 
+            username:""
         };
         this.handleSearchBar = this.handleSearchBar.bind(this);
     }
@@ -30,6 +31,13 @@ class Header extends Component {
         }
     }
 
+    componentDidMount(){
+        Auth.getUsername((name) => {
+            console.log(name)
+            this.setState({username : name});
+        })
+    }
+
     renderRedirect(){
         if(window.location.pathname=="/products"&&this.state.redirect){
             this.state.redirect=false;
@@ -38,12 +46,6 @@ class Header extends Component {
         if(this.state.redirect){
             this.state.redirect=false;
             return <Redirect to={'/products?categories='+String(this.state.categories)+"&search="+String(this.state.search)} />
-        }
-    }
-
-    getUserName(){
-        if(Auth.state.user!="temp"){
-            this.setState({username : Auth.state.user});
         }
     }
 
@@ -61,11 +63,11 @@ class Header extends Component {
                     {/* Message, Profile-Pic, Shoppingcart-Icon */}
                     <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-        <p id="welcome">Willkommen {Auth.state.user}</p>
+        <p id="welcome">Willkommen {this.username}</p>
                     </li>
                     <li className="nav-item">
                         <Link to="/account">
-                        <img id="profil-img" src="https://stafforgserv.com.au/wp-content/uploads/2018/09/user-img.png" width={45} height={45} />
+                        <img id="profil-img" src={userImg} width={45} height={45} />
                         </Link>
                     </li>
                     <li className="nav-item">

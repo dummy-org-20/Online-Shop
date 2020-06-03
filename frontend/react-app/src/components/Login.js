@@ -57,6 +57,13 @@ class Login extends Component {
             alert("Bitte füllen sie alle Felder aus");
             return;
         }
+        if(25<newUser.length) alert("Username is too long: please do not use more than 25 characters");
+        if(newUser.length<3) alert("Username is too short: please use more than 3 characters");
+        if(100<newPwd.length) alert("Password is too long: please do not use more than 100 characters");
+        if(newPwd.length<8) alert("Password is too short: please use at least 8 characters");
+        if(100<newQuestion.length) alert("Security answer is too long: please do not use more than 100 characters");
+        if(newQuestion.length<2) alert("Security answer is too short: please use at least 2 characters");
+
         $.ajax({
             type:"POST",
             url : encodeURI("/register?username="+String(newUser)+"&password="+String(newPwd)+"&security_answer="+String(newQuestion)),

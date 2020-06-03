@@ -11,6 +11,14 @@ class ShoppingCart extends Component {
         }
     }
 
+    formatPrice(price) {
+        let euro = Number.parseInt(price / 100)
+        let cent = price % 100
+        if(cent == 0) return euro + "€"
+        if(cent < 10) return euro + ",0" + cent + "€"
+        return euro + "," + cent + "€"
+    }
+
     componentDidMount() {
         fetch("/getWarenkorb").then(response => response.json()).then(data => {
                 var item_sum = 0;
@@ -96,7 +104,7 @@ class ShoppingCart extends Component {
                         <button type="button" className="close" data-dismiss="modal">×</button>
                     </div>
                     <div className="modal-body">
-                        <h3>Summe: {this.state.sum}€</h3>
+                        <h3>Summe: { this.formatPrice(this.state.sum)}</h3>
                         <form>
                         <div className="form-row">
                             <div className="form-group col-md-6">
