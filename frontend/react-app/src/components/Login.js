@@ -31,6 +31,20 @@ class Login extends Component {
     handleLogin(event) {
         const { user, pwd } = this.state;
 
+        if(user==undefined||user.length<=3){
+            alert("Nutzername sollte mindenstens eine Länge von 3 haben");
+            return;
+        }else if(user.length>25){
+            alert("Nutzername kann nicht mehr als 25 Zeichen haben");
+            return;
+        }
+        if(pwd==undefined||pwd.length<8){
+            alert("Passwort Länge sollte mindenstens 8 Zeichen betragen");
+            return;
+        }else if(pwd.length>100){
+            alert("Das Passwort kann höchstens 100 Zeichen beinhalten");
+            return;
+        }
         $.ajax({
             type:"POST",
             url : encodeURI("/login?username="+String(user)+"&password="+String(pwd)),
