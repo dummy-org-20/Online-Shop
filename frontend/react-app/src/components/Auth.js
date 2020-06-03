@@ -1,29 +1,57 @@
 class Auth {
     constructor() {
         this.authenticated = false;
-
-        // Check if User is already logged in
-        fetch("/user", {method: 'GET'}).then(response => response.json()).then(data => {
+        this.state = {
+            user:"" 
+        };
+        
+        this.getCookie(() => {this.fetchUser((data) => {
             if (data.username !== 'temp') {
                 this.authenticated = true;
             }
+            this.state.user = data.username;
+        });})
+        // Check if User is already logged in
+        
+        
+    }
+
+    async getCookie(callback){
+        fetch("/getCookie").then(response => {callback()});
+    }
+
+    fetchUser(callback){
+        fetch("/user", {method: 'GET'}).then(response => response.json()).then(data => {
+            callback(data);
         });
     }
 
     login(cb) {
-        console.log();
-        this.authenticated = true;
-        cb(); // call back für spaeter
+        this.fetchUser((data) => {
+            if (data.username !== 'temp') {
+                this.authenticated = true;
+            }
+            this.state.user = data.username;
+            cb(); // call back für spaeter
+        });
     }
 
     logout(cb) {
-        this.authenticated = false;
-        cb(); // call back für spaeter
+        this.fetchUser((data) => {
+            if (data.username !== 'temp') {
+                this.authenticated = false;
+            }
+            this.state.user = "";
+            cb(); // call back für spaeter
+        });
     }
 
     signup(cb) {
-        this.authenticated = true;
-        cb(); // call back für spaeter
+        this.fetchUser((data) => {
+            this.authenticated = true;
+            this.state.user = data.username;
+            cb(); // call back für spaeter
+        });
     }
 
     isAuthenticated() {

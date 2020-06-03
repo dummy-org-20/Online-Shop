@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
+import Auth from './Auth';
 import $ from 'jquery';
 
 
@@ -14,7 +15,8 @@ class Header extends Component {
         this.state = {
             redirect:false,
             categories:[],
-            search:"", 
+            search:"",
+            username:"" 
         };
         this.handleSearchBar = this.handleSearchBar.bind(this);
     }
@@ -39,6 +41,12 @@ class Header extends Component {
         }
     }
 
+    getUserName(){
+        if(Auth.state.user!="temp"){
+            this.setState({username : Auth.state.user});
+        }
+    }
+
     render() {
         return (
             <div>
@@ -53,7 +61,7 @@ class Header extends Component {
                     {/* Message, Profile-Pic, Shoppingcart-Icon */}
                     <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <p id="welcome">Willkommen</p>
+        <p id="welcome">Willkommen {Auth.state.user}</p>
                     </li>
                     <li className="nav-item">
                         <Link to="/account">
