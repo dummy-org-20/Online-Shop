@@ -399,7 +399,7 @@ function start(){
 					let username = req.query["username"];
 					let password = req.query["password"];
 					let security_answer= req.query["security_answer"];
-					if(username==undefined || (password==undefined && security_answer==undefined)){
+					if(username==undefined || (password==undefined && security_answer==undefined)||username.length<3||username.length>25){
 						res.status(400).send({message:"No"});
 					}
 					if(security_answer==undefined)security_answer="";
