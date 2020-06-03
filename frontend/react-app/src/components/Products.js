@@ -50,7 +50,9 @@ class Products extends Component {
         if(min!=undefined&&max!=undefined&&min>max)return;
         if(min<0||max<0) return
         var needUpdate=false;
-        if(((min!=undefined&&min<this.state.minPrice)||(max!=undefined&&max>this.state.maxPrice)))needUpdate=true;
+        if(min==this.state.minPrice&&max==this.state.maxPrice&&arraysEqual(this.oldCat,this.state.checkedCategories)&&this.oldSearch==$(".form-control#myInput")[0].value)return
+        if(!(arraysEqual(this.oldCat,this.state.checkedCategories)&&this.oldSearch==$(".form-control#myInput")[0].value))needUpdate=true;
+        else if(((min!=undefined&&min<this.state.minPrice)||(max!=undefined&&max>this.state.maxPrice)))needUpdate=true;
         else if((min==undefined&&this.state.minPrice!=undefined)||(max==undefined&&this.state.maxPrice!=undefined))needUpdate=true;
         this.setState({
             minPrice:min,
