@@ -6,9 +6,7 @@ class Auth {
             type:"User",
             admin: false
         };
-        
         this.getCookie(() => {this.fetchUser((data) => {
-            if (data.username !== 'temp') {
                 this.authenticated = true;
                 this.state.user = data.username;
                 this.state.admin = data.admin;
@@ -17,11 +15,8 @@ class Auth {
                 } else {
                     this.state.type = "User";
                 }
-            }
+            this.cool = true;
         });})
-        // Check if User is already logged in
-        
-        
     }
 
     async getCookie(callback){
@@ -71,6 +66,8 @@ class Auth {
             cb(); // call back für spaeter
         });
     }
+
+    
 
     isAuthenticated() {
         return this.authenticated;
