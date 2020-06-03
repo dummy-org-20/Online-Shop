@@ -61,9 +61,12 @@ class Products extends Component {
             if(needUpdate){
                 this.setState({
                     items:[],
-                    search: $(".form-control#myInput")[0].value
+                    search: $(".form-control#myInput")[0].value,
                 },()=>{
+                    this.oldCat=this.state.checkedCategories.concat();
+                    this.oldSearch=this.state.search;
                     this.searchAndDisplay(()=>{this.sorting(this.state.sort)});
+                    this.props.history.push("/products?categories="+String(this.state.checkedCategories)+"&search="+String(this.state.search));
                 })
             }else{
                 var newItems=[];
