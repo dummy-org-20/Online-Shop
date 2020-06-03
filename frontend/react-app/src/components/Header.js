@@ -31,13 +31,6 @@ class Header extends Component {
         }
     }
 
-    componentDidMount(){
-        Auth.getUsername((name) => {
-            console.log(name)
-            this.setState({username : name});
-        })
-    }
-
     renderRedirect(){
         if(window.location.pathname=="/products"&&this.state.redirect){
             this.state.redirect=false;
@@ -63,7 +56,7 @@ class Header extends Component {
                     {/* Message, Profile-Pic, Shoppingcart-Icon */}
                     <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-        <p id="welcome">Willkommen {this.username}</p>
+        <p id="welcome">Willkommen {Auth.state.user}</p>
                     </li>
                     <li className="nav-item">
                         <Link to="/account">
