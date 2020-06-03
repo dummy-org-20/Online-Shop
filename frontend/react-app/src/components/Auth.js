@@ -2,14 +2,22 @@ class Auth {
     constructor() {
         this.authenticated = false;
         this.state = {
-            user:"" 
+            user:"",
+            type:"User",
+            admin: false
         };
         
         this.getCookie(() => {this.fetchUser((data) => {
             if (data.username !== 'temp') {
                 this.authenticated = true;
+                this.state.user = data.username;
+                this.state.admin = data.admin;
+                if(data.admin==1){
+                    this.state.type = "Admin";
+                } else {
+                    this.state.type = "User";
+                }
             }
-            this.state.user = data.username;
         });})
         // Check if User is already logged in
         
@@ -30,32 +38,46 @@ class Auth {
         this.fetchUser((data) => {
             if (data.username !== 'temp') {
                 this.authenticated = true;
+                this.state.user = data.username;
+                this.state.admin = data.admin;
+                if(data.admin==1){
+                    this.state.type = "Admin";
+                } else {
+                    this.state.type = "User";
+                }
             }
-            this.state.user = data.username;
             cb(); // call back für spaeter
         });
     }
 
     logout(cb) {
-        this.fetchUser((data) => {
-            if (data.username !== 'temp') {
-                this.authenticated = false;
-            }
+            this.authenticated = false;
             this.state.user = "";
+            this.state.type = "";
+            this.state.admin = false;
             cb(); // call back für spaeter
-        });
     }
 
     signup(cb) {
         this.fetchUser((data) => {
             this.authenticated = true;
             this.state.user = data.username;
+            this.state.admin = data.admin;
+            if(data.admin==1){
+                this.state.type = "Admin";
+            } else {
+                this.state.type = "User";
+            }
             cb(); // call back für spaeter
         });
     }
 
     isAuthenticated() {
         return this.authenticated;
+    }
+
+    isAdmin(){
+        return this.state.admin;
     }
 }
 

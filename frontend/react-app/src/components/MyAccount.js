@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Auth from './Auth';
 
 class MyAccount extends Component {
     render() {
@@ -8,11 +9,11 @@ class MyAccount extends Component {
                     <tbody>
                     <tr>
                         <th scope="row"><b>Nutzername:</b></th>
-                        <td>@peter</td>
+        <td> { Auth.state.user }</td>
                     </tr>
                     <tr>
                         <th scope="row"><b>Konto-Typ:</b></th>
-                        <td>Admin</td>
+        <td> { Auth.state.type }</td>
                     </tr>
                     </tbody>
                 </table>
