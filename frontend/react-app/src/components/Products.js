@@ -60,7 +60,8 @@ class Products extends Component {
         },()=>{
             if(needUpdate){
                 this.setState({
-                    items:[]
+                    items:[],
+                    search: $(".form-control#myInput")[0].value
                 },()=>{
                     this.searchAndDisplay(()=>{this.sorting(this.state.sort)});
                 })
