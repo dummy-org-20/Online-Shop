@@ -167,7 +167,7 @@ class Login extends Component {
                             name="newPwd"
                             type="password" 
                             className="form-control" 
-                            placeholder="Nutzername" 
+                            placeholder="Passwort" 
                             value={this.state.newPwd} 
                             onChange={this.handleChange} 
                             required 
