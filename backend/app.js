@@ -774,20 +774,19 @@ function start(){
 				res.status(400).send({message:"no"});
 				return;
 			}else{
-				user.getBoughtItemOrderIDs((IDs)=>{
+				user.getBoughtItemOrderIDsAndAddress((data)=>{
 					var items=[];
-					for(let i=0;i<IDs.length;i++){
-						new Item().getAllItemsFromOrder(IDs[i]["id"],db,(item)=>{
-							item.push({order_id:IDs[i]["id"]});
-							console.log(item)
+					for(let i=0;i<data.length;i++){
+						new Item().getAllItemsFromOrder(data[i]["id"],db,(item)=>{
+							item.push({order_id:data[i]["id"],address:data[i]["address"]});
 							items.push(item);
-							if(items.length==IDs.length){
+							if(items.length==data.length){
 								items=items.sort(function(a,b){return a[a.length-1]["order_id"]-b[b.length-1]["order_id"];});
 								res.status(200).json(items);
 							}
 						})
 					}
-					if(IDs.length==0){
+					if(data.length==0){
 						res.status(200).json([]);
 					}
 				})

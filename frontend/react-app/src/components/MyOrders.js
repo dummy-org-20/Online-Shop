@@ -1,6 +1,45 @@
 import React, { Component } from 'react';
 
 class MyOrders extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            orders:[]
+        };
+    }
+
+    componentDidMount(){
+        fetch("/boughtItems").then(data=>data.json()).then(response=>{
+            var orders=[]
+            for(let i=0;i<response.length;i++){
+                var items=[];
+                var sum=0;
+                for(let j=0;j<response[i].length-1;j++){
+                    items.push(<React.Fragment>
+                        <img src={response[i][j].urls.length!=0? "/image/"+response[i][j].urls[0]:"image/test/test.jpg"} width={45} height={45} />
+                        <span>{" "+response[i][j].name+" ("+response[i][j].amount+" Stk.)"}</span>
+                        <br /></React.Fragment>)
+                    sum+=response[i][j].price*response[i][j].amount
+                }
+                orders.push(<tr>
+                    <td>{response[i][response[i].length-1].order_id}</td>
+                    <td>
+                    {items}
+                    </td>
+                    <td>{sum}</td>
+                    <td>{response[i][response[i].length-1].address}</td>
+                    <td>offen</td>
+                </tr>)
+            }
+            console.log(orders)
+            this.setState({
+                orders:orders
+            })
+        })
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -15,48 +54,7 @@ class MyOrders extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>187</td>
-                        <td>
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
-                        <br />
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
-                        <br />
-                        </td>
-                        <td>15,99€</td>
-                        <td>Max Muster <br />Coblitzallee 1-9, <br />68163 Mannheim</td>
-                        <td>offen</td>
-                    </tr>
-                    <tr>
-                        <td>243</td>
-                        <td>
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
-                        <br />
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
-                        <br />
-                        </td>
-                        <td>15,99€</td>
-                        <td>Max Muster <br />Coblitzallee 1-9, <br />68163 Mannheim</td>
-                        <td>offen</td>
-                    </tr>
-                    <tr>
-                        <td>423</td>
-                        <td>
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
-                        <br />
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap (4 Stk.)</span>
-                        <br />
-                        </td>
-                        <td>15,99€</td>
-                        <td>Max Muster <br />Coblitzallee 1-9, <br />68163 Mannheim</td>
-                        <td>gesendet</td>
-                    </tr>
+                    {this.state.orders}
                     </tbody>
                 </table>
             </React.Fragment>

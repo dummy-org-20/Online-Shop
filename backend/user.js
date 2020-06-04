@@ -183,8 +183,8 @@ class User {
 		getWarenkorb(this.id,this.db,callback);
 	}
 
-	getBoughtItemOrderIDs(callback){
-		this.db.safeSearch("SELECT id FROM shop_orders WHERE user_id=?",[this.id],(results)=>{
+	getBoughtItemOrderIDsAndAddress(callback){
+		this.db.safeSearch("SELECT id,address FROM shop_orders WHERE status=1 AND user_id=?",[this.id],(results)=>{
 			callback(results);
 		})
 	}

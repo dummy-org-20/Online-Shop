@@ -29,7 +29,17 @@ class ShopItem {
 	
 	getAllItemsFromOrder(id,db,callback){
 		db.safeSearch("SELECT item_id,amount FROM shop_order_items WHERE order_id=?",[id],(results)=>{
-			callback(results);
+			var items=[];
+			for(let i=0;i<results.length;i++){
+				this.getItem(results[i]["item_id"],db,(item)=>{
+					item["amount"]=results[i]["amount"];
+					items.push(item);
+					if(items.length==results.length){
+						callback(items)
+					}
+				})
+			}
+			if(results.length==0)callback(items)
 		})
 	}
 	
