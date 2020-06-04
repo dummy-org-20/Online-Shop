@@ -45,6 +45,36 @@ class ShoppingCart extends Component {
         this.state.items.splice(index,1);
         this.forceUpdate();
     }
+
+    order(){
+        let surname = document.getElementById('inputVorname').value;
+        let lastname = document.getElementById('inputNachname').value;
+        let street = document.getElementById("inputStraße").value;
+        let streetnr = document.getElementById("inputNr").value;
+        let plz = document.getElementById("inputPlz").value;
+        let place = document.getElementById("inputOrt").value;
+        if(this.state.items.length != 0){
+            if(surname == undefined || lastname == undefined){
+                alert("Bitte geben Sie eine korrekte Vorname-Nachname-Kombination ein.")
+            } else if (surname.length>25 || surname.length<3 || lastname.length>25 || lastname.length<3){
+                alert("Bitte geben Sie eine korrekte Vorname-Nachname-Kombination ein.")
+            } else {
+                if(street == undefined || streetnr == undefined || plz == undefined || place == undefined){
+                    alert("Bitte geben Sie eine valide Adresse ein.");
+                } else if (street.length>50 || street.length<3 || streetnr.length<1 || streetnr.length>10 || plz.length>20 || plz.length<3 || place.length>30 || place.length<3){
+                    alert("Bitte geben Sie eine valide Adresse ein.");
+                } else {
+                    fetch("/buy?address="+surname+";"+lastname+";"+street+";"+streetnr+";"+plz+";"+place,{method:"POST"}).then(response => {
+                        this.setState({items : []});
+                        alert("Die Bestellung war erfolgreich.");
+                    });
+                }
+            }
+        } else {
+            alert("Bestellung fehlgeschlagen: Es sind keine Waren im Warenkorb.");
+        }
+    }
+
     /* state = {
         items: [
             {
@@ -139,7 +169,7 @@ class ShoppingCart extends Component {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-outline-dark no-radius btn-lg" data-dismiss="modal">Bestellen</button>
+                        <button type="button" className="btn btn-outline-dark no-radius btn-lg" data-dismiss="modal" onClick={() => this.order()}>Bestellen</button>
                     </div>
                     </div>
                 </div>
