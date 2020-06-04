@@ -103,12 +103,12 @@ class Products extends Component {
                             (event)=>{
                                 let checkbox=event.target;
                                 if(!checkbox.checked) {
-                                    let index=this.state.checkedCategories.indexOf(checkbox.id.substring(checkbox.id.length-1))
+                                    let index=this.state.checkedCategories.indexOf(checkbox.id.substring(checkbox.id.search("x")+1))
                                     if(index!=-1) this.state.checkedCategories.splice(index,1)
                                 }else{
-                                    let index=this.state.checkedCategories.indexOf(checkbox.id.substring(checkbox.id.length-1))
+                                    let index=this.state.checkedCategories.indexOf(checkbox.id.substring(checkbox.id.search("x")+1))
                                     if(index==-1) this.setState({
-                                        checkedCategories:this.state.checkedCategories.concat([checkbox.id.substring(checkbox.id.length-1)])
+                                        checkedCategories:this.state.checkedCategories.concat([checkbox.id.substring(checkbox.id.search("x")+1)])
                                     })
                                 }
                             }
