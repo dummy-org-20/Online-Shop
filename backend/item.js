@@ -25,7 +25,13 @@ class ShopItem {
                 callback(item);
             });
         });
-    }
+	}
+	
+	getAllItemsFromOrder(id,db,callback){
+		db.safeSearch("SELECT item_id,amount FROM shop_order_items WHERE order_id=?",[id],(results)=>{
+			callback(results);
+		})
+	}
 	
 	getAllItemsTheUserMade(user_id,db,callback){
 		db.safeSearch("SELECT id FROM shop_items WHERE creator_id=?", [user_id], function(rows) {

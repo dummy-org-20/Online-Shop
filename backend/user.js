@@ -182,6 +182,12 @@ class User {
 	getWarenkorb(callback){
 		getWarenkorb(this.id,this.db,callback);
 	}
+
+	getBoughtItemOrderIDs(callback){
+		this.db.safeSearch("SELECT id FROM shop_orders WHERE user_id=?",[this.id],(results)=>{
+			callback(results);
+		})
+	}
 	
 	//merges the Warenkorb of *this* user with the Warenkorb of the other user
 	//deletes the items of the other user and writes them into *this* warenkorb
@@ -205,7 +211,7 @@ class User {
 	}
 	
 	buy(address,callback){
-		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE user_id=?",[address,this.id],()=>{
+		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE user_id=? AND status=0",[address,this.id],()=>{
 			createWarenkorb("",0,this.id,this.db,callback)
 		});
 	}

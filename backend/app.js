@@ -199,6 +199,16 @@ const userItemsDelimiter = rateLimit({
 	}
 });
 
+const boughtItemsLimiter = rateLimit({
+	windowMs: 2 * 60 * 1000, // 2 min window
+	max: 50, // start blocking after 100 requests
+	message:
+		"Sorry but you tried to access this api too many times, please try again in 2 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /boughtItems too many times: "+String(req.ip));
+	}
+});
+
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/getCookie",tempUserLimiter, function (req, res) {
@@ -755,6 +765,35 @@ function start(){
 			}
 		});
 	});
+
+	app.get("/boughtItems",boughtItemsLimiter,function(req,res){
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send({message:"no"});
+				return;
+			}else{
+				user.getBoughtItemOrderIDs((IDs)=>{
+					var items=[];
+					for(let i=0;i<IDs.length;i++){
+						new Item().getAllItemsFromOrder(IDs[i]["id"],db,(item)=>{
+							item.push({order_id:IDs[i]["id"]});
+							console.log(item)
+							items.push(item);
+							if(items.length==IDs.length){
+								items=items.sort(function(a,b){return a[a.length-1]["order_id"]-b[b.length-1]["order_id"];});
+								res.status(200).json(items);
+							}
+						})
+					}
+					if(IDs.length==0){
+						res.status(200).json([]);
+					}
+				})
+			}
+		});
+	})
 
 
 	
