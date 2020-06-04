@@ -458,40 +458,45 @@ function start(){
 			return;
 		}
 		let cats = String(req.query.category);
-		let sfor = String(req.query.item)+"%";
-		if(cats!=""){
-			let splitCat = cats.split(",");
-			splitCat.forEach((x,i,a)=>{a[i]="\'"+String(x)+"\'"});
-            db.search("select * from shop_items where category_id IN (" +String(splitCat)+ ") AND isAvailable=1 AND name LIKE \""+sfor+"\"", (rows)=>{
-				var items = new Array();
-				let item= new Item();
-				for (let index = 0; index < rows.length; index++) {
-					item.getItem(rows[index]["id"],db,(item)=>{
-						items.push(item);
-						if(items.length==rows.length){
-							res.status(200).json(items);
-							return;
-						}
-					});
-				}
-				if(rows.length==0)res.status(200).json(items);
-			});
-        } else {
-            db.search("select * from shop_items where name LIKE \""+sfor+"\" AND isAvailable=1", (rows)=>{
-                var items = new Array();
-				let item= new Item();
-				for (let index = 0; index < rows.length; index++) {
-					item.getItem(rows[index]["id"],db,(item)=>{
-						items.push(item);
-						if(items.length==rows.length){
-							res.status(200).json(items);
-							return;
-						}
-					});
-				}
-				if(rows.length==0)res.status(200).json(items);
-            });
-        }
+		let sfor = String(req.query.item);
+		if(sfor.includes("%") || sfor.includes(";") || sfor.includes(",") || sfor.includes("?")){
+			res.status(400).send("Unallowed characters found");
+		} else {
+			sfor = "%"+sfor+"%";
+			if(cats!=""){
+				let splitCat = cats.split(",");
+				splitCat.forEach((x,i,a)=>{a[i]="\'"+String(x)+"\'"});
+				db.search("select * from shop_items where category_id IN (" +String(splitCat)+ ") AND isAvailable=1 AND name LIKE \""+sfor+"\"", (rows)=>{
+					var items = new Array();
+					let item= new Item();
+					for (let index = 0; index < rows.length; index++) {
+						item.getItem(rows[index]["id"],db,(item)=>{
+							items.push(item);
+							if(items.length==rows.length){
+								res.status(200).json(items);
+								return;
+							}
+						});
+					}
+					if(rows.length==0)res.status(200).json(items);
+				});
+			} else {
+				db.search("select * from shop_items where name LIKE \""+sfor+"\" AND isAvailable=1", (rows)=>{
+					var items = new Array();
+					let item= new Item();
+					for (let index = 0; index < rows.length; index++) {
+						item.getItem(rows[index]["id"],db,(item)=>{
+							items.push(item);
+							if(items.length==rows.length){
+								res.status(200).json(items);
+								return;
+							}
+						});
+					}
+					if(rows.length==0)res.status(200).json(items);
+				});
+			}
+		}
     })
 
     //create new User in db
