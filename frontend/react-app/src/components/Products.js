@@ -124,7 +124,7 @@ class Products extends Component {
                 search:searchParams.get("search")
             },()=>{
                 this.oldSearch=this.state.search;
-                this.oldCat=this.state.checkedCategories;
+                this.oldCat=this.state.checkedCategories.concat();
                 $(".form-control#myInput")[0].value=this.state.search;
                 this.checkBoxes();
                 this.searchAndDisplay(()=>{this.sorting("ALPHASC")});

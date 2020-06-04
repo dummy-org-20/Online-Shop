@@ -10,6 +10,14 @@ class MyOrders extends Component {
         };
     }
 
+    formatPrice(price) {
+        let euro = Number.parseInt(price / 100)
+        let cent = price % 100
+        if(cent == 0) return euro + "€"
+        if(cent < 10) return euro + ",0" + cent + "€"
+        return euro + "," + cent + "€"
+    }
+
     componentDidMount(){
         fetch("/boughtItems").then(data=>data.json()).then(response=>{
             var orders=[]
@@ -23,17 +31,17 @@ class MyOrders extends Component {
                         <br /></React.Fragment>)
                     sum+=response[i][j].price*response[i][j].amount
                 }
+                var addr=response[i][response[i].length-1].address.split(";")
                 orders.push(<tr>
                     <td>{response[i][response[i].length-1].order_id}</td>
                     <td>
                     {items}
                     </td>
-                    <td>{sum}</td>
-                    <td>{response[i][response[i].length-1].address}</td>
+                    <td>{this.formatPrice(sum)}</td>
+                    <td>{addr[0]+" "+addr[1]}<br/>{addr[2]+" "+addr[3]+"."}<br/>{addr[4]+" "+addr[5]}</td>
                     <td>offen</td>
                 </tr>)
             }
-            console.log(orders)
             this.setState({
                 orders:orders
             })
