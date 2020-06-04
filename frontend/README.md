@@ -2,12 +2,12 @@
 
 ## Unterseiten der Webseite
 
-/
-/shopping-cart
-/products
-/details
-/account
-/login
+- /
+- /shopping-cart
+- /products
+- /details
+- /account
+- /login
 
 ## Genutzte Technologien
 
@@ -26,15 +26,15 @@ Wählen Sie in ihrer Konsole den Pfad "/Online-Shop/frontend/react-app" aus.
 
 Führen Sie Folgende Befehle aus:
 
-`npm install`
-`npm install jquery`
-`npm start`
+- `npm install`
+- `npm install jquery`
+- `npm start`
 
 ## Frontend starten
 
 Wählen Sie in ihrer Konsole den Pfad "/Online-Shop/frontend/react-app" aus.
 
-`npm start`
+- `npm start`
 
 ## React-App
 
