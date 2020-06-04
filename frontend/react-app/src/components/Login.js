@@ -64,13 +64,17 @@ class Login extends Component {
             }
         });
     }
-
+    
     handleSignup(event) {
         const { newUser, newPwd, newQuestion } = this.state;
         if(newUser==undefined||newPwd==undefined||newQuestion==undefined){
             alert("Bitte füllen sie alle Felder aus");
             return;
         }
+        console.log("Username: " + newUser + ", " + newUser.length)
+        console.log("Username: " + newPwd + ", " + newPwd.length)
+        console.log("Username: " + newQuestion + ", " + newQuestion.length)
+
         if(25<newUser.length) alert("Username is too long: please do not use more than 25 characters");
         if(newUser.length<3) alert("Username is too short: please use more than 3 characters");
         if(100<newPwd.length) alert("Password is too long: please do not use more than 100 characters");
@@ -122,7 +126,6 @@ class Login extends Component {
                             name="user"
                             type="text" 
                             className="form-control"
-                            id="inputStraße" 
                             placeholder="Nutzername" 
                             value={this.state.user} 
                             onChange={this.handleChange} 
@@ -134,7 +137,6 @@ class Login extends Component {
                             name="pwd"
                             type="password" 
                             className="form-control" 
-                            id="inputNr" 
                             placeholder="Passwort" 
                             value={this.state.pwd} 
                             onChange={this.handleChange} 
@@ -150,14 +152,38 @@ class Login extends Component {
                     <form>
                     <div className="form-row">
                         <div className="form-group col-md-12">
-                        <input name="newUser" type="text" className="form-control" id="inputStraße" placeholder="Nutzername" />
+                        <input
+                            name="newUser"
+                            type="text" 
+                            className="form-control" 
+                            placeholder="Nutzername" 
+                            value={this.state.newUser} 
+                            onChange={this.handleChange} 
+                            required 
+                        />
                         </div>
                         <div className="form-group col-md-12">
-                        <input name="newPwd" type="password" className="form-control" id="inputNr" placeholder="Passwort" />
+                        <input
+                            name="newPwd"
+                            type="password" 
+                            className="form-control" 
+                            placeholder="Nutzername" 
+                            value={this.state.newPwd} 
+                            onChange={this.handleChange} 
+                            required 
+                        />
                         </div>
                         <div className="form-group col-md-12">
                         <label htmlFor="inputPassword4">Sicherheitsfrage:</label>
-                        <input name="newQuestion" type="text" className="form-control" id="inputOrt" placeholder="Wie heißt Ihr Geburtsort?" />
+                        <input
+                            name="newQuestion"
+                            type="text" 
+                            className="form-control" 
+                            placeholder="Wie heißt Ihr Geburtsort?" 
+                            value={this.state.newQuestion} 
+                            onChange={this.handleChange} 
+                            required 
+                        />
                         </div>
                     </div>
                     <button onClick={this.handleSignup} type="button" className="btn btn-outline-dark no-radius btn-lg btn-block" data-dismiss="modal">Registrieren</button>
