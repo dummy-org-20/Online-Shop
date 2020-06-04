@@ -7,6 +7,7 @@ class Auth {
             admin: false
         };
         this.getCookie(() => {this.fetchUser((data) => {
+            if (data.username != 'temp') {
                 this.authenticated = true;
                 this.state.user = data.username;
                 this.state.admin = data.admin;
@@ -16,6 +17,7 @@ class Auth {
                     this.state.type = "User";
                 }
             this.cool = true;
+            }
         });})
     }
 
@@ -31,7 +33,7 @@ class Auth {
 
     login(cb) {
         this.fetchUser((data) => {
-            if (data.username !== 'temp') {
+            if (data.username != 'temp') {
                 this.authenticated = true;
                 this.state.user = data.username;
                 this.state.admin = data.admin;
