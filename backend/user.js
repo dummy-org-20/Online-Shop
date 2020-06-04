@@ -211,7 +211,7 @@ class User {
 	}
 	
 	buy(address,callback){
-		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE user_id=? AND status=0",[address,this.id],()=>{
+		this.db.safeSearch("UPDATE shop_orders SET status=1, address=? WHERE status=0 AND user_id=?",[address,this.id],()=>{
 			createWarenkorb("",0,this.id,this.db,callback)
 		});
 	}

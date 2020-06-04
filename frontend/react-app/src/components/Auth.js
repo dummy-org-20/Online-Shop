@@ -3,7 +3,7 @@ class Auth {
         this.authenticated = false;
         this.state = {
             user:"",
-            type:"User",
+            type:"",
             admin: false
         };
         this.getCookie(() => {this.fetchUser((data) => {
