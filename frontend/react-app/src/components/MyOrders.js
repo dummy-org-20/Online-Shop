@@ -26,7 +26,7 @@ class MyOrders extends Component {
                 var sum=0;
                 for(let j=0;j<response[i].length-1;j++){
                     items.push(<React.Fragment>
-                        <img src={response[i][j].urls.length!=0? "/image/"+response[i][j].urls[0]:"image/test/test.jpg"} width={45} height={45} />
+                        <img src={response[i][j].urls.length!=0? "/image/"+response[i][j].urls[0]:"image/test/test.jpg"} width={70} height={70} />
                         <span>{" "+response[i][j].name+" ("+response[i][j].amount+" Stk.)"}</span>
                         <br /></React.Fragment>)
                     sum+=response[i][j].price*response[i][j].amount
