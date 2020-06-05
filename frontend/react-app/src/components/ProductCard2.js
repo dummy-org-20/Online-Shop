@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-class ProductCard extends Component {
+class ProductCard2 extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="col-4">
+                <div className="col-3">
                     <Link to={"/details/"+String(this.props.id)}>
                     <div className="card no-radius">
                         <div className="zoom">
@@ -24,11 +24,11 @@ class ProductCard extends Component {
     }
 }
 
-ProductCard.protoTypes = {
+ProductCard2.protoTypes = {
     url: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
     id : PropTypes.number.isRequired
 }
 
-export default ProductCard;
+export default ProductCard2;

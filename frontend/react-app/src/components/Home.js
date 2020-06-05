@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 import HomeCarousel from './HomeCarousel';
 import HomeCategories from './HomeCategorie';
-import ProductCard from './ProducCard';
+import ProductCard2 from './ProductCard2';
 
 class Home extends Component {
 
@@ -28,9 +28,9 @@ class Home extends Component {
             fetch("/item/"+i,{method:"GET"}).then(response=>response.json()).then((element)=>{
                 element["price"]=this.formatPrice(parseInt(element["price"]));
                 if(element["urls"]["0"]==undefined){
-                item=item.concat([<ProductCard url={"/image/Test/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
+                item=item.concat([<ProductCard2 url={"/image/Test/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
                 }else{
-                item=item.concat([<ProductCard url={"/image/"+element["urls"]["0"]} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
+                item=item.concat([<ProductCard2 url={"/image/"+element["urls"]["0"]} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
                 }
                 if(item.length==8){
                     this.setState({
