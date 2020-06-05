@@ -23,7 +23,7 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        for(let i=1;i<9;i++){
+        for(let i=2;i<10;i++){
             var item=[]
             fetch("/item/"+i,{method:"GET"}).then(response=>response.json()).then((element)=>{
                 element["price"]=this.formatPrice(parseInt(element["price"]));
