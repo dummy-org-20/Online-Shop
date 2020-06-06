@@ -25,10 +25,10 @@ class ManageProducts extends Component {
 
     componentDidMount(){
         fetch("/userItems").then(response=>response.json()).then(data=>{
+            fetch("/categories").then(response=>response.json()).then(data2=>{
             var items=[]
             for(let i=0;i<data.length;i++){
                     var cat;
-                    fetch("/categories").then(response=>response.json()).then(data2=>{
                     for(let j = 0;j<data2.length;j++){
                         if(data2[j].id==data[i].category_id){
                             cat = data2[j].name;
@@ -55,8 +55,8 @@ class ManageProducts extends Component {
                             items:items
                         })
                     }
-                });
-            }
+                }
+            });
         });
     }
 
