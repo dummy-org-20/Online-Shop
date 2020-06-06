@@ -739,7 +739,7 @@ function start(){
 	//we will will just mark them as unavaible
 	app.post("/item.delete",itemDeleteLimiter, function(req, res) {
 		console.log("/item.delete wird aufgerufen");
-		let id = req.query.id;
+		let id = parseInt(req.query.id);
 
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
