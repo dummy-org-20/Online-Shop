@@ -9,6 +9,21 @@ import ManageOrders from './ManageOrders';
 import Auth from './Auth';
 
 class Account extends Component {
+
+    constructor(props){
+        super(props);
+        this.state={
+            admin:false
+        }
+    }
+
+    async componentDidMount(){
+        let admin=await Auth.isAdmin();
+        this.setState({
+            admin:admin
+        })
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -25,7 +40,7 @@ class Account extends Component {
                         <li className="nav-item">
                         <a className="nav-link" id="bestellungen-tab" data-toggle="tab" href="#bestellungen" role="tab" aria-controls="bestellungen" aria-selected="false">Bestellungen</a>
                         </li>
-                        {Auth.isAdmin()? <React.Fragment><li className="nav-item">
+                        {this.state.admin? <React.Fragment><li className="nav-item">
                         <a className="nav-link" id="add-produkt-tab" data-toggle="tab" href="#add-produkt" role="tab" aria-controls="add-produkt" aria-selected="false">Produkt hinzufügen</a>
                         </li>
                         <li className="nav-item">
@@ -60,7 +75,7 @@ class Account extends Component {
                         <div className="tab-pane fade" id="bestellungen" role="tabpanel" aria-labelledby="bestellungen-tab">
                             <MyOrders />
                         </div>
-                        {Auth.isAdmin()? <React.Fragment><div className="tab-pane fade" id="add-produkt" role="tabpanel" aria-labelledby="add-produkt-tab">
+                        {this.state.admin? <React.Fragment><div className="tab-pane fade" id="add-produkt" role="tabpanel" aria-labelledby="add-produkt-tab">
                             <AddProduct />
                         </div>
                         <div className="tab-pane fade" id="nutzer-verwalten" role="tabpanel" aria-labelledby="nutzer-verwalten-tab">

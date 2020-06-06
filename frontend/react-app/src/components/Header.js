@@ -22,6 +22,13 @@ class Header extends Component {
         this.handleSearchBar = this.handleSearchBar.bind(this);
     }
 
+    async componentDidMount(){
+        let username=await Auth.getUser();
+        this.setState({
+            username:username
+        })
+    }
+
     handleSearchBar= (event)=>{
         if (event.which == 13 || event.keyCode == 13) {
             this.setState({
@@ -56,7 +63,7 @@ class Header extends Component {
                     {/* Message, Profile-Pic, Shoppingcart-Icon */}
                     <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-        <p id="welcome">Willkommen {Auth.state.user}</p>
+        <p id="welcome">Willkommen {this.state.username}</p>
                     </li>
                     <li className="nav-item">
                         <Link to="/account">

@@ -19,6 +19,11 @@ class Auth {
             this.cool = true;
             }
         });})
+
+        this.isAuthenticated = this.isAuthenticated.bind(this);
+        this.isAdmin = this.isAdmin.bind(this);
+        this.getUser = this.getUser.bind(this);
+        this.getType = this.getType.bind(this);
     }
 
     async getCookie(callback){
@@ -69,14 +74,49 @@ class Auth {
         });
     }
 
-    
-
-    isAuthenticated() {
-        return this.authenticated;
+    getData(cb){
+        this.getCookie(() => {this.fetchUser((data) => {
+            if (data.username != 'temp') {
+                this.authenticated = true;
+                this.state.user = data.username;
+                this.state.admin = data.admin;
+                if(data.admin==1){
+                    this.state.type = "Admin";
+                } else {
+                    this.state.type = "User";
+                }
+                this.cool=true;
+            cb();
+            }
+        });})
     }
 
-    isAdmin(){
-        return this.state.admin;
+    isAuthenticated=()=> {
+        return new Promise((resolve, reject)=> {
+            if(this.cool)resolve(this.authenticated);
+            else this.getData(()=>resolve(this.authenticated));
+          });
+    }
+
+    isAdmin= ()=>{
+        return new Promise((resolve, reject)=> {
+            if(this.cool)resolve(this.state.admin);
+            else this.getData(()=>resolve(this.state.admin));
+        });
+    }
+
+    getUser= ()=>{
+        return new Promise((resolve, reject)=> {
+            if(this.cool)resolve(this.state.user);
+            else this.getData(()=>resolve(this.state.user));
+        });
+    }
+
+    getType=()=>{
+        return new Promise((resolve, reject)=> {
+            if(this.cool)resolve(this.state.type);
+            else this.getData(()=>resolve(this.state.type));
+        });
     }
 }
 
