@@ -31,7 +31,7 @@ class Login extends Component {
     handleLogin(event) {
         const { user, pwd } = this.state;
 
-        if(user==undefined||user.length<=3){
+        if(user==undefined||user.length<3){
             alert("Nutzername sollte mindenstens eine Länge von 3 haben");
             return;
         }else if(user.length>25){
@@ -75,12 +75,30 @@ class Login extends Component {
         console.log("Username: " + newPwd + ", " + newPwd.length)
         console.log("Username: " + newQuestion + ", " + newQuestion.length)
 
-        if(25<newUser.length) alert("Username is too long: please do not use more than 25 characters");
-        if(newUser.length<3) alert("Username is too short: please use more than 3 characters");
-        if(100<newPwd.length) alert("Password is too long: please do not use more than 100 characters");
-        if(newPwd.length<8) alert("Password is too short: please use at least 8 characters");
-        if(100<newQuestion.length) alert("Security answer is too long: please do not use more than 100 characters");
-        if(newQuestion.length<2) alert("Security answer is too short: please use at least 2 characters");
+        if(25<newUser.length) {
+            alert("Username is too long: please do not use more than 25 characters");
+            return;
+        }
+        if(newUser.length<3) {
+            alert("Username is too short: please use more than 3 characters");
+            return;
+        }
+        if(100<newPwd.length) {
+            alert("Password is too long: please do not use more than 100 characters");
+            return;
+        }
+        if(newPwd.length<8) {
+            alert("Password is too short: please use at least 8 characters");
+            return;
+        }
+        if(100<newQuestion.length){
+            alert("Security answer is too long: please do not use more than 100 characters");
+            return;
+        }
+        if(newQuestion.length<2){
+            alert("Security answer is too short: please use at least 2 characters");
+            return;
+        }
 
         $.ajax({
             type:"POST",

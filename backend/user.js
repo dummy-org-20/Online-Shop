@@ -297,7 +297,7 @@ function mergeWarenkorb(id1,id2,db,callback){
 
 //deletes items of Warenkorb of the user with the id
 function deleteWarenkorb(id,db,callback){
-	db.safeSearch("DELETE FROM shop_order_items WHERE order_id=(SELECT id FROM shop_orders WHERE user_id=?)",[id],(res)=>{
+	db.safeSearch("DELETE FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id=?) AND status=0",[id],(res)=>{
 		callback(res); 
 	});
 }

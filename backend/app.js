@@ -209,6 +209,16 @@ const boughtItemsLimiter = rateLimit({
 	}
 });
 
+const deleteUserLimiter = rateLimit({
+	windowMs: 10 * 60 * 1000, // 2 min window
+	max: 50, // start blocking after 100 requests
+	message:
+		"Sorry but you tried to access this api too many times, please try again in 2 minutes",
+	onLimitReached: function (req, res, options) {
+		console.log("this ip called /deleteUser too many times: "+String(req.ip));
+	}
+});
+
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/getCookie",tempUserLimiter, function (req, res) {
@@ -376,11 +386,12 @@ function start(){
 			if(us.isEmpty()||!us.isAdmin()){
 				res.status(400).send({message:"I dont think so m8"});
 			}else{
-				db.search("SELECT id FROM shop_users ORDER BY id ASC",(result)=>{
+				db.search("SELECT id FROM shop_users WHERE isTemporary=0 ORDER BY id ASC",(result)=>{
 					let allUsers=[];
 					for(let i=0;i<result.length;i++){
 						new User({"db":db}).getUserByID(result[i].id,(user2)=>{
-							allUsers.push(user2);
+							let userWithLessInfo={"id":user2.id,"username":user2.username,"admin":user2.admin}
+							allUsers.push(userWithLessInfo);
 							if(allUsers.length==result.length){
 								res.status(200).json(allUsers.sort(function(a,b){return a["id"]-b["id"];}));
 							}
@@ -794,6 +805,36 @@ function start(){
 					if(data.length==0){
 						res.status(200).json([]);
 					}
+				})
+			}
+		});
+	})
+
+	app.post("/deleteUser",deleteUserLimiter,function(req,res){
+		console.log("/deleteUser wird aufgerufen")
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()||!user.isAdmin()){
+				res.status(400).send({message:"no"});
+				return;
+			}else{
+				let deleteUser=parseInt(req.query.user);
+				if(!Number.isInteger(deleteUser)){
+					res.status(400).send({message:"no"});
+					return;
+				}
+				new User({"db":db}).getUserByID(deleteUser,(user)=>{
+					user["db"]=db;
+					user.disconnectCookieFromUser(()=>{
+						db.safeSearch("DELETE FROM shop_order_items WHERE order_id IN (SELECT id FROM shop_orders WHERE user_id=?)",[user.id],(rese)=>{
+							db.safeSearch("DELETE FROM shop_orders  WHERE user_id=?",[user.id],(rese)=>{
+								db.safeSearch("DELETE FROM shop_users WHERE id=?",[user.id],(rese)=>{
+									res.status(200).send("yes");
+								});
+							});
+						});
+					})
 				})
 			}
 		});
