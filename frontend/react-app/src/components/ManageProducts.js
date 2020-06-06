@@ -1,6 +1,65 @@
 import React, { Component } from 'react';
 
 class ManageProducts extends Component {
+
+    constructor() {
+        super();
+            this.state = {items: []
+        }
+    }
+
+    deleteItem(id){
+        fetch("/item.delete?id="+parseInt(id),{method:"POST"}).then(data=> {
+            console.log(data)
+            window.location.reload(false);
+        });
+    }
+
+    formatPrice(price) {
+        let euro = Number.parseInt(price / 100)
+        let cent = price % 100
+        if(cent == 0) return euro + "€"
+        if(cent < 10) return euro + ",0" + cent + "€"
+        return euro + "," + cent + "€"
+    }
+
+    componentDidMount(){
+        fetch("/userItems").then(response=>response.json()).then(data=>{
+            var items=[]
+            for(let i=0;i<data.length;i++){
+                    var cat;
+                    fetch("/categories").then(response=>response.json()).then(data2=>{
+                    for(let j = 0;j<data2.length;j++){
+                        if(data2[j].id==data[i].category_id){
+                            cat = data2[j].name;
+                        }
+                    }
+                    items.push(<React.Fragment>
+                    <tr>
+                        <td>{data[i].id}</td>
+                        <td>
+                        <img src={"/image/"+data[i].urls[0]} width={45} height={45} />
+                        <span>{" "+data[i].name}</span>
+                        </td>
+                        <td>{this.formatPrice(data[i].price)}</td>
+                    <td>{cat}</td>
+                        <td>
+                        <button type="button" className="btn btn-danger no-radius" onClick={()=>{if(window.confirm("Möchtest du wirklich dieses Item löschen?"))this.deleteItem(data[i].id)}}>
+                            <i className="fa fa-trash" aria-hidden="true" />
+                        </button>
+                        </td>
+                    </tr>
+                    </React.Fragment>)
+                    if(items.length==data.length){
+                        this.setState({
+                            items:items
+                        })
+                    }
+                });
+            }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -11,62 +70,11 @@ class ManageProducts extends Component {
                         <th scope="col">Produkt</th>
                         <th scope="col">Preis</th>
                         <th scope="col">Kategorie</th>
-                        <th scope="col">Rabatt</th>
                         <th scope="col">Optionen</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>187</td>
-                        <td>
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap</span>
-                        </td>
-                        <td>15,99€</td>
-                        <td>Bekleidung</td>
-                        <td>
-                        <div className="form-group">
-                            <select id="inputState" className="form-control">
-                            <option selected>0%</option>
-                            <option>10%</option>
-                            <option>20%</option>
-                            <option>30%</option>
-                            <option>40%</option>
-                            <option>50%</option>
-                            </select>
-                        </div>
-                        </td>
-                        <td>
-                        <button type="button" className="btn btn-danger no-radius">
-                            <i className="fa fa-trash" aria-hidden="true" />
-                        </button>
-                        </td>
-                    </tr>
-                    <tr><td>197</td>
-                        <td>
-                        <img src="https://www.snipes.com/dw/image/v2/BDCB_PRD/on/demandware.static/-/Sites-snse-master-eu/default/dwfe7026cd/1688198_P.jpg?sw=1560&sh=1560&sm=fit&sfrm=png" width={45} height={45} />
-                        <span>CHAMPION - Legacy Baseball Cap</span>
-                        </td>
-                        <td>15,99€</td>
-                        <td>Bekleidung</td>
-                        <td>
-                        <div className="form-group">
-                            <select id="inputState" className="form-control">
-                            <option selected>0%</option>
-                            <option>10%</option>
-                            <option>20%</option>
-                            <option>30%</option>
-                            <option>40%</option>
-                            <option>50%</option>
-                            </select>
-                        </div>
-                        </td>
-                        <td>
-                        <button type="button" className="btn btn-danger no-radius">
-                            <i className="fa fa-trash" aria-hidden="true" />
-                        </button>
-                        </td>
-                    </tr>
+                    {this.state.items}
                     </tbody>
                 </table>
             </React.Fragment>

@@ -44,7 +44,7 @@ class ShopItem {
 	}
 	
 	getAllItemsTheUserMade(user_id,db,callback){
-		db.safeSearch("SELECT id FROM shop_items WHERE creator_id=?", [user_id], function(rows) {
+		db.safeSearch("SELECT id FROM shop_items WHERE isAvailable=1 AND creator_id=?", [user_id], function(rows) {
             let items=[]
 			for(let i=0;i<rows.length;i++){
 				new ShopItem().getItem(rows[i]["id"],db,(item)=>{
