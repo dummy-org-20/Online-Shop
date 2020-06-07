@@ -1,6 +1,8 @@
+
 class Auth {
     constructor() {
         this.authenticated = false;
+        this.updateApp=()=>{};
         this.state = {
             user:"",
             type:"",
@@ -37,7 +39,7 @@ class Auth {
     }
 
     login(cb) {
-        this.fetchUser((data) => {
+        this.fetchUser(async (data) => {
             if (data.username != 'temp') {
                 this.authenticated = true;
                 this.state.user = data.username;
@@ -48,6 +50,7 @@ class Auth {
                     this.state.type = "User";
                 }
             }
+            await this.updateApp();
             cb(); // call back für spaeter
         });
     }
@@ -86,9 +89,13 @@ class Auth {
                     this.state.type = "User";
                 }
                 this.cool=true;
-            cb();
             }
+            cb();
         });})
+    }
+
+    initializeAppUpdate=(func)=>{
+        this.updateApp=func;
     }
 
     isAuthenticated=()=> {
