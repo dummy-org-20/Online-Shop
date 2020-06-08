@@ -49,9 +49,12 @@ class Account extends Component {
                         <li className="nav-item">
                         <a className="nav-link" id="produkte-verwalten-tab" data-toggle="tab" href="#produkte-verwalten" role="tab" aria-controls="produkte-verwalten" aria-selected="false">Produkte verwalten</a>
                         </li>
+                        {/*
                         <li className="nav-item">
                         <a className="nav-link" id="bestellungen-verwalten-tab" data-toggle="tab" href="#bestellungen-verwalten" role="tab" aria-controls="bestellungen-verwalten" aria-selected="false">Bestellungen verwalten</a>
-                        </li></React.Fragment>:false}
+                        </li>
+                        */}
+                        </React.Fragment>:false}
                     </ul>
                     {/* Signout-Btn */}
                     <div className="text-center">
@@ -84,9 +87,11 @@ class Account extends Component {
                         <div className="tab-pane fade" id="produkte-verwalten" role="tabpanel" aria-labelledby="produkte-verwalten-tab">
                             <ManageProducts />
                         </div>
+                        {/*
                         <div className="tab-pane fade" id="bestellungen-verwalten" role="tabpanel" aria-labelledby="bestellungen-verwalten-tab">
                             <ManageOrders />
                         </div>
+                        */}
                     </React.Fragment> : false }
                     </div>
                     </div>
