@@ -90,28 +90,29 @@ class AddProducts extends Component {
 			}
 			let oldPreis=$(".form-control#price")[0].value;
 			let preis= parseFloat(($(".form-control#price")[0].value.replace(",",".")));
-			if((".custom-file-input#customFile1")[0].files[0]!=undefined&&$(".custom-file-input#customFile1")[0].files[0].name.length>32){
+			if((".custom-file-input#customFile1")[0].files!=undefined&&(".custom-file-input#customFile1")[0].files[0]!=undefined&&$(".custom-file-input#customFile1")[0].files[0].name.length>32){
 				alert("Der Bildname 1 ist zu lang");
 				return;
 			}
-			if((".custom-file-input#customFile2")[0].files[0]!=undefined&&$(".custom-file-input#customFile2")[0].files[0].name.length>32){
+			if((".custom-file-input#customFile1")[0].files!=undefined&&(".custom-file-input#customFile2")[0].files[0]!=undefined&&$(".custom-file-input#customFile2")[0].files[0].name.length>32){
 				alert("Der Bildname 2 ist zu lang");
 				return;
 			}
-			if((".custom-file-input#customFile3")[0].files[0]!=undefined&&$(".custom-file-input#customFile3")[0].files[0].name.length>32){
+			if((".custom-file-input#customFile1")[0].files!=undefined&&(".custom-file-input#customFile3")[0].files[0]!=undefined&&$(".custom-file-input#customFile3")[0].files[0].name.length>32){
 				alert("Der Bildname 3 ist zu lang");
 				return;
 			}
-			if((".custom-file-input#customFile4")[0].files[0]!=undefined&&$(".custom-file-input#customFile4")[0].files[0].name.length>32){
+			if((".custom-file-input#customFile1")[0].files!=undefined&&(".custom-file-input#customFile4")[0].files[0]!=undefined&&$(".custom-file-input#customFile4")[0].files[0].name.length>32){
 				alert("Der Bildname 4 ist zu lang");
 				return;
 			}
 			var form = $(this);
 			var url = form.attr('action');
-			console.log(encodeURI(url+"?"+form.serialize()))
+			var request=form.serialize();
+			request=request.substr(0,request.search("price")+6)+Math.floor(preis*100);
 			$.ajax({
 				   type: "POST",
-				   url: encodeURI(url+"?"+form.serialize()),
+				   url:url+"?"+request,
 				   success: async function(data){
 					let item_id=data.id;
 					let file1=undefined;
@@ -126,7 +127,7 @@ class AddProducts extends Component {
 					if(file2!=undefined)await sendImage(file2,item_id,2,$(".custom-file-input#customFile2")[0].files[0].name);
 					if(file3!=undefined)await sendImage(file3,item_id,3,$(".custom-file-input#customFile3")[0].files[0].name);
 					if(file4!=undefined)await sendImage(file4,item_id,4,$(".custom-file-input#customFile4")[0].files[0].name);
-					alert("Die Items würden Erfolgreich hinzugefügt");
+					alert("Das Item wurde erfolgreich hinzugefügt");
 					window.location.reload();
 				   },
 				   error: function(data){
