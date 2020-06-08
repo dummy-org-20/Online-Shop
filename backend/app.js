@@ -70,8 +70,8 @@ const deleteImageLimiter = rateLimit({
 });
 
 const userLimiter = rateLimit({
-	windowMs: 20 * 60 * 1000, // 20 min window
-	max: 50, // start blocking after 30 requests
+	windowMs: 3 * 60 * 1000, // 20 min window
+	max: 100, // start blocking after 30 requests
 	message:
 		"Sorry but you tried to gain information about your user too often, please try again in 20 minutes",
 	onLimitReached: function (req, res, options) {
@@ -120,7 +120,7 @@ const logoutLimiter = rateLimit({
 });
 
 const searchLimiter = rateLimit({
-	windowMs: 5 * 60 * 1000, // 5 min window
+	windowMs: 3 * 60 * 1000, // 5 min window
 	max: 100, // start blocking after 100 requests
 	message:
 		"Sorry but searched too many times, please try again in 5 minutes",
@@ -141,7 +141,7 @@ const buyLimiter = rateLimit({
 
 const itemLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000, // 5 min window
-	max: 100, // start blocking after 100 requests
+	max: 1000, // start blocking after 100 requests
 	message:
 		"Please wait 5 minutes and try again",
 	onLimitReached: function (req, res, options) {
