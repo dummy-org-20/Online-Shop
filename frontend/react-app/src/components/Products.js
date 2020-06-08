@@ -161,7 +161,7 @@ class Products extends Component {
                 }
                 data[i]["price"]=this.formatPrice(parseInt(data[i]["price"]));
                 if(data[i]["urls"]["0"]==undefined){
-                        item=item.concat(<ProductCard url={"/image/Test/test.jpg"} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
+                        item=item.concat(<ProductCard url={"/image/0/test.jpg"} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
                 }else{
                     item=item.concat(<ProductCard url={"/image/"+data[i]["urls"]["0"]} alt={data[i]["name"]} id={data[i]["id"]} name={data[i]["name"]} price={data[i]["price"]}/>)
                 }

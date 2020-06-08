@@ -38,7 +38,7 @@ class ManageProducts extends Component {
                     <tr>
                         <td>{data[i].id}</td>
                         <td>
-                        <img src={"/image/"+data[i].urls[0]} width={45} height={45} />
+                        <img src={data.urls.length!=0?"/image/"+data[i].urls[0]:"/image/0/test.jpg"} width={45} height={45} />
                         <span>{" "+data[i].name}</span>
                         </td>
                         <td>{this.formatPrice(data[i].price)}</td>
