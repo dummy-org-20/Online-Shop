@@ -24,8 +24,9 @@ class Home extends Component {
 
     componentDidMount(){
             fetch("/homepage",{method:"GET"}).then(response=>response.json()).then((elements)=>{
+                var item = []
                 for(let i = 0; i < 8; i++){
-                    element = elements[i];
+                    var element = elements[i];
                     if(element["urls"]["0"]==undefined){
                         item=item.concat([<ProductCard2 url={"/image/0/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={this.formatPrice(element["price"])}/>])
                     }else{
