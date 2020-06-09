@@ -226,7 +226,7 @@ function getSalt(username,db,callback){
 
 //checks if the cookie exists in the database and gives back the matching user_id
 function checkCookie(cookie,db,callback){
-	if(cookie==null||cookie.match(/^[a-zA-Z0-9]{32}$/)==null){
+	if(cookie==null||cookie.match(/^[a-zA-Z0-9]{64}$/)==null){
 		callback(null);
 		return;
 	}
