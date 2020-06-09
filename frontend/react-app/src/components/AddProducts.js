@@ -88,6 +88,22 @@ class AddProducts extends Component {
 				alert("Bitte geben sie beim Preis einen richtigen Wert ein");
 				return;
 			}
+			if($(".form-control#titel")[0].value.length>42){
+				alert("Der Name ist zu Lang, bitte wählen sie einen Namen der weniger als 42 Zeichen hat");
+				return;
+			}
+			if($(".form-control#titel")[0].value.length<3){
+				alert("Der Name ist zu Kurz, bitte wählen sie einen Namen der mehr als 3 Zeichen hat");
+				return;
+			}
+			if($(".form-control#description")[0].value.length>=800){
+				alert("Die Beschreibung ist zu Lang, bitte wählen sie eine Beschreibung die weniger als 800 Zeichen hat");
+				return;
+			}
+			if($(".form-control#description")[0].value.length<10){
+				alert("Die Beschreibung ist zu kurz, bitte wählen sie eine Beschreibung die mehr als 10 Zeichen hat");
+				return;
+			}
 			let oldPreis=$(".form-control#price")[0].value;
 			let preis= parseFloat(($(".form-control#price")[0].value.replace(",",".")));
 			if($(".custom-file-input#customFile1")[0].files!=undefined&&$(".custom-file-input#customFile1")[0].files[0]!=undefined){

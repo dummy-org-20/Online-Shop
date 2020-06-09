@@ -36,6 +36,9 @@ class Details extends Component {
         for(let i in urls) {
             array[i] = "/image/" + urls[i];
         }
+        if(urls[0]==undefined){
+            array[0]=="/image/0/test.jpg";
+        }
         return array
     }
 

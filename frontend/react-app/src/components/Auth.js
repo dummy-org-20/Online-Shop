@@ -17,12 +17,16 @@ class Auth {
 
     async getCookie(callback){
         fetch("/getCookie",{
-            credentials: "same-origin"
+            credentials: "same-origin", mode: 'same-origin',
+            redirect: 'follow',
+            credentials: 'include'
           }).then(response => {console.log(response);callback()});
     }
 
     fetchUser(callback){
-        fetch("/user", {method: 'GET',credentials:"same-origin"}).then(response => response.json()).then(data => {
+        fetch("/user", {method: 'GET', mode: 'same-origin',
+        redirect: 'follow',
+        credentials: 'include'}).then(response => response.json()).then(data => {
             console.log(data);
             callback(data);
         });

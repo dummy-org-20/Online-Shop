@@ -35,11 +35,12 @@ class ManageProducts extends Component {
                             cat = data2[j].name;
                         }
                     }
+                    console.log(data[i])
                     items.push(<React.Fragment>
                     <tr>
                         <td>{data[i].id}</td>
                         <td>
-                        <img src={data[i].urls.length!=0?"/image/"+data[i].urls[0]:"/image/0/test.jpg"} width={45} height={45} />
+                        <img src={data[i].urls[0]!=undefined?"/image/"+data[i].urls[0]:"/image/0/test.jpg"} width={45} height={45} />
                         <span>{" "+data[i].name}</span>
                         </td>
                         <td>{this.formatPrice(data[i].price)}</td>

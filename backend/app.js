@@ -230,7 +230,7 @@ function start(){
 				createNewCookie((cookiee)=>{
 					//TODO fix header issue
 					user.getTempUser((user_id)=>{
-						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{res.cookie("sessionID",cookiee,{ expires: new Date(Date.now()+7*24*60*60*1000), httpOnly: true,secure:true }).send("lemme give you a cookie");});
+						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{res.cookie("sessionID",cookiee,{ expires: new Date(Date.now()+7*24*60*60*1000), httpOnly: true}).send("lemme give you a cookie");});
 					});
 				});
 			}
@@ -363,6 +363,7 @@ function start(){
 	app.get("/user",userLimiter, function (req, res) {
 		console.log("/user wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
+		console.log(cookie)
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){
