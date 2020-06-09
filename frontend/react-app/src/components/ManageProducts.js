@@ -28,6 +28,7 @@ class ManageProducts extends Component {
             fetch("/categories").then(response=>response.json()).then(data2=>{
             var items=[]
             for(let i=0;i<data.length;i++){
+                console.log(data[i])
                     var cat;
                     for(let j = 0;j<data2.length;j++){
                         if(data2[j].id==data[i].category_id){
@@ -38,7 +39,7 @@ class ManageProducts extends Component {
                     <tr>
                         <td>{data[i].id}</td>
                         <td>
-                        <img src={data.urls.length!=0?"/image/"+data[i].urls[0]:"/image/0/test.jpg"} width={45} height={45} />
+                        <img src={data[i].urls.length!=0?"/image/"+data[i].urls[0]:"/image/0/test.jpg"} width={45} height={45} />
                         <span>{" "+data[i].name}</span>
                         </td>
                         <td>{this.formatPrice(data[i].price)}</td>

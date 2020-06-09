@@ -8,19 +8,6 @@ class Auth {
             type:"",
             admin: false
         };
-        this.getCookie(() => {this.fetchUser((data) => {
-            if (data.username != 'temp') {
-                this.authenticated = true;
-                this.state.user = data.username;
-                this.state.admin = data.admin;
-                if(data.admin==1){
-                    this.state.type = "Admin";
-                } else {
-                    this.state.type = "User";
-                }
-            this.cool = true;
-            }
-        });})
 
         this.isAuthenticated = this.isAuthenticated.bind(this);
         this.isAdmin = this.isAdmin.bind(this);
@@ -29,11 +16,14 @@ class Auth {
     }
 
     async getCookie(callback){
-        fetch("/getCookie").then(response => {callback()});
+        fetch("/getCookie",{
+            credentials: "same-origin"
+          }).then(response => {console.log(response);callback()});
     }
 
     fetchUser(callback){
-        fetch("/user", {method: 'GET'}).then(response => response.json()).then(data => {
+        fetch("/user", {method: 'GET',credentials:"same-origin"}).then(response => response.json()).then(data => {
+            console.log(data);
             callback(data);
         });
     }
@@ -88,8 +78,8 @@ class Auth {
                 } else {
                     this.state.type = "User";
                 }
-                this.cool=true;
             }
+            this.cool=true;
             cb();
         });})
     }

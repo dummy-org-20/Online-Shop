@@ -229,9 +229,8 @@ function start(){
 			if(user.isEmpty()){
 				createNewCookie((cookiee)=>{
 					//TODO fix header issue
-					res.cookie("sessionID",cookiee).send("lemme give you a cookie");
 					user.getTempUser((user_id)=>{
-						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{});
+						new User({"id":user_id,"db":db}).connectUserWithCookie(cookiee,()=>{res.cookie("sessionID",cookiee,{ expires: new Date(Date.now()+7*24*60*60*1000), httpOnly: true,secure:true }).send("lemme give you a cookie");});
 					});
 				});
 			}
@@ -333,7 +332,7 @@ function start(){
 		let item_id = parseInt(req.query.item_id);
 		let order_id = parseInt(req.query.order_id);
 		let image_name = req.query.image_name;
-		if(!Number.isInteger(item_id)||!Number.isInteger(order_id)||image_name.match(/[a-zA-Z0-9]+\.\w+$/)==null||image_name.length>32||req.body.image==undefined){
+		if(!Number.isInteger(item_id)||!Number.isInteger(order_id)||image_name.match(/^[a-zA-Z0-9]+\.\w+$/)==null||image_name.length>64||req.body.image==undefined){
 			res.status(400).send();
 			return;
 		}
@@ -888,7 +887,7 @@ function getWarenkorb(user_id,callback){
 function createNewCookie(callback){
 	let letters="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9".split(",");
 	let string="";
-	for(let i=0;i<32;i++){
+	for(let i=0;i<64;i++){
 		string+=letters[getRandomInt(31)];
 	}
 	db.search("SELECT cookie FROM shop_login_cookies WHERE cookie=\""+string+"\"",(rows)=>{

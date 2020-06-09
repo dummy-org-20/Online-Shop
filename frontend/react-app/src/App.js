@@ -38,15 +38,15 @@ class App extends Component {
   }
 
   checkChange= async ()=>{
-    let auth=await Auth.isAuthenticated();
+    return new Promise(async (resolve,reject)=>{
+      let auth=await Auth.isAuthenticated();
     if(this.state.auth!=auth){
       this.setState({
         auth:auth
-      })
+      },()=>resolve(true))
     }
-    return new Promise((resolve,reject)=>{
-      resolve(true)
     })
+  
   }
 
   render() {
