@@ -80,8 +80,8 @@ const userLimiter = rateLimit({
 });
 
 const userAllLimiter = rateLimit({
-	windowMs: 20 * 60 * 1000, // 20 min window
-	max: 20, // start blocking after 20 requests
+	windowMs: 5 * 60 * 1000, // 20 min window
+	max: 100, // start blocking after 20 requests
 	message:
 		"Sorry but you tried to gain information about all users too often, please try again in 20 minutes",
 	onLimitReached: function (req, res, options) {
@@ -91,7 +91,7 @@ const userAllLimiter = rateLimit({
 
 const getWarenkorbLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 min window
-	max: 50, // start blocking after 50 requests
+	max: 150, // start blocking after 50 requests
 	message:
 		"Sorry but you tried to access your Warenkorb too many times, please try again in 10 minutes",
 	onLimitReached: function (req, res, options) {
@@ -101,7 +101,7 @@ const getWarenkorbLimiter = rateLimit({
 
 const setWarenkorbLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 min window
-	max: 100, // start blocking after 100 requests
+	max: 200, // start blocking after 100 requests
 	message:
 		"Sorry but you tried to gain information about all users too often, please try again in 20 minutes",
 	onLimitReached: function (req, res, options) {
@@ -131,7 +131,7 @@ const searchLimiter = rateLimit({
 
 const buyLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000, // 5 min window
-	max: 5, // start blocking after 5 requests
+	max: 50, // start blocking after 5 requests
 	message:
 		"Sorry but you tried to buy too many times, please try again in 5 minutes",
 	onLimitReached: function (req, res, options) {
@@ -150,7 +150,7 @@ const itemLimiter = rateLimit({
 });
 
 const itemInsertLimiter = rateLimit({
-	windowMs: 30 * 60 * 1000, // 20 min window
+	windowMs: 3 * 60 * 1000, // 20 min window
 	max: 10, // start blocking after 30 requests
 	message:
 		"Sorry but you tried to insert an Item too many times, try again in 30 min",
@@ -170,8 +170,8 @@ const itemDeleteLimiter = rateLimit({
 });
 
 const imageLimiter = rateLimit({
-	windowMs: 2 * 60 * 1000, // 2 min window
-	max: 500, // start blocking after 300 requests
+	windowMs: 1 * 60 * 1000, // 2 min window
+	max: 1000, // start blocking after 300 requests
 	message:
 		"Sorry but you tried to access to many Images in a short amount of time, please try again in 2 minutes",
 	onLimitReached: function (req, res, options) {
@@ -222,7 +222,7 @@ const deleteUserLimiter = rateLimit({
 //db.search("select * from sample",(rows)=>{console.log(rows)});
 function start(){
 	app.get("/getCookie",tempUserLimiter, function (req, res) {
-		console.log("/getCookie wird aufgerufen");
+		//console.log("/getCookie wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -246,7 +246,7 @@ function start(){
 	//{order_id:url,order_id:url,...} order_id startet bei 1
 	//die json muss aufsteigende order_ids haben
 	app.use(bodyParser.json({limit: '2mb'})).post("/order",orderLimiter,function(req,res){
-		console.log("/order wird aufgerufen");
+		//console.log("/order wird aufgerufen");
 		let item_id=req.query["item_id"];
 		let json=req.body;
 		let cookie=req.cookies["sessionID"];
@@ -294,7 +294,7 @@ function start(){
 	
 	//deletes an image of an item that *this* user created
 	//needs item_id and image_name as query param
-	app.post("/deleteImage",function(req,res){
+	app.post("/deleteImage",deleteImageLimiter,function(req,res){
 		console.log("/deleteImage wird aufgerufen");
 		let item_id=parseInt(req.query["item_id"]);
 		let image_name=req.query["image_name"];
@@ -361,7 +361,7 @@ function start(){
 
 	//gets user-object from db that is associated with the cookie
 	app.get("/user",userLimiter, function (req, res) {
-		console.log("/user wird aufgerufen");
+		//console.log("/user wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		console.log(cookie)
 		if(cookie==undefined)cookie=null;
@@ -463,7 +463,7 @@ function start(){
 
     //search after itemName in single, multiple or all categories
     app.get("/search", searchLimiter,function(req, res){
-		console.log("/search wird aufgerufen");
+		//console.log("/search wird aufgerufen");
 		if(req.query.category==undefined||req.query.item==undefined){
 			res.status(400).send();
 			return;
@@ -564,7 +564,7 @@ function start(){
 	
 	//Hole alle Items und deren Anzahl aus dem Warenkorb des User heraus (funktionert über Cookie "sessionID")
 	app.get("/getWarenkorb", getWarenkorbLimiter,function(req,res) {
-		console.log("/getWarenkorb wird aufgerufen");
+		//console.log("/getWarenkorb wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -585,7 +585,7 @@ function start(){
 	//Wenn ein Item entfernt werden sollen, muss ein negativer count angegeben werden.
 	//Warenkorb existiert hier schon
 	app.post("/setWarenkorb",setWarenkorbLimiter, function(req,res) {
-		console.log("/setWarenkorb wird aufgerufen");
+		//console.log("/setWarenkorb wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie==null;
 		let item_id=parseInt(req.query["item_id"]);
@@ -654,7 +654,7 @@ function start(){
 
 	// get item by id
 	app.get("/item/:id",itemLimiter, function(req, res) {
-		console.log("/item/:id wird aufgerufen");
+		//console.log("/item/:id wird aufgerufen");
 		let id = parseInt(req.params.id);
 		if(!Number.isInteger(id)){
 			res.status(400);
@@ -710,7 +710,7 @@ function start(){
 	});
 	
 	app.get('/image/:item_id/:image_name',imageLimiter, function (req, res) {
-		console.log("/image/:item_id/:image_name wird aufgerufen");
+		//console.log("/image/:item_id/:image_name wird aufgerufen");
 		let item_id=String(req.params.item_id);
 		let image_name=String(req.params.image_name);
 		if(item_id.match(/^[0-9]+$/)==null||image_name.match(/[a-zA-Z0-9\-_\.]+\.\w+$/)==null){
@@ -727,9 +727,9 @@ function start(){
 		}
 		res.sendFile("images/"+item_id+"/"+image_name,options, function (err) {
 			if (err) {
-				console.log(err);
+				//console.log(err);
 			} else {
-				console.log('Sent:', image_name);
+				//console.log('Sent:', image_name);
 			}
 		});
 	});
@@ -760,7 +760,7 @@ function start(){
 	});
 
 	app.get("/categories",categoryLimiter,function(req,res){
-		console.log("/categories wird aufgerufen");
+		//console.log("/categories wird aufgerufen");
 		db.search("SELECT id,name FROM shop_categories",(result)=>{
 			res.status(200).json(result);
 		})
@@ -841,7 +841,7 @@ function start(){
 	})
 
 	app.get("/homepage",function(req,res){
-		console.log("userItems wird aufgerufen");
+		//console.log("homepage wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
@@ -858,7 +858,7 @@ function start(){
 
 	
 	app.use(function (err, req, res, next) {
-		console.error(err.stack);
+		//console.error(err.stack);
 		res.status(400).send();
 	});
 	
