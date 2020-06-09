@@ -840,6 +840,21 @@ function start(){
 		});
 	})
 
+	app.get("/homepage",function(req,res){
+		console.log("userItems wird aufgerufen");
+		let cookie=req.cookies["sessionID"];
+		if(cookie==undefined)cookie=null;
+		new User({"cookie":cookie,"db":db},(user)=>{
+			if(user.isEmpty()){
+				res.status(400).send({message:"no"});
+				return;
+			}else{
+				new Item().get8firstItems(db,(items)=>{
+					res.status(200).json(items.sort(function(a,b){return a["id"]-b["id"];}));
+				})	
+			}
+		});
+	})
 
 	
 	app.use(function (err, req, res, next) {

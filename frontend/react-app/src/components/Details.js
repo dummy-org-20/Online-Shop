@@ -33,11 +33,13 @@ class Details extends Component {
 
     urlsToArray(urls, id) {
         let array = [];
-        for(let i in urls) {
-            array[i] = "/image/" + urls[i];
+        if(urls[0]!=undefined){
+            for(let i in urls) {
+                array[i] = "/image/" + urls[i];
+            }
         }
-        if(urls[0]==undefined){
-            array[0]=="/image/0/test.jpg";
+        else{
+            array[0]="/image/0/test.jpg";
         }
         return array
     }
@@ -94,7 +96,8 @@ class Details extends Component {
 
     render() {
         if(this.state.name == undefined) {
-            return "TODO: Creating page for item not found"
+            window.location.href="https://www.youtube.com/embed/DLzxrzFCyOs?autoplay=1";
+            return;
         }
 
         return (

@@ -56,6 +56,20 @@ class ShopItem {
 			}
         });
 	}
+
+	get8firstItems(db,callback){
+		db.search("SELECT id FROM shop_items WHERE isAvailable=1 LIMIT 10",(rows)=>{
+			let items=[]
+			for(let i=0;i<rows.length;i++){
+				new ShopItem().getItem(rows[i]["id"],db,(item)=>{
+					items.push(item);
+					if(items.length==rows.length){
+						callback(items);
+					}
+				});
+			}
+		})
+	}
     
     insertItem(item, db, callback) {
         db.safeSearch("INSERT INTO shop_items (`creator_id`, `category_id`, `price`, `name`, `description`,`isAvailable`,`prc_Angebot`) VALUES (?, ?, ?, ?, ?, ?, ?)",
