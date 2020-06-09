@@ -27,7 +27,7 @@ class Details extends Component {
                 urls: this.urlsToArray(data.urls)
             });
         }).catch(function (error) {
-            console.log(error.message)
+            //console.log(error.message)
         });
     }
 
@@ -80,17 +80,15 @@ class Details extends Component {
         fetch("/setWarenkorb?item_id=" + item_id + "&count=" + count, options).then(response => {
             let status = response.status
             if(status != 200) {
-                console.log("no user, you idiot")
                 return
             }
-            console.log("nice shot")
             this.setState({
                 amount: 1
             });
             this.props.history.push("/shopping-cart")
         })
         .catch(function (error) {
-            console.log(error.message)
+            //console.log(error.message)
         });
     }
 

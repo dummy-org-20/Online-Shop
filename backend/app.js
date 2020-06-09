@@ -363,7 +363,6 @@ function start(){
 	app.get("/user",userLimiter, function (req, res) {
 		//console.log("/user wird aufgerufen");
 		let cookie=req.cookies["sessionID"];
-		console.log(cookie)
 		if(cookie==undefined)cookie=null;
 		new User({"cookie":cookie,"db":db},(user)=>{
 			if(user.isEmpty()){

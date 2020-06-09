@@ -10,7 +10,7 @@ class ManageProducts extends Component {
 
     deleteItem(id){
         fetch("/item.delete?id="+parseInt(id),{method:"POST"}).then(data=> {
-            console.log(data)
+            //console.log(data)
             window.location.reload(false);
         });
     }
@@ -28,14 +28,14 @@ class ManageProducts extends Component {
             fetch("/categories").then(response=>response.json()).then(data2=>{
             var items=[]
             for(let i=0;i<data.length;i++){
-                console.log(data[i])
+                //console.log(data[i])
                     var cat;
                     for(let j = 0;j<data2.length;j++){
                         if(data2[j].id==data[i].category_id){
                             cat = data2[j].name;
                         }
                     }
-                    console.log(data[i])
+                    //console.log(data[i])
                     items.push(<React.Fragment>
                     <tr>
                         <td>{data[i].id}</td>

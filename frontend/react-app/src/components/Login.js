@@ -71,9 +71,6 @@ class Login extends Component {
             alert("Bitte füllen sie alle Felder aus");
             return;
         }
-        console.log("Username: " + newUser + ", " + newUser.length)
-        console.log("Username: " + newPwd + ", " + newPwd.length)
-        console.log("Username: " + newQuestion + ", " + newQuestion.length)
 
         if(25<newUser.length) {
             alert("Username is too long: please do not use more than 25 characters");

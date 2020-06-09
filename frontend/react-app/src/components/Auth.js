@@ -20,14 +20,13 @@ class Auth {
             credentials: "same-origin", mode: 'same-origin',
             redirect: 'follow',
             credentials: 'include'
-          }).then(response => {console.log(response);callback()});
+          }).then(response => {callback()});
     }
 
     fetchUser(callback){
         fetch("/user", {method: 'GET', mode: 'same-origin',
         redirect: 'follow',
         credentials: 'include'}).then(response => response.json()).then(data => {
-            console.log(data);
             callback(data);
         });
     }

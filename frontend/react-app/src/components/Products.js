@@ -130,7 +130,7 @@ class Products extends Component {
                 this.searchAndDisplay(()=>{this.sorting("ALPHASC")});
             })
         }).catch(function (error) {
-            console.log(error)
+            //console.log(error)
         });
     }
 

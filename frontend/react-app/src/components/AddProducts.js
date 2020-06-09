@@ -16,7 +16,7 @@ class AddProducts extends Component {
 				})
 			}
         }).catch(function (error) {
-            console.log(error)
+            //console.log(error)
         });
     }
 	
@@ -208,7 +208,7 @@ const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => {console.log(error);reject(error);};
+    reader.onerror = error => {reject(error);};
 });
 
 const sendImage = (base64,item_id,order_id,image_name) => new Promise((resolve, reject) => {
