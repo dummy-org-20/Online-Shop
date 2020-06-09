@@ -23,22 +23,21 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        for(let i=2;i<10;i++){
-            var item=[]
-            fetch("/item/"+i,{method:"GET"}).then(response=>response.json()).then((element)=>{
-                element["price"]=this.formatPrice(parseInt(element["price"]));
-                if(element["urls"]["0"]==undefined){
-                item=item.concat([<ProductCard2 url={"/image/0/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
-                }else{
-                item=item.concat([<ProductCard2 url={"/image/"+element["urls"]["0"]} alt={element["name"]} id={element["id"]} name={element["name"]} price={element["price"]}/>])
-                }
-                if(item.length==8){
-                    this.setState({
-                        items:item.sort(function(a,b){return a.props["id"]-b.props["id"]})
-                    })
+            fetch("/homepage",{method:"GET"}).then(response=>response.json()).then((elements)=>{
+                for(let i = 0; i < 8; i++){
+                    element = elements[i];
+                    if(element["urls"]["0"]==undefined){
+                        item=item.concat([<ProductCard2 url={"/image/0/test.jpg"} alt={element["name"]} id={element["id"]} name={element["name"]} price={this.formatPrice(element["price"])}/>])
+                    }else{
+                        item=item.concat([<ProductCard2 url={"/image/"+element["urls"]["0"]} alt={element["name"]} id={element["id"]} name={element["name"]} price={this.formatPrice(element["price"])}/>])
+                    }
+                    if(item.length==8){
+                        this.setState({
+                            items:item.sort(function(a,b){return a.props["id"]-b.props["id"]})
+                        })
+                    }
                 }
             });
-        }
     }
 
     render() {
