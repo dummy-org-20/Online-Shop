@@ -90,7 +90,7 @@ class AddProducts extends Component {
 			}
 			let oldPreis=$(".form-control#price")[0].value;
 			let preis= parseFloat(($(".form-control#price")[0].value.replace(",",".")));
-			if((".custom-file-input#customFile1")[0].files!=undefined&&(".custom-file-input#customFile1")[0].files[0]!=undefined){
+			if($(".custom-file-input#customFile1")[0].files!=undefined&&$(".custom-file-input#customFile1")[0].files[0]!=undefined){
 				if($(".custom-file-input#customFile1")[0].files[0].name.length>64){
 					alert("Der Bildname 1 ist zu lang");
 					return;
@@ -100,7 +100,7 @@ class AddProducts extends Component {
 					return
 				}
 			}
-			if((".custom-file-input#customFile2")[0].files!=undefined&&(".custom-file-input#customFile2")[0].files[0]!=undefined){
+			if($(".custom-file-input#customFile2")[0].files!=undefined&&$(".custom-file-input#customFile2")[0].files[0]!=undefined){
 				if($(".custom-file-input#customFile2")[0].files[0].name.length>64){
 					alert("Der Bildname 2 ist zu lang");
 					return;
@@ -109,7 +109,7 @@ class AddProducts extends Component {
 					alert("Im Bildnamen sind nur Buchstaben und Zahlen erlaubt, bitte ändern sie ihr Bildnamen bei Bild Nummer 2");
 					return
 				}
-			}if((".custom-file-input#customFile3")[0].files!=undefined&&(".custom-file-input#customFile3")[0].files[0]!=undefined){
+			}if($(".custom-file-input#customFile3")[0].files!=undefined&&$(".custom-file-input#customFile3")[0].files[0]!=undefined){
 				if($(".custom-file-input#customFile3")[0].files[0].name.length>64){
 					alert("Der Bildname 3 ist zu lang");
 					return;
@@ -118,7 +118,7 @@ class AddProducts extends Component {
 					alert("Im Bildnamen sind nur Buchstaben und Zahlen erlaubt, bitte ändern sie ihr Bildnamen bei Bild Nummer 3");
 					return
 				}
-			}if((".custom-file-input#customFile4")[0].files!=undefined&&(".custom-file-input#customFile4")[0].files[0]!=undefined){
+			}if($(".custom-file-input#customFile4")[0].files!=undefined&&$(".custom-file-input#customFile4")[0].files[0]!=undefined){
 				if($(".custom-file-input#customFile4")[0].files[0].name.length>64){
 					alert("Der Bildname 4 ist zu lang");
 					return;

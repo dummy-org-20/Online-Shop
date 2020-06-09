@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS shop_items (
 CREATE TABLE IF NOT EXISTS shop_item_images (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
-    url VARCHAR(32),
+    url VARCHAR(64),
     order_id INT
 );
 CREATE TABLE IF NOT EXISTS shop_order_items (
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS shop_orders (
 );
 CREATE TABLE IF NOT EXISTS shop_login_cookies (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    cookie VARCHAR(32)
+    cookie VARCHAR(64)
 );
 INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('ChristianAt','40194cea9f3efd50c7b254283d0306aa352b18ad2bd89498498f4a08173c91669f331b70a9dbe440e1bb543347eee138dbb79d36ec9ab2f10b9fd3356108a988','5a8bd93934a9202b602f151d94def4f3','3ff773e11b9522266efd98f641952f51b5680d9fabf1ed3721426bdfe0b8718c76b888ad6e13bfe7f1863565aa4006c6ed5f5c47ddbb97ac908f52b77cbb6a12',False,False,True);
 INSERT INTO shop_users(username,password,salt,security_answer,admin,isTemporary,isUsed) Values('AleksST','9a9955687a22b3b2eb44269757a45a0c5c2abb31716795b95245fe92f3e911db62b649b5360c1edb17235ea9e7dbd27e3e0ce1117cfe6695ad68f77cc95b57d1','106530b80be5afe9913f7fd739c0b056','41cd982e97157f577c4996bd33a0bc5e0e57a4015c41ae095834d8df645bf6ba3505d422155a8a2424f67192d7118eaf32940afb21c7fd94295ee9de2451eae4',False,False,True);
